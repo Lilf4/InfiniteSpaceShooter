@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @onready var Main = find_parent("Main")
+@export var SpeedLabel: Label
 
 @export var ThrustSpeed = 100
 @export var accelRate = .5
@@ -10,7 +11,7 @@ extends CharacterBody3D
 var target_velocity = Vector3.ZERO
 var currVel = Vector3.ZERO
 
-@export var maxTurnSpeed = 5
+@export var maxTurnSpeed = .5
 @export var turnCutOff = 0.25
 var turnVal = Vector3.ZERO
 
@@ -45,9 +46,9 @@ func _physics_process(delta):
 		dir.y += -1
 		relativeDir += -transform.basis.y * 1
 	if Input.is_action_pressed("left_roll"):
-		turnVal.z += 1
+		turnVal.z += 5
 	if Input.is_action_pressed("right_roll"):
-		turnVal.z += -1
+		turnVal.z += -5
 	
 	if dir != Vector3.ZERO:
 		dir.normalized()
@@ -73,7 +74,12 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
-	turnVal.clamp(-Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed),Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed))
+	SpeedLabel.text = ""
+	
+	turnVal = turnVal.clamp(
+		-Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed),
+		Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed)
+	)
 	turnVal.z = lerp(turnVal.z, 0.0, delta * passiveStopSpeed)
 	
 	if turnVal.distance_to(Vector3.ZERO) < turnCutOff:
