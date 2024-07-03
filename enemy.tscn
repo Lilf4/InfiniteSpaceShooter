@@ -32,3 +32,14 @@ shape = SubResource("BoxShape3D_6n7wn")
 [node name="LeftWing" type="CollisionShape3D" parent="." groups=["EnemyBody", "LeftWing"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.85, 1.359, -2.163)
 shape = SubResource("BoxShape3D_otdal")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+omni_range = 22.523
+omni_attenuation = 0.00153239
+
+[node name="OmniLight3D" type="OmniLight3D" parent="OmniLight3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13, 0)
+light_energy = 15.384
+omni_range = 22.523
+omni_attenuation = 0.00153239
