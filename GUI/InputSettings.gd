@@ -16,6 +16,7 @@ var input_actions = {
 	"downward_thrust": "Move Down",
 	"right_roll": "Roll Right",
 	"left_roll": "Roll Left",
+	"shoot": "Shoot"
 }
 
 func _ready():

@@ -1,13 +1,17 @@
-extends Node
+extends Node3D
 
-@onready var starScene = preload("res://Mob.tscn")
+@onready var starScene = preload("res://Star.tscn")
+@onready var Player = find_parent("Main").find_child("Player")
 
-@export var radius = 1500
-@export var density = .000005
+@export var radius = 200
+@export var density = .005
+
+func _process(delta):
+	position = Player.position
 
 func _ready():
-	spawnFilledSphere()
-	#spawnSurface()
+	#spawnFilledSphere()
+	spawnSurface()
 
 func spawnSurface():
 	for i in range(4 * (PI * pow(radius, 2)) * density) :

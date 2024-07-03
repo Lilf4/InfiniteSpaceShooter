@@ -12,7 +12,7 @@ var target_velocity = Vector3.ZERO
 var currVel = Vector3.ZERO
 
 @export var maxTurnSpeed = .5
-@export var turnCutOff = 0.25
+@export var turnCutOff = 0.1
 var turnVal = Vector3.ZERO
 
 func _input(event):
@@ -74,14 +74,13 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
-	SpeedLabel.text = ""
+	SpeedLabel.text = str("Velocity: ", round(currVel*pow(10,2))/pow(10,2))
 	
 	turnVal = turnVal.clamp(
 		-Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed),
 		Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed)
 	)
 	turnVal.z = lerp(turnVal.z, 0.0, delta * passiveStopSpeed)
-	
 	if turnVal.distance_to(Vector3.ZERO) < turnCutOff:
 		return
 	

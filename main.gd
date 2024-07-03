@@ -1,14 +1,14 @@
 extends Node
 
 @onready var input_settings_menu = $GUI/InputSettings
-
+@onready var fpsLabel = $GUI/VBoxContainer/fpsLabel
 var game_paused = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _process(delta):
-	pass
+	fpsLabel.text = str("FPS: ", Engine.get_frames_per_second())
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause"):
