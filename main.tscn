@@ -36,7 +36,7 @@ text = "Speed: (0,0,0)"
 [node name="Player" parent="." node_paths=PackedStringArray("SpeedLabel") instance=ExtResource("1_4wbho")]
 SpeedLabel = NodePath("../GUI/VBoxContainer/SpeedLabel")
 maxTurnSpeed = 2.0
-turnCutOff = 0.5
+turnCutOff = 0.05
 
 [node name="WaveSpawner" type="Node3D" parent="."]
 script = ExtResource("7_x3jq6")
