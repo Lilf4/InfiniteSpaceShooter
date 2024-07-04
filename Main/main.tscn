@@ -56,7 +56,7 @@ script = ExtResource("8_cn62n")
 light_color = Color(1, 0.282353, 0.909804, 1)
 shadow_transmittance_bias = 2.313
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="ParticleSpawner" type="Node3D" parent="."]
 script = ExtResource("9_o6gks")
 
 [connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]

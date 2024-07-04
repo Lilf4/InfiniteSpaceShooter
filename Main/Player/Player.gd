@@ -38,26 +38,10 @@ func _physics_process(delta):
 	if Input.is_action_pressed("backward_thrust"):
 		dir.z += -1
 		relativeDir += -transform.basis.z * 1
-	if Input.is_action_pressed("left_thrust"):
-		pass
-		#dir.x += 1
-		#relativeDir += transform.basis.x * 1
-	if Input.is_action_pressed("right_thrust"):
-		pass
-		#dir.x += -1 
-		#relativeDir += -transform.basis.x * 1 
-	if Input.is_action_pressed("upward_thrust"):
-		pass
-		#dir.y += 1
-		#relativeDir += transform.basis.y * 1
-	if Input.is_action_pressed("downward_thrust"):
-		pass
-		#dir.y += -1
-		#relativeDir += -transform.basis.y * 1
 	if Input.is_action_pressed("left_roll"):
-		roll += 1
-	if Input.is_action_pressed("right_roll"):
 		roll += -1
+	if Input.is_action_pressed("right_roll"):
+		roll += 1
 	
 	if dir != Vector3.ZERO:
 		dir.normalized()
