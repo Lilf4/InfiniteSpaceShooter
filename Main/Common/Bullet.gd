@@ -15,7 +15,7 @@ func _process(delta):
 	if timeLeft < 0:
 		queue_free()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	velocity = transform.basis.z * Speed
 	move_and_slide()
 

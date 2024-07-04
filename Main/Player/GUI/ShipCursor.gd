@@ -1,15 +1,14 @@
 extends Control
 
-var Player
+@onready var Player = find_parent("Main").find_child("Player")
 
 @onready var Main = find_parent("Main")
 @export var reticleSize = 25
 
 func _ready():
-	Player = find_parent("Main").find_child("Player")
+	pass
 
-
-func _process(delta):
+func _process(_delta):
 	if(Main.game_paused):
 		return
 	queue_redraw()

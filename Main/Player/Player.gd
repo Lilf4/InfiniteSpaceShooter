@@ -81,6 +81,9 @@ func _physics_process(delta):
 		Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed)
 	)
 	turnVal.z = lerp(turnVal.z, 0.0, delta * passiveStopSpeed)
+	
+	rotate_object_local(Vector3(0,0,1), deg_to_rad(turnVal.z))
+	
 	if turnVal.distance_to(Vector3.ZERO) < turnCutOff:
 		return
 	
@@ -90,4 +93,3 @@ func _physics_process(delta):
 	
 	rotate_object_local(Vector3(0,1,0), deg_to_rad(-yaw))
 	rotate_object_local(Vector3(1,0,0), deg_to_rad(pitch))
-	rotate_object_local(Vector3(0,0,1), deg_to_rad(turnVal.z))

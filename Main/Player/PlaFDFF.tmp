@@ -1,9 +1,9 @@
 [gd_scene load_steps=12 format=3 uid="uid://c4m8ja0uorn45"]
 
-[ext_resource type="Script" path="res://Player.gd" id="1_ujv3y"]
+[ext_resource type="Script" path="res://Main/Player/Player.gd" id="1_ef8ja"]
 [ext_resource type="ArrayMesh" uid="uid://fvg06ial0u3o" path="res://Assets/Spaceship/Lo_poly_Spaceship_01_by_Liz_Reddington.obj" id="1_xmbok"]
-[ext_resource type="Shader" path="res://OuterSpace.gdshader" id="3_6mxks"]
-[ext_resource type="Script" path="res://Gun.gd" id="3_h47rt"]
+[ext_resource type="Shader" path="res://Main/Environment/OuterSpace.gdshader" id="3_e7q7t"]
+[ext_resource type="Script" path="res://Main/Player/Gun.gd" id="4_0rjyh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hhju4"]
 size = Vector3(9.15137, 5.53, 28.8636)
@@ -19,7 +19,7 @@ transparency = 1
 albedo_color = Color(1, 1, 1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6yv2o"]
-shader = ExtResource("3_6mxks")
+shader = ExtResource("3_e7q7t")
 shader_parameter/sky_color = Color(0, 0, 0, 1)
 shader_parameter/star_base_color = Color(0.8, 1, 0.3, 1)
 shader_parameter/star_hue_offset = 0.6
@@ -38,11 +38,12 @@ background_mode = 2
 sky = SubResource("Sky_bhxmv")
 glow_enabled = true
 glow_normalized = true
+glow_strength = 1.49
 glow_blend_mode = 4
 
 [node name="Player" type="CharacterBody3D"]
 motion_mode = 1
-script = ExtResource("1_ujv3y")
+script = ExtResource("1_ef8ja")
 
 [node name="MainBodyCollider" type="CollisionShape3D" parent="." groups=["MainBody", "PlayerBody"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.783173)
@@ -71,11 +72,11 @@ near = 0.001
 
 [node name="LeftGun" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.55, 0, 23.0632)
-script = ExtResource("3_h47rt")
+script = ExtResource("4_0rjyh")
 
 [node name="RightGun" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.55, 0, 23.1033)
-script = ExtResource("3_h47rt")
+script = ExtResource("4_0rjyh")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2771, 0)

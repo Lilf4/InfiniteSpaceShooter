@@ -2,7 +2,7 @@ extends Node3D
 
 @onready var Main = find_parent("Main")
 @onready var Player = find_parent("Player")
-@onready var bullet = preload("res://Bullet.tscn")
+@onready var bullet = preload("res://Main/Common/Bullet.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

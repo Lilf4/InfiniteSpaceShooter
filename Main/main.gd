@@ -7,7 +7,7 @@ var game_paused = false
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
-func _process(delta):
+func _process(_delta):
 	fpsLabel.text = str("FPS: ", Engine.get_frames_per_second())
 
 func _unhandled_input(event):

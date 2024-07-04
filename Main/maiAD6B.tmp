@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://buoq5hkopjydp"]
+
+[ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
+[ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
+[ext_resource type="PackedScene" uid="uid://c2xoo5sd5ga8u" path="res://Main/Environment/Sun.tscn" id="2_35fdn"]
+[ext_resource type="PackedScene" uid="uid://cpwy34jgvhxa7" path="res://Main/GUI/Settings/InputSettings.tscn" id="2_2420r"]
+[ext_resource type="PackedScene" uid="uid://dgu27pi6pnrhm" path="res://Main/Player/GUI/ShipCursor.tscn" id="3_ija6w"]
+[ext_resource type="Script" path="res://Main/GUI/fpsLabel.gd" id="4_sekis"]
+[ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
+[ext_resource type="Script" path="res://Main/Enemy/WaveSpawner.gd" id="8_urq70"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_6atm7")
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="InputSettings" parent="GUI" instance=ExtResource("2_2420r")]
+visible = false
+
+[node name="ShipCursor" parent="GUI" instance=ExtResource("3_ija6w")]
+reticleSize = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="fpsLabel" type="Label" parent="GUI/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("4_sekis")
+
+[node name="SpeedLabel" type="Label" parent="GUI/VBoxContainer"]
+layout_mode = 2
+text = "Speed: (0,0,0)"
+
+[node name="Player" parent="." node_paths=PackedStringArray("SpeedLabel") instance=ExtResource("1_4wbho")]
+SpeedLabel = NodePath("../GUI/VBoxContainer/SpeedLabel")
+maxTurnSpeed = 2.0
+turnCutOff = 0.05
+
+[node name="WaveSpawner" type="Node3D" parent="."]
+script = ExtResource("8_urq70")
+
+[node name="SpawnTimer" type="Timer" parent="WaveSpawner"]
+wait_time = 5.0
+autostart = true
+
+[node name="SunScene" parent="." instance=ExtResource("2_35fdn")]
+script = ExtResource("8_cn62n")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SunScene"]
+light_color = Color(1, 0.282353, 0.909804, 1)
+shadow_transmittance_bias = 2.313
+
+[connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]

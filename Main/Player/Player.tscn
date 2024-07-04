@@ -1,0 +1,85 @@
+[gd_scene load_steps=12 format=3 uid="uid://c4m8ja0uorn45"]
+
+[ext_resource type="Script" path="res://Main/Player/Player.gd" id="1_ef8ja"]
+[ext_resource type="ArrayMesh" uid="uid://fvg06ial0u3o" path="res://Assets/Spaceship/Lo_poly_Spaceship_01_by_Liz_Reddington.obj" id="1_xmbok"]
+[ext_resource type="Shader" path="res://Main/Environment/OuterSpace.gdshader" id="3_e7q7t"]
+[ext_resource type="Script" path="res://Main/Player/Gun.gd" id="4_0rjyh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hhju4"]
+size = Vector3(9.15137, 5.53, 28.8636)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7yh8t"]
+size = Vector3(14.036, 3, 4.517)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_umqah"]
+size = Vector3(14.036, 3, 4.517)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x372m"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6yv2o"]
+shader = ExtResource("3_e7q7t")
+shader_parameter/sky_color = Color(0, 0, 0, 1)
+shader_parameter/star_base_color = Color(0.8, 1, 0.3, 1)
+shader_parameter/star_hue_offset = 0.6
+shader_parameter/star_intensity = 0.08
+shader_parameter/star_twinkle_speed = 0.8
+shader_parameter/star_twinkle_intensity = 0.2
+shader_parameter/layer_scale = 20.0
+shader_parameter/layer_scale_step = 10.0
+shader_parameter/layers_count = 3
+
+[sub_resource type="Sky" id="Sky_bhxmv"]
+sky_material = SubResource("ShaderMaterial_6yv2o")
+
+[sub_resource type="Environment" id="Environment_4sf5v"]
+background_mode = 2
+sky = SubResource("Sky_bhxmv")
+glow_enabled = true
+glow_normalized = true
+glow_strength = 1.49
+glow_blend_mode = 4
+
+[node name="Player" type="CharacterBody3D"]
+motion_mode = 1
+script = ExtResource("1_ef8ja")
+
+[node name="MainBodyCollider" type="CollisionShape3D" parent="." groups=["MainBody", "PlayerBody"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.783173)
+shape = SubResource("BoxShape3D_hhju4")
+
+[node name="LeftWingCollider" type="CollisionShape3D" parent="." groups=["LeftWing", "PlayerBody"]]
+transform = Transform3D(0.652098, 0, 0.758134, 0, 1, 0, -0.758134, 0, 0.652098, 10.8753, 0, -8.86117)
+shape = SubResource("BoxShape3D_7yh8t")
+
+[node name="RightWingCollider" type="CollisionShape3D" parent="." groups=["PlayerBody", "RightWing"]]
+transform = Transform3D(0.652098, 0, -0.758134, 0, 1, 0, 0.758134, 0, 0.652098, -10.875, 0, -8.861)
+shape = SubResource("BoxShape3D_umqah")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+mesh = ExtResource("1_xmbok")
+surface_material_override/3 = SubResource("StandardMaterial3D_x372m")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 4.553, -6)
+environment = SubResource("Environment_4sf5v")
+projection = 2
+fov = 37.8493
+size = 0.001
+near = 0.001
+
+[node name="LeftGun" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.55, 0, 23.0632)
+script = ExtResource("4_0rjyh")
+
+[node name="RightGun" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.55, 0, 23.1033)
+script = ExtResource("4_0rjyh")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2771, 0)
+light_energy = 11.343
+omni_range = 26.647
+omni_attenuation = 0.965937

@@ -1,6 +1,6 @@
 extends Node3D
 
-@onready var enemeyScene = preload("res://enemy.tscn")
+@onready var enemeyScene = preload("res://Main/Enemy/enemy.tscn")
 
 @onready var main = find_parent("Main")
 @onready var player = find_parent("Main").find_child("Player")
@@ -29,11 +29,14 @@ func spawnEnemies(count):
 		var newEnemy = enemeyScene.instantiate()
 		newEnemy.set_position((points * radius) + player.position)
 		newEnemy.connect("enemyDeath", enemyDied)
+		newEnemy.ID = System_Global.GET_NEWID()
+		System_Global.EnemyInstances[newEnemy.ID] = newEnemy
 		main.add_child.call_deferred(newEnemy)
 		enemiesAlive += 1
 
-func enemyDied():
-	enemiesAlive -= 1
+func enemyDied(id):
+	if(System_Global.EnemyInstances.erase(id)):
+		enemiesAlive -= 1
 	enemiesKilledSinceSpawn += 1
 
 
@@ -48,4 +51,10 @@ func trySpawnEnemies():
 		enemiesSpawned += enemiesToSpawn
 		enemiesLeft -= enemiesToSpawn
 		enemiesKilledSinceSpawn = 0
-	print("Enemies spawned: ", enemiesSpawned, "\r\nEnemies alive: ", enemiesAlive, "\r\nEnemies left: ", enemiesLeft)
+	if(System_Global.DEBUG_MODE):
+		print(
+			"Enemies spawned: ", enemiesSpawned, 
+			"\r\nEnemies alive: ", enemiesAlive, 
+			"\r\nEnemies left: ", enemiesLeft,
+			"\r\nIDs", System_Global.EnemyInstances
+			)

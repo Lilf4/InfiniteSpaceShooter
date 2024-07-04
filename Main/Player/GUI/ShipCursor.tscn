@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://dgu27pi6pnrhm"]
 
-[ext_resource type="Script" path="res://ShipCursor.gd" id="1_jkhp1"]
+[ext_resource type="Script" path="res://Main/Player/GUI/ShipCursor.gd" id="1_oudon"]
 
 [node name="ShipCursor" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_jkhp1")
+script = ExtResource("1_oudon")
