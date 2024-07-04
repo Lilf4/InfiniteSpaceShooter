@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://dgu27pi6pnrhm" path="res://Main/Player/GUI/ShipCursor.tscn" id="3_ija6w"]
 [ext_resource type="Script" path="res://Main/GUI/fpsLabel.gd" id="4_sekis"]
 [ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
-[ext_resource type="PackedScene" uid="uid://ypaqjflcdklt" path="res://Main/Enemy/enemy.tscn" id="8_lxge5"]
 [ext_resource type="Script" path="res://Main/Enemy/WaveSpawner.gd" id="8_urq70"]
+[ext_resource type="Script" path="res://Main/Environment/StarSpawner.gd" id="9_o6gks"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_6atm7")
@@ -41,6 +41,9 @@ turnCutOff = 0.05
 
 [node name="WaveSpawner" type="Node3D" parent="."]
 script = ExtResource("8_urq70")
+enemies = 50
+maxEnemiesAlive = 8
+minEnemiesKilledToSpawn = 3
 
 [node name="SpawnTimer" type="Timer" parent="WaveSpawner"]
 wait_time = 5.0
@@ -53,7 +56,7 @@ script = ExtResource("8_cn62n")
 light_color = Color(1, 0.282353, 0.909804, 1)
 shadow_transmittance_bias = 2.313
 
-[node name="Enemy" parent="." instance=ExtResource("8_lxge5")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 103)
+[node name="Node3D" type="Node3D" parent="."]
+script = ExtResource("9_o6gks")
 
 [connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]

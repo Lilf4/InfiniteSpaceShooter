@@ -1,17 +1,18 @@
 extends Node3D
 
-@onready var starScene = preload("res://Star.tscn")
+@onready var starScene = preload("res://Main/Environment/dust_particle.tscn")
 @onready var Player = find_parent("Main").find_child("Player")
 
-@export var radius = 200
-@export var density = .005
+@export var radius = 2000
+@export var density = .0000005
 
 func _process(delta):
-	position = Player.position
+	#position = Player.position
+	pass
 
 func _ready():
-	#spawnFilledSphere()
-	spawnSurface()
+	spawnFilledSphere()
+	#spawnSurface()
 
 func spawnSurface():
 	for i in range(4 * (PI * pow(radius, 2)) * density) :

@@ -1,6 +1,6 @@
 extends Control
 
-@onready var input_button_scene = preload("res://Main/GUI/settings/input_button.tscn")
+@onready var input_button_scene = preload("res://Main/GUI/Settings/input_button.tscn")
 @onready var action_list = $PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList
 
 var is_remapping = false
@@ -9,11 +9,7 @@ var remapping_button = null
 
 var input_actions = {
 	"forward_thrust": "Move Forward",
-	"left_thrust": "Move Left",
 	"backward_thrust": "Move Back",
-	"right_thrust": "Move Right",
-	"upward_thrust": "Move Up",
-	"downward_thrust": "Move Down",
 	"right_roll": "Roll Right",
 	"left_roll": "Roll Left",
 	"shoot": "Shoot"

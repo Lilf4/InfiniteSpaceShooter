@@ -10,6 +10,11 @@ extends CharacterBody3D
 
 var target_velocity = Vector3.ZERO
 var currVel = Vector3.ZERO
+var currRoll: float = 0
+@export var maxRollSpeed = 10.0
+@export var rollAccel = 0.5
+@export var rollForce = 5.0
+@export var rollStopForce = 1.0
 
 @export var maxTurnSpeed = .5
 @export var turnCutOff = 0.1
@@ -26,7 +31,7 @@ func _physics_process(delta):
 		return
 	var dir = Vector3.ZERO
 	var relativeDir = Vector3.ZERO
-	
+	var roll: int = 0
 	if Input.is_action_pressed("forward_thrust"):
 		dir.z += 1
 		relativeDir += transform.basis.z * 1
@@ -34,21 +39,25 @@ func _physics_process(delta):
 		dir.z += -1
 		relativeDir += -transform.basis.z * 1
 	if Input.is_action_pressed("left_thrust"):
-		dir.x += 1
-		relativeDir += transform.basis.x * 1
+		pass
+		#dir.x += 1
+		#relativeDir += transform.basis.x * 1
 	if Input.is_action_pressed("right_thrust"):
-		dir.x += -1 
-		relativeDir += -transform.basis.x * 1 
+		pass
+		#dir.x += -1 
+		#relativeDir += -transform.basis.x * 1 
 	if Input.is_action_pressed("upward_thrust"):
-		dir.y += 1
-		relativeDir += transform.basis.y * 1
+		pass
+		#dir.y += 1
+		#relativeDir += transform.basis.y * 1
 	if Input.is_action_pressed("downward_thrust"):
-		dir.y += -1
-		relativeDir += -transform.basis.y * 1
+		pass
+		#dir.y += -1
+		#relativeDir += -transform.basis.y * 1
 	if Input.is_action_pressed("left_roll"):
-		turnVal.z += 5
+		roll += 1
 	if Input.is_action_pressed("right_roll"):
-		turnVal.z += -5
+		roll += -1
 	
 	if dir != Vector3.ZERO:
 		dir.normalized()
@@ -80,9 +89,11 @@ func _physics_process(delta):
 		-Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed),
 		Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed)
 	)
-	turnVal.z = lerp(turnVal.z, 0.0, delta * passiveStopSpeed)
+	currRoll += ((roll * rollForce) * rollAccel) * delta
 	
-	rotate_object_local(Vector3(0,0,1), deg_to_rad(turnVal.z))
+	currRoll = lerp(currRoll, 0.0, delta * rollStopForce)
+	
+	rotate_object_local(Vector3(0,0,1), deg_to_rad(currRoll))
 	
 	if turnVal.distance_to(Vector3.ZERO) < turnCutOff:
 		return

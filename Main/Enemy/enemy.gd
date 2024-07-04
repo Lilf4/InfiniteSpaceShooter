@@ -74,14 +74,14 @@ func Following(delta):
 	
 	target_velocity *= distThrustPower
 	
-	for enemy in System_Global.EnemyInstances:
-		if enemy != ID:
-			enemy = System_Global.EnemyInstances[enemy]
-			var seperationPointToFollow = enemy.position - (-enemy.position.direction_to(position) * SeperationDist) 
-			var clampedSeperationDist = clamp(position.distance_to(seperationPointToFollow), 0, 100)
-			var seperationThrustPower = 0 if clampedSeperationDist <= SeperationDistMargin else clampedSeperationDist * 0.01
-			print((position.direction_to(enemy.position) * -SeperationForce) * seperationThrustPower)
-			target_velocity += (position.direction_to(enemy.position) * -SeperationForce) * seperationThrustPower
+	#for enemy in System_Global.EnemyInstances:
+	#	if enemy != ID:
+	#		enemy = System_Global.EnemyInstances[enemy]
+	#		var seperationPointToFollow = enemy.position - (-enemy.position.direction_to(position) * SeperationDist) 
+	#		var clampedSeperationDist = clamp(position.distance_to(seperationPointToFollow), 0, 100)
+	#		var seperationThrustPower = 0 if clampedSeperationDist <= SeperationDistMargin else clampedSeperationDist * 0.01
+	#		print((position.direction_to(enemy.position) * -SeperationForce) * seperationThrustPower)
+	#		target_velocity += (position.direction_to(enemy.position) * -SeperationForce) * seperationThrustPower
 	
 	currVel += (target_velocity * AccelRate) * delta
 	
