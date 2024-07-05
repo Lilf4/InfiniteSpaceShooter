@@ -11,6 +11,8 @@ extends Node3D
 @export var maxEnemiesAlive = 5
 @export var minEnemiesKilledToSpawn = 4
 
+@export var enabled: bool = true
+
 var enemiesSpawned = 0
 var enemiesAlive = 0
 var enemiesLeft = 0
@@ -18,6 +20,9 @@ var enemiesKilledSinceSpawn = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if not enabled:
+		find_child("SpawnTimer").stop()
+		return
 	enemiesLeft = enemies
 	enemiesKilledSinceSpawn = minEnemiesKilledToSpawn
 	trySpawnEnemies()
@@ -35,6 +40,8 @@ func spawnEnemies(count):
 		enemiesAlive += 1
 
 func enemyDied(id):
+	if not enabled:
+		return
 	if(System_Global.EnemyInstances.erase(id)):
 		enemiesAlive -= 1
 	enemiesKilledSinceSpawn += 1

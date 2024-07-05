@@ -41,9 +41,9 @@ turnCutOff = 0.05
 
 [node name="WaveSpawner" type="Node3D" parent="."]
 script = ExtResource("8_urq70")
-enemies = 50
-maxEnemiesAlive = 8
-minEnemiesKilledToSpawn = 3
+radius = 50
+maxEnemiesAlive = 1
+minEnemiesKilledToSpawn = 0
 
 [node name="SpawnTimer" type="Timer" parent="WaveSpawner"]
 wait_time = 5.0

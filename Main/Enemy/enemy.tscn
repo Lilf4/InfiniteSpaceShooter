@@ -1,36 +1,39 @@
-[gd_scene load_steps=6 format=3 uid="uid://ypaqjflcdklt"]
+[gd_scene load_steps=7 format=3 uid="uid://ypaqjflcdklt"]
 
 [ext_resource type="ArrayMesh" uid="uid://bti3a3k88xeno" path="res://Assets/SpaceshipT2/Lo_poly_Spaceship_04_by_Liz_Reddington.obj" id="1_6h2m3"]
 [ext_resource type="Script" path="res://Main/Enemy/enemy.gd" id="1_jffad"]
+[ext_resource type="PackedScene" uid="uid://bkgb414flbofn" path="res://Main/Enemy/follow_point.tscn" id="3_r8coq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0500u"]
-size = Vector3(6.50684, 7.47168, 21.082)
+size = Vector3(6.50684, 7.47168, 21.187)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6n7wn"]
-size = Vector3(4.943, 12.7183, 9.727)
+size = Vector3(5.38142, 12.919, 10.0208)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_otdal"]
-size = Vector3(4.943, 12.7183, 9.727)
+size = Vector3(5.38142, 12.919, 10.0208)
 
 [node name="Enemy" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_jffad")
+FollowForgiveness = 20.0
+FollowingDistance = 80.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 mesh = ExtResource("1_6h2m3")
 
 [node name="MainBody" type="CollisionShape3D" parent="." groups=["EnemyBody", "MainBody"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.67306, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.67306, -0.0524979)
 shape = SubResource("BoxShape3D_0500u")
 
 [node name="RightWing" type="CollisionShape3D" parent="." groups=["EnemyBody", "RightWing"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.8496, 1.35913, -2.16328)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.863, 1.309, -2.153)
 shape = SubResource("BoxShape3D_6n7wn")
 
 [node name="LeftWing" type="CollisionShape3D" parent="." groups=["EnemyBody", "LeftWing"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.85, 1.359, -2.163)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.86297, 1.309, -2.153)
 shape = SubResource("BoxShape3D_otdal")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
@@ -43,3 +46,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13, 0)
 light_energy = 15.384
 omni_range = 22.523
 omni_attenuation = 0.00153239
+
+[node name="FollowPoint" parent="." instance=ExtResource("3_r8coq")]
