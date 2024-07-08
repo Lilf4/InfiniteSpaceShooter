@@ -17,6 +17,17 @@ size = Vector3(4.943, 12.7183, 9.727)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_jffad")
+SeperationDistMargin = null
+SeperationDist = null
+SeperationForce = null
+MaxSpeed = null
+AccelRate = null
+Thrust = null
+StoppingPower = null
+FollowForgiveness = null
+FollowingDistance = null
+followPointRadius = null
+Health = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
