@@ -22,7 +22,7 @@ extends CharacterBody3D
 @onready var followPointScene: PackedScene = preload("res://Main/Enemy/follow_point.tscn")
 @onready var followPointMiddle: Node3D
 @onready var followPointOuter: Node3D
-var followPointOffset: Vector3 = Vector3(0, 0, 20)
+var followPointOffset: Vector3 = Vector3(0, 0, -20)
 
 var currVel: Vector3 = Vector3.ZERO
 
@@ -60,24 +60,28 @@ var currBehavior: BehaviorStates = BehaviorStates.Following
 
 #Control behavior
 func _process(_delta):
+	if System_Global.GamePaused:
+		return
 	followPointMiddle.position = position
 	followPointOuter.position = followPointOffset
 
 #Perform behavior
 func _physics_process(delta):
+	if System_Global.GamePaused:
+		return
 	match currBehavior:
 		BehaviorStates.Idle:
 			Idle(delta)
 		BehaviorStates.Following:
 			Following(delta)
 
-func Dogfight(delta):
+func Dogfight(_delta):
 	pass
 
-func Flyby(delta):
+func Flyby(_delta):
 	pass
 
-func Idle(delta):
+func Idle(_delta):
 	pass
 
 func Following(delta):
@@ -99,17 +103,17 @@ func Following(delta):
 	else:
 		look_at(player.position)
 	
-	#move_and_slide()
+	move_and_slide()
 	
-	var v = Vector2(followPointMiddle.global_position.x, followPointMiddle.global_position.y) - Vector2(player.global_position.x, player.global_position.y)
-	var angle = v.angle()
-	var r = Vector2(followPointMiddle.global_rotation.x, followPointMiddle.global_rotation.y)
-	var lerpedRot = lerp(r, Vector2(angle,angle), 0.2)
-	followPointMiddle.global_rotation = Vector3(lerpedRot.x, lerpedRot.y , 0)
+	if not followPointMiddle.position.is_equal_approx(player.position):
+		var before = followPointMiddle.rotation
+		followPointMiddle.look_at(player.position)
+		var after = followPointMiddle.rotation
+		followPointMiddle.rotation = before.lerp(after, 0.2)
 	#Get angle in y dir and apply
 	#Get angle in z dir and apply
 	#print("Toward player: ", towardPlayer, "\r\n", "Current: ", currLook, "\r\n", "Difference: ", currLook - towardPlayer)
-	#moveFollowPoint((towardPlayer - currLook).normalized(), 50 * delta)
+	#moveFollowPoint(, 50 * delta)
 
 func LegacyFollowing(delta):
 	var pointToFollow = player.position - (-player.position.direction_to(position) * FollowingDistance) 
@@ -152,8 +156,6 @@ func LegacyFollowing(delta):
 	
 	move_and_slide()
 
-
-#FIX DOT ROTATING WITH SHIP ENDING IN INSANE BAYBLADE SPINNING
 func moveFollowPoint(dir: Vector3, amount: float):
 	followPointMiddle.rotate_object_local(dir, deg_to_rad(amount))
 	#print(followPointMiddle.rotation, amount)

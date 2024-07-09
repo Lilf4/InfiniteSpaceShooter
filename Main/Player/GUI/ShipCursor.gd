@@ -9,7 +9,7 @@ func _ready():
 	pass
 
 func _process(_delta):
-	if(Main.game_paused):
+	if System_Global.GamePaused:
 		return
 	queue_redraw()
 

@@ -11,6 +11,8 @@ var fireRate = .05
 
 var timeToNextShot = 0
 func _process(delta):
+	if System_Global.GamePaused:
+		return
 	if Input.is_action_pressed("shoot"):
 		if timeToNextShot <= 0:
 			var newBullet = bullet.instantiate()

@@ -6,10 +6,6 @@ extends Node3D
 @export var radius: float = 2000
 @export var density: float = .0000005
 
-func _process(delta):
-	#position = Player.position
-	pass
-
 func _ready():
 	spawnFilledSphere()
 	#spawnSurface()
@@ -23,7 +19,7 @@ func spawnSurface():
 		self.add_child(newStar)
 
 func spawnFilledSphere():
-	for i in range(4 / 3 * (PI * pow(radius, 3)) * density) :
+	for i in range(4.0 / 3.0 * (PI * pow(radius, 3.0)) * density) :
 		var d = 0.0
 		var x = 0.0
 		var y = 0.0

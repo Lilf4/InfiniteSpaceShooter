@@ -21,13 +21,13 @@ var currRoll: float = 0
 var turnVal = Vector3.ZERO
 
 func _input(event):
-	if Main.game_paused:
+	if System_Global.GamePaused:
 		return
 	if event is InputEventMouseMotion:
 		turnVal += Vector3(event.relative.x, event.relative.y, 0) * 0.001
 
 func _physics_process(delta):
-	if Main.game_paused:
+	if System_Global.GamePaused:
 		return
 	var dir = Vector3.ZERO
 	var relativeDir = Vector3.ZERO
