@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0uslv36kcdlt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lohr7"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ptluh"]
+material = SubResource("StandardMaterial3D_lohr7")
+
+[node name="EnemyDot" type="MeshInstance3D"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("SphereMesh_ptluh")

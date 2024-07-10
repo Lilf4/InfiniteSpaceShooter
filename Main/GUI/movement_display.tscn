@@ -1,0 +1,72 @@
+[gd_scene load_steps=10 format=3 uid="uid://t6fcxu1o6f5b"]
+
+[ext_resource type="Script" path="res://Main/GUI/movement_display.gd" id="1_6jy7c"]
+[ext_resource type="ArrayMesh" uid="uid://fvg06ial0u3o" path="res://Assets/Spaceship/Lo_poly_Spaceship_01_by_Liz_Reddington.obj" id="1_uiutr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3elbi"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.196078)
+
+[sub_resource type="SphereMesh" id="SphereMesh_i4slj"]
+material = SubResource("StandardMaterial3D_3elbi")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_80csh"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.337255)
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hbbay"]
+transparency = 1
+albedo_color = Color(0, 1, 1, 0.196078)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i2fnb"]
+material = SubResource("StandardMaterial3D_hbbay")
+height = 0.001
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ha6eb"]
+top_radius = 0.0
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4rhey"]
+top_radius = 0.125
+bottom_radius = 0.125
+height = 1.0
+
+[node name="MovementDisplay" type="Node3D"]
+script = ExtResource("1_6jy7c")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 60, 100)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+mesh = SubResource("SphereMesh_i4slj")
+
+[node name="PlayerVis" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.02, 0, 1.74846e-09, 0, 0.02, 0, -1.74846e-09, 0, -0.02, 0, 0, 0)
+visible = false
+material_overlay = SubResource("StandardMaterial3D_80csh")
+mesh = ExtResource("1_uiutr")
+skeleton = NodePath("../../MeshInstance3D")
+
+[node name="HorizontalVis" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
+mesh = SubResource("CylinderMesh_i2fnb")
+skeleton = NodePath("../../MeshInstance3D")
+
+[node name="DirPivot" type="Node3D" parent="."]
+
+[node name="Arrow" type="Node3D" parent="DirPivot"]
+transform = Transform3D(-10, 8.74228e-07, -3.82137e-14, 0, -4.37114e-07, -10, -8.74228e-07, -10, 4.37114e-07, 0, 0, 0)
+
+[node name="Head" type="MeshInstance3D" parent="DirPivot/Arrow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("CylinderMesh_ha6eb")
+skeleton = NodePath("../../..")
+
+[node name="Base" type="MeshInstance3D" parent="DirPivot/Arrow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_4rhey")

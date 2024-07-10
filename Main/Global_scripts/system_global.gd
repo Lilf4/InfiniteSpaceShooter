@@ -5,6 +5,7 @@ var DEBUG_MODE = false
 var EnemyInstances = {}
 var GamePaused = false
 
+
 func GET_NEWID():
 	var returnVal = currID
 	currID += 1

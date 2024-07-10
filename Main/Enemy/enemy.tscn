@@ -46,3 +46,15 @@ omni_range = 22.523
 omni_attenuation = 0.00153239
 
 [node name="FollowPointMiddle" parent="." instance=ExtResource("3_bpd68")]
+
+[node name="RightFrontGun" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.43555, 0.580084, 8)
+
+[node name="RightBackGun" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.47109, 2.16994, 5.77334)
+
+[node name="LeftBackGun" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.471, 2.17, 5.773)
+
+[node name="LeftFrontGun" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.436, 0.58, 8)

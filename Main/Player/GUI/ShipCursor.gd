@@ -17,23 +17,23 @@ func _draw():
 	if Player == null:
 		return
 	var distMult = 2
-	var screenCenter = get_viewport_rect().size * .5
+	#var screenCenter = get_viewport_rect().size * .5
 	var mouseOffset = (Vector2(Player.turnVal.x, Player.turnVal.y) * (reticleSize * distMult)) 
 	
 	#Cursor
 	draw_arc(
-		screenCenter + mouseOffset, 
+		mouseOffset, 
 		reticleSize * .5, 
 		0, TAU, 100, Color.WHITE)
 		
 	#Deadzone
 	draw_arc(
-		screenCenter, 
+		Vector2.ZERO, 
 		reticleSize + (reticleSize * Vector2(Player.turnCutOff, Player.turnCutOff).distance_to(Vector2.ZERO)),
 		0, TAU, 100, Color.ORANGE)
 		
 	#Max
 	draw_arc(
-		screenCenter, 
+		Vector2.ZERO, 
 		(reticleSize + Player.maxTurnSpeed) + (reticleSize * Player.maxTurnSpeed), 
 		0, TAU, 100, Color.RED)

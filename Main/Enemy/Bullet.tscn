@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://ckbqf17yd8g7o"]
+
+[ext_resource type="Script" path="res://Main/Common/Bullet.gd" id="1_c182w"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bd6cl"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ttfwx"]
+material = SubResource("StandardMaterial3D_bd6cl")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8hv5o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fl8mf"]
+
+[node name="Bullet" type="CharacterBody3D"]
+collision_layer = 4
+motion_mode = 1
+script = ExtResource("1_c182w")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, -8.74228e-08, -0.5, 0, 2, -2.18557e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_ttfwx")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(2, 0, 0, 0, -8.74228e-08, -2, 0, 2, -8.74228e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_8hv5o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_fl8mf")
+disabled = true
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

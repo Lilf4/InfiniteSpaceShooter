@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 
 System_Global="*res://Main/Global_scripts/system_global.gd"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/draw3d/plugin.cfg")
+
 [input]
 
 ui_left={

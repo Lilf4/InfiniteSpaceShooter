@@ -11,16 +11,12 @@ func _ready():
 	timeLeft = 10
 
 func _process(delta):
-	if System_Global.GamePaused:
-		return
 	timeLeft -= delta
 	if timeLeft < 0:
 		queue_free()
 
 func _physics_process(_delta):
-	if System_Global.GamePaused:
-		return
-	velocity = transform.basis.z * Speed
+	velocity = -transform.basis.z * Speed
 	move_and_slide()
 
 

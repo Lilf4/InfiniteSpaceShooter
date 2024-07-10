@@ -3,6 +3,8 @@ extends CharacterBody3D
 @onready var Main = find_parent("Main")
 @export var SpeedLabel: Label
 
+@export var Health: float = 100
+
 @export var ThrustSpeed = 100
 @export var accelRate = .5
 
@@ -19,6 +21,13 @@ var currRoll: float = 0
 @export var maxTurnSpeed = .5
 @export var turnCutOff = 0.1
 var turnVal = Vector3.ZERO
+
+
+signal PlayerDeath
+func takeDamage(val):
+	Health -= val
+	if Health <= 0:
+		PlayerDeath.emit()
 
 func _input(event):
 	if System_Global.GamePaused:

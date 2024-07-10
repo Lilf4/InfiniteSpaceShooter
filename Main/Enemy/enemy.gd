@@ -3,8 +3,16 @@ extends CharacterBody3D
 ## Enemy will try to move towards a follow point which gets moved further/closer to control the speed of the enemy
 ## Using a follow point with more "realistic" restrictions/movement fx making the point need to be moved over time-
 ## to point toward the player allows for enemies to make "realistic" turning manuevers with less complications
+@onready var Main: Node = find_parent("Main")
+@onready var Player: Node3D = find_parent("Main").find_child("Player")
 
-@onready var player = find_parent("Main").find_child("Player")
+@onready var Bullet: PackedScene = preload("res://Main/Enemy/Bullet.tscn")
+@onready var LeftBackGun: Node3D = find_child("LeftBackGun")
+@onready var LeftFrontGun: Node3D = find_child("LeftFrontGun")
+@onready var RightBackGun: Node3D = find_child("RightBackGun")
+@onready var RightFrontGun: Node3D = find_child("RightFrontGun")
+
+var Guns = []
 
 @export var SeperationDistMargin: float = 10.0
 @export var SeperationDist: float = 30.0
@@ -17,6 +25,8 @@ extends CharacterBody3D
 
 @export var FollowForgiveness: float = 10.0
 @export var FollowingDistance: float = 60.0
+
+@export var FireRate: float = 0.2
 
 @export var followPointRadius: float = 20
 @onready var followPointScene: PackedScene = preload("res://Main/Enemy/follow_point.tscn")
@@ -40,10 +50,11 @@ func takeDamage(val):
 		followPointMiddle.queue_free()
 		queue_free()
 
-func shoot():
-	pass
-
 func _ready():
+	Guns.append(LeftFrontGun)
+	Guns.append(LeftBackGun)
+	Guns.append(RightFrontGun)
+	Guns.append(RightBackGun)
 	currHealth = Health
 	followPointMiddle = followPointScene.instantiate()
 	find_parent("Main").add_child(followPointMiddle)
@@ -57,6 +68,11 @@ enum BehaviorStates {
 }
 
 var currBehavior: BehaviorStates = BehaviorStates.Following
+var allowedToShoot: bool = false
+var rotDistToPlayer: float = 0
+@export var aimCorrection: float = 1.0
+@export var accuracyDist: float = 0.002
+
 
 #Control behavior
 func _process(_delta):
@@ -74,6 +90,24 @@ func _physics_process(delta):
 			Idle(delta)
 		BehaviorStates.Following:
 			Following(delta)
+	
+	if rotDistToPlayer <= accuracyDist and allowedToShoot:
+		ShootAtPlayer(delta)
+		
+var timeToNextShot = 0
+var gunToShoot: int = 0
+func ShootAtPlayer(delta):
+	if gunToShoot > Guns.size() - 1:
+		gunToShoot = 0
+	if timeToNextShot <= 0:
+			var newBullet = Bullet.instantiate()
+			newBullet.position = Guns[gunToShoot].global_position
+			newBullet.rotation = rotation
+			Main.add_child(newBullet)
+			timeToNextShot = FireRate
+			gunToShoot += 1
+	timeToNextShot -= delta
+	#print(Time.get_datetime_string_from_system(), ": shooting at player")
 
 func Dogfight(_delta):
 	pass
@@ -101,22 +135,19 @@ func Following(delta):
 	if not global_position.is_equal_approx(global_position + -currVel):
 		look_at(global_position + -currVel)
 	else:
-		look_at(player.position)
+		look_at(Player.position)
 	
 	move_and_slide()
 	
-	if not followPointMiddle.position.is_equal_approx(player.position):
+	if not followPointMiddle.position.is_equal_approx(Player.position):
 		var before = followPointMiddle.rotation
-		followPointMiddle.look_at(player.position)
+		followPointMiddle.look_at(Player.position)
 		var after = followPointMiddle.rotation
+		rotDistToPlayer = before.distance_to(after)
 		followPointMiddle.rotation = before.lerp(after, 0.2)
-	#Get angle in y dir and apply
-	#Get angle in z dir and apply
-	#print("Toward player: ", towardPlayer, "\r\n", "Current: ", currLook, "\r\n", "Difference: ", currLook - towardPlayer)
-	#moveFollowPoint(, 50 * delta)
 
 func LegacyFollowing(delta):
-	var pointToFollow = player.position - (-player.position.direction_to(position) * FollowingDistance) 
+	var pointToFollow = Player.position - (-Player.position.direction_to(position) * FollowingDistance) 
 	
 	var movDir = position.direction_to(pointToFollow)
 	var target_velocity = movDir * Thrust
@@ -152,7 +183,7 @@ func LegacyFollowing(delta):
 	if not global_position.is_equal_approx(global_position + -currVel):
 		look_at(global_position + -currVel)
 	else:
-		look_at(player.position)
+		look_at(Player.position)
 	
 	move_and_slide()
 

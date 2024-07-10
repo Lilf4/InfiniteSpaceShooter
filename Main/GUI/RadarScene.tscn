@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://cfl1xsdo0pylf"]
+
+[ext_resource type="Script" path="res://Main/GUI/RadarScene.gd" id="1_04cco"]
+[ext_resource type="ArrayMesh" uid="uid://fvg06ial0u3o" path="res://Assets/Spaceship/Lo_poly_Spaceship_01_by_Liz_Reddington.obj" id="2_2r3lo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pnxo6"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.337255)
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ule5"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.196078)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nls8l"]
+material = SubResource("StandardMaterial3D_8ule5")
+height = 0.001
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_txrxo"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.196078)
+
+[sub_resource type="SphereMesh" id="SphereMesh_wijox"]
+material = SubResource("StandardMaterial3D_txrxo")
+
+[node name="Radar" type="Node3D"]
+script = ExtResource("1_04cco")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
+transform = Transform3D(-1, 4.37114e-08, -7.57103e-08, 0, 0.866025, 0.5, 8.74228e-08, 0.5, -0.866025, 0, 60, -100)
+size = 9.974
+near = 0.001
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Pivot/Camera3D"]
+
+[node name="PlayerVis" type="MeshInstance3D" parent="Pivot"]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 0)
+material_overlay = SubResource("StandardMaterial3D_pnxo6")
+mesh = ExtResource("2_2r3lo")
+skeleton = NodePath("../../MeshInstance3D")
+
+[node name="HorizontalVis" type="MeshInstance3D" parent="Pivot"]
+transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
+mesh = SubResource("CylinderMesh_nls8l")
+skeleton = NodePath("../../MeshInstance3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+mesh = SubResource("SphereMesh_wijox")
