@@ -6,16 +6,25 @@ extends Node
 @onready var fpsLabel = $GUI/VBoxContainer/fpsLabel
 @onready var deathScreen = $GUI/DeathScreen
 @onready var healthBar = $GUI/PlayElements/HealthBar/Foreground/HealthProgress
+@onready var speedLabel = $GUI/PlayElements/MoveDisplay/MarginContainer/HBoxContainer/Label
+@onready var ParticleEmitter = $Player/GPUParticles3D
+
+@onready var MainMenu: PackedScene = preload("res://Main/MainMenu.tscn")
 
 var PlayerDead: bool = false
 
 func _ready():
+	print("Startup")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _process(_delta):
 	healthBar.value = player.Health
 	fpsLabel.text = str("FPS: ", Engine.get_frames_per_second())
-	
+	speedLabel.text = str("Speed: ", "%.2f" % player.velocity.distance_to(Vector3.ZERO), " kpm")
+	if System_Global.GamePaused:
+		ParticleEmitter.speed_scale = 0
+	else:
+		ParticleEmitter.speed_scale = 1
 
 func _unhandled_input(event):
 	if event.is_action_pressed("pause") and !PlayerDead:
@@ -30,13 +39,15 @@ func _unhandled_input(event):
 
 func PlayerDeath():
 	System_Global.GamePaused = true
+	System_Global.EnemyInstances.clear()
 	PlayerDead = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	deathScreen.visible = true
 
 func Retry():
-	get_tree().reload_current_scene()
 	System_Global.GamePaused = false
+	get_tree().reload_current_scene()
 
 func Quit():
-	get_tree().quit()
+	System_Global.GamePaused = false
+	get_tree().change_scene_to_packed(MainMenu)

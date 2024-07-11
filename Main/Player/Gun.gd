@@ -3,8 +3,8 @@ extends Node3D
 @onready var Main = find_parent("Main")
 @onready var Player = find_parent("Player")
 @onready var bullet = preload("res://Main/Common/Bullet.tscn")
-
-var fireRate = .05
+@onready var AudioPlayer: AudioStreamPlayer3D = Player.find_child("AudioStreamPlayer3D")
+var fireRate = .2
 
 var timeToNextShot = 0
 func _process(delta):
@@ -17,5 +17,6 @@ func _process(delta):
 			newBullet.rotation = Player.rotation
 			newBullet.set_collision_layer_value(2, true)
 			Main.add_child(newBullet)
+			AudioPlayer.play(0)
 			timeToNextShot = fireRate
 	timeToNextShot -= delta

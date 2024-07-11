@@ -7,10 +7,10 @@ extends CharacterBody3D
 @onready var Player: Node3D = find_parent("Main").find_child("Player")
 
 @onready var Bullet: PackedScene = preload("res://Main/Enemy/Bullet.tscn")
-@onready var LeftBackGun: Node3D = find_child("LeftBackGun")
-@onready var LeftFrontGun: Node3D = find_child("LeftFrontGun")
-@onready var RightBackGun: Node3D = find_child("RightBackGun")
-@onready var RightFrontGun: Node3D = find_child("RightFrontGun")
+@onready var LeftBackGun: Node3D = $LeftBackGun
+@onready var LeftFrontGun: Node3D = $LeftFrontGun
+@onready var RightBackGun: Node3D = $RightBackGun
+@onready var RightFrontGun: Node3D = $RightFrontGun
 
 var Guns = []
 
@@ -35,6 +35,9 @@ var Guns = []
 var followPointOffset: Vector3 = Vector3(0, 0, -20)
 
 var currVel: Vector3 = Vector3.ZERO
+
+@onready var AudioPlayer: AudioStreamPlayer3D = $AudioStreamPlayer3D
+@onready var HealthLabel: Label3D = $Label3D
 
 
 @export var Health = 100
@@ -68,7 +71,7 @@ enum BehaviorStates {
 }
 
 var currBehavior: BehaviorStates = BehaviorStates.Following
-var allowedToShoot: bool = false
+var allowedToShoot: bool = true
 var rotDistToPlayer: float = 0
 @export var aimCorrection: float = 1.0
 @export var accuracyDist: float = 0.002
@@ -78,6 +81,7 @@ var rotDistToPlayer: float = 0
 func _process(_delta):
 	if System_Global.GamePaused:
 		return
+	HealthLabel.text = str(currHealth, "% HP")
 	followPointMiddle.position = position
 	followPointOuter.position = followPointOffset
 
@@ -106,6 +110,7 @@ func ShootAtPlayer(delta):
 			Main.add_child(newBullet)
 			timeToNextShot = FireRate
 			gunToShoot += 1
+			AudioPlayer.play(0)
 	timeToNextShot -= delta
 	#print(Time.get_datetime_string_from_system(), ": shooting at player")
 

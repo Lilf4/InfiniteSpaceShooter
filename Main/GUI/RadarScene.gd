@@ -4,16 +4,16 @@ extends Node3D
 var localScale: float = 100
 
 @onready var Player = find_parent("Main").find_child("Player")
-@onready var Pivot = find_child("Pivot")
+@onready var Pivot = $Pivot
 @onready var EnemyDot = preload("res://Main/GUI/enemy_dot.tscn")
-@onready var Cam = find_child("Camera3D")
-@onready var HorizontalVis = find_child("HorizontalVis")
+@onready var Cam = $Pivot/Camera3D
+@onready var HorizontalVis = $Pivot/HorizontalVis
 var enemies = {}
 var enemyLines = {}
 func _ready():
 	pass
 
-func _process(delta):
+func _process(_delta):
 	if System_Global.GamePaused:
 		return
 	Pivot.rotation = Player.rotation
@@ -39,33 +39,30 @@ func _process(delta):
 	updateDotPos()
 
 func updateDotPos():
-	
 	for enemy in enemies:
 		var enemyInstance = System_Global.EnemyInstances[enemy]
 		var dirFromPlayer = Player.global_position.direction_to(enemyInstance.global_position)
 		var distFromPlayer = Player.global_position.distance_to(enemyInstance.global_position)
+		var line: Draw3D = enemyLines[enemy]
+		line.clear()
 		if distFromPlayer > maxDist:
 			enemies[enemy].visible = false
 			continue
-		
-		enemies[enemy].visible = true
-		
-		var scaledDist = (localScale * 0.5 - 0) * ((distFromPlayer - enemies[enemy].scale.x - 0) / (maxDist - 0)) + 0
-		
-		enemies[enemy].position = dirFromPlayer * scaledDist
-		
-		var line: Draw3D = enemyLines[enemy]
-		line.clear()
-		var object_position = enemies[enemy].global_transform.origin
-		var plane_position = Pivot.global_transform.origin
-		
-		var plane_normal = Pivot.global_transform.basis.y
-		
-		var plane_to_object = object_position - plane_position
-		
-		var distance_to_plane = plane_normal.dot(plane_to_object)
-		var closest_point_on_plane = object_position - plane_normal * distance_to_plane
-		
-		var direction_vector = (closest_point_on_plane - object_position).normalized()
-		
-		line.draw_line([closest_point_on_plane, enemies[enemy].global_position], Color.RED)
+		else:
+			enemies[enemy].visible = true
+			
+			var scaledDist = (localScale * 0.5 - 0) * ((distFromPlayer - enemies[enemy].scale.x - 0) / (maxDist - 0)) + 0
+			
+			enemies[enemy].position = dirFromPlayer * scaledDist
+			
+			var object_position = enemies[enemy].global_transform.origin
+			var plane_position = Pivot.global_transform.origin
+			
+			var plane_normal = Pivot.global_transform.basis.y
+			
+			var plane_to_object = object_position - plane_position
+			
+			var distance_to_plane = plane_normal.dot(plane_to_object)
+			var closest_point_on_plane = object_position - plane_normal * distance_to_plane
+			
+			line.draw_line([closest_point_on_plane, enemies[enemy].global_position], Color.RED)

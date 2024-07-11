@@ -57,7 +57,7 @@ layout_mode = 2
 [node name="QuitBtn" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Quit"
+text = "Main Menu"
 
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/RetryBtn" to="." method="_on_retry_btn_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/QuitBtn" to="." method="_on_quit_btn_pressed"]

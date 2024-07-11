@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://buoq5hkopjydp"]
+[gd_scene load_steps=14 format=3 uid="uid://buoq5hkopjydp"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
@@ -10,29 +10,13 @@
 [ext_resource type="PackedScene" uid="uid://cfl1xsdo0pylf" path="res://Main/GUI/RadarScene.tscn" id="6_ysssl"]
 [ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
 [ext_resource type="Script" path="res://Main/Enemy/WaveSpawner.gd" id="8_urq70"]
+[ext_resource type="Script" path="res://Main/Environment/StarSpawner.gd" id="9_o6gks"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkqsf"]
 bg_color = Color(0, 0, 0, 0.784314)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdfhv"]
 bg_color = Color(0.137255, 0.407843, 0.639216, 0.784314)
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aiq0l"]
-emission_shape_scale = Vector3(200, 200, 200)
-emission_shape = 1
-emission_sphere_radius = 1.0
-gravity = Vector3(0, 0, 0)
-collision_mode = 2
-collision_use_scale = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_662mr"]
-emission_enabled = true
-emission = Color(1, 1, 1, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_kcvcf"]
-material = SubResource("StandardMaterial3D_662mr")
-radius = 0.05
-height = 0.1
 
 [node name="Main" type="Node"]
 script = ExtResource("1_6atm7")
@@ -60,6 +44,9 @@ mouse_filter = 2
 [node name="fpsLabel" type="Label" parent="GUI/VBoxContainer"]
 layout_mode = 2
 script = ExtResource("4_sekis")
+
+[node name="DeathScreen" parent="GUI" instance=ExtResource("5_ikyxl")]
+visible = false
 
 [node name="PlayElements" type="Control" parent="GUI"]
 layout_mode = 3
@@ -181,28 +168,13 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DeathScreen" parent="GUI" instance=ExtResource("5_ikyxl")]
-visible = false
-
 [node name="Player" parent="." instance=ExtResource("1_4wbho")]
 maxTurnSpeed = 2.0
 turnCutOff = 0.05
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Player"]
-amount = 1000
-randomness = 1.0
-interpolate = false
-process_material = SubResource("ParticleProcessMaterial_aiq0l")
-draw_pass_1 = SubResource("SphereMesh_kcvcf")
-
-[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0232849, 2.71088, 0.81041)
-size = Vector3(14.21, 7.42175, 28.7681)
-
 [node name="WaveSpawner" type="Node3D" parent="."]
 script = ExtResource("8_urq70")
-enemies = 1000
-maxEnemiesAlive = 4
+maxEnemiesAlive = 2
 minEnemiesKilledToSpawn = 0
 
 [node name="SpawnTimer" type="Timer" parent="WaveSpawner"]
@@ -215,6 +187,10 @@ script = ExtResource("8_cn62n")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SunScene"]
 light_color = Color(1, 0.282353, 0.909804, 1)
 shadow_transmittance_bias = 2.313
+
+[node name="ParticleSpawner" type="Node3D" parent="."]
+visible = false
+script = ExtResource("9_o6gks")
 
 [connection signal="Quit" from="GUI/DeathScreen" to="." method="Quit"]
 [connection signal="Retry" from="GUI/DeathScreen" to="." method="Retry"]

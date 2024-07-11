@@ -1,0 +1,88 @@
+[gd_scene load_steps=8 format=3 uid="uid://b3ir0kbsjbhlk"]
+
+[ext_resource type="Shader" path="res://Main/Environment/OuterSpace.gdshader" id="1_j2uu8"]
+[ext_resource type="Script" path="res://Main/MainMenu.gd" id="1_qfqhd"]
+[ext_resource type="PackedScene" uid="uid://c2xoo5sd5ga8u" path="res://Main/Environment/Sun.tscn" id="2_ffs7v"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6yv2o"]
+shader = ExtResource("1_j2uu8")
+shader_parameter/sky_color = Color(0, 0, 0, 1)
+shader_parameter/star_base_color = Color(0.517647, 0.486275, 0.376471, 1)
+shader_parameter/star_hue_offset = 1.0
+shader_parameter/star_intensity = 0.08
+shader_parameter/star_twinkle_speed = 0.8
+shader_parameter/star_twinkle_intensity = 0.2
+shader_parameter/layer_scale = 20.0
+shader_parameter/layer_scale_step = 10.0
+shader_parameter/layers_count = 3
+
+[sub_resource type="Sky" id="Sky_65mn3"]
+sky_material = SubResource("ShaderMaterial_6yv2o")
+
+[sub_resource type="Environment" id="Environment_kigmk"]
+background_mode = 2
+sky = SubResource("Sky_65mn3")
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 1.49
+glow_blend_mode = 4
+
+[sub_resource type="LabelSettings" id="LabelSettings_11gl2"]
+font_size = 32
+
+[node name="MainMenu" type="Node"]
+script = ExtResource("1_qfqhd")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+environment = SubResource("Environment_kigmk")
+
+[node name="Sun" parent="." instance=ExtResource("2_ffs7v")]
+transform = Transform3D(1500, 0, 0, 0, 1500, 0, 0, 0, 1500, 1069.17, -532.066, -1073.3)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Spacer" type="Control" parent="Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Space Shooter"
+label_settings = SubResource("LabelSettings_11gl2")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Play" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Play"
+
+[node name="Quit" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="Spacer2" type="Control" parent="Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

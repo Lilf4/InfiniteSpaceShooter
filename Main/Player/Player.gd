@@ -1,26 +1,25 @@
 extends CharacterBody3D
 
-@onready var Main = find_parent("Main")
-@export var SpeedLabel: Label
+@onready var Main: Node = find_parent("Main")
 
 @export var Health: float = 100
 
-@export var ThrustSpeed = 100
-@export var accelRate = .5
+@export var ThrustSpeed: float = 100
+@export var accelRate: float = .5
 
-@export var passiveStopSpeed = 20
+@export var passiveStopSpeed: float = 20
 
-var target_velocity = Vector3.ZERO
-var currVel = Vector3.ZERO
+var target_velocity: Vector3 = Vector3.ZERO
+var currVel: Vector3 = Vector3.ZERO
 var currRoll: float = 0
-@export var maxRollSpeed = 10.0
-@export var rollAccel = 0.5
-@export var rollForce = 5.0
-@export var rollStopForce = 1.0
+@export var maxRollSpeed: float = 10.0
+@export var rollAccel: float = 0.5
+@export var rollForce: float = 5.0
+@export var rollStopForce: float = 1.0
 
-@export var maxTurnSpeed = .5
-@export var turnCutOff = 0.1
-var turnVal = Vector3.ZERO
+@export var maxTurnSpeed: float = .5
+@export var turnCutOff: float = 0.1
+var turnVal: Vector3 = Vector3.ZERO
 
 
 signal PlayerDeath
@@ -75,8 +74,6 @@ func _physics_process(delta):
 	velocity = currVel
 	
 	move_and_slide()
-	
-	SpeedLabel.text = str("Velocity: ", round(currVel*pow(10,2))/pow(10,2))
 	
 	turnVal = turnVal.clamp(
 		-Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed),

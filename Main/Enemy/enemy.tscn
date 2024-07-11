@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://ypaqjflcdklt"]
+[gd_scene load_steps=8 format=3 uid="uid://ypaqjflcdklt"]
 
 [ext_resource type="ArrayMesh" uid="uid://bti3a3k88xeno" path="res://Assets/SpaceshipT2/Lo_poly_Spaceship_04_by_Liz_Reddington.obj" id="1_6h2m3"]
 [ext_resource type="Script" path="res://Main/Enemy/enemy.gd" id="1_jffad"]
 [ext_resource type="PackedScene" uid="uid://lmx0g2htlaf6" path="res://Main/Enemy/follow_point.tscn" id="3_bpd68"]
+[ext_resource type="AudioStream" uid="uid://tjnhntclvkob" path="res://Assets/Sounds/laserShoot.wav" id="4_3kswj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0500u"]
 size = Vector3(6.50684, 7.47168, 21.082)
@@ -58,3 +59,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.471, 2.17, 5.773)
 
 [node name="LeftFrontGun" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.436, 0.58, 8)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_3kswj")
+volume_db = -24.615
+max_db = -24.0
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
+modulate = Color(1, 0, 0, 1)
+text = "100 HP"
+font_size = 1024
+outline_size = 64
+uppercase = true

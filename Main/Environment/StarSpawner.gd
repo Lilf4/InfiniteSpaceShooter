@@ -7,8 +7,9 @@ extends Node3D
 @export var density: float = .0000005
 
 func _ready():
-	spawnFilledSphere()
+	#spawnFilledSphere()
 	#spawnSurface()
+	pass
 
 func spawnSurface():
 	for i in range(4 * (PI * pow(radius, 2)) * density) :

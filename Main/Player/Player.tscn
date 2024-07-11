@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://c4m8ja0uorn45"]
+[gd_scene load_steps=13 format=3 uid="uid://c4m8ja0uorn45"]
 
 [ext_resource type="Script" path="res://Main/Player/Player.gd" id="1_ef8ja"]
 [ext_resource type="ArrayMesh" uid="uid://fvg06ial0u3o" path="res://Assets/Spaceship/Lo_poly_Spaceship_01_by_Liz_Reddington.obj" id="1_xmbok"]
 [ext_resource type="Shader" path="res://Main/Environment/OuterSpace.gdshader" id="3_e7q7t"]
 [ext_resource type="Script" path="res://Main/Player/Gun.gd" id="4_0rjyh"]
+[ext_resource type="AudioStream" uid="uid://tjnhntclvkob" path="res://Assets/Sounds/laserShoot.wav" id="5_fm8k2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hhju4"]
 size = Vector3(9.15137, 5.53, 28.8636)
@@ -83,3 +84,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2771, 0)
 light_energy = 11.343
 omni_range = 26.647
 omni_attenuation = 0.965937
+
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
+current = true
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_fm8k2")
+max_db = -24.0
+attenuation_filter_db = -40.0
