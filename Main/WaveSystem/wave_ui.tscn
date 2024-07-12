@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3 uid="uid://pmew437j224v"]
+
+[ext_resource type="Script" path="res://Main/WaveSystem/wave_ui.gd" id="1_4tv1a"]
+[ext_resource type="Script" path="res://WaveStartTimer.gd" id="1_j3pbo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nfw6q"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_cjpqc"]
+font_size = 36
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w2fli"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_k6dl4"]
+font_size = 24
+
+[node name="WaveUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4tv1a")
+
+[node name="WaveStartTimer" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_nfw6q")
+script = ExtResource("1_j3pbo")
+
+[node name="Label" type="Label" parent="WaveStartTimer"]
+layout_mode = 2
+text = "Wave Starts In:
+5"
+label_settings = SubResource("LabelSettings_cjpqc")
+horizontal_alignment = 1
+
+[node name="Timer" type="Timer" parent="WaveStartTimer"]
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1.0
+offset_bottom = 23.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_w2fli")
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+text = "Wave: 1"
+label_settings = SubResource("LabelSettings_k6dl4")
+
+[connection signal="WaveStart" from="WaveStartTimer" to="." method="wave_start"]
+[connection signal="timeout" from="WaveStartTimer/Timer" to="WaveStartTimer" method="_on_timer_timeout"]

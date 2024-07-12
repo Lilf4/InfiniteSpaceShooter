@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://buoq5hkopjydp"]
+[gd_scene load_steps=17 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dgu27pi6pnrhm" path="res://Main/Player/GUI/ShipCursor.tscn" id="3_ija6w"]
 [ext_resource type="Script" path="res://Main/GUI/fpsLabel.gd" id="4_sekis"]
 [ext_resource type="PackedScene" uid="uid://dxa6xif2pbt5k" path="res://Main/GUI/death_screen.tscn" id="5_ikyxl"]
+[ext_resource type="PackedScene" uid="uid://pmew437j224v" path="res://Main/WaveSystem/wave_ui.tscn" id="6_4op8d"]
 [ext_resource type="PackedScene" uid="uid://cfl1xsdo0pylf" path="res://Main/GUI/RadarScene.tscn" id="6_ysssl"]
 [ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
 [ext_resource type="Script" path="res://Main/Enemy/WaveSpawner.gd" id="8_urq70"]
@@ -181,6 +182,8 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="WaveUI" parent="GUI" instance=ExtResource("6_4op8d")]
+
 [node name="DeathScreen" parent="GUI" instance=ExtResource("5_ikyxl")]
 visible = false
 
@@ -201,9 +204,6 @@ size = Vector3(14.21, 7.42175, 28.7681)
 
 [node name="WaveSpawner" type="Node3D" parent="."]
 script = ExtResource("8_urq70")
-enemies = 1000
-maxEnemiesAlive = 4
-minEnemiesKilledToSpawn = 0
 
 [node name="SpawnTimer" type="Timer" parent="WaveSpawner"]
 wait_time = 5.0
@@ -216,6 +216,7 @@ script = ExtResource("8_cn62n")
 light_color = Color(1, 0.282353, 0.909804, 1)
 shadow_transmittance_bias = 2.313
 
+[connection signal="WaveStarted" from="GUI/WaveUI" to="WaveSpawner" method="_on_wave_ui_wave_started"]
 [connection signal="Quit" from="GUI/DeathScreen" to="." method="Quit"]
 [connection signal="Retry" from="GUI/DeathScreen" to="." method="Retry"]
 [connection signal="PlayerDeath" from="Player" to="." method="PlayerDeath"]

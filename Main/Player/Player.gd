@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @onready var Main: Node = find_parent("Main")
 
+var currHealth: float = 0
 @export var Health: float = 100
 
 @export var ThrustSpeed: float = 100
@@ -21,11 +22,13 @@ var currRoll: float = 0
 @export var turnCutOff: float = 0.1
 var turnVal: Vector3 = Vector3.ZERO
 
-
+func _ready():
+	currHealth = Health
+	
 signal PlayerDeath
 func takeDamage(val):
-	Health -= val
-	if Health <= 0:
+	currHealth -= val
+	if currHealth <= 0:
 		PlayerDeath.emit()
 
 func _input(event):

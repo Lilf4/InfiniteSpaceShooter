@@ -18,7 +18,7 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _process(_delta):
-	healthBar.value = player.Health
+	healthBar.value = player.currHealth
 	fpsLabel.text = str("FPS: ", Engine.get_frames_per_second())
 	speedLabel.text = str("Speed: ", "%.2f" % player.velocity.distance_to(Vector3.ZERO), " kpm")
 	if System_Global.GamePaused:
@@ -50,4 +50,4 @@ func Retry():
 
 func Quit():
 	System_Global.GamePaused = false
-	get_tree().change_scene_to_packed(MainMenu)
+	get_tree().change_scene_to_file("res://Main/MainMenu.tscn")

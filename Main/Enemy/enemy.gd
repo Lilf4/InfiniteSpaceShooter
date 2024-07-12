@@ -73,7 +73,7 @@ enum BehaviorStates {
 var currBehavior: BehaviorStates = BehaviorStates.Following
 var allowedToShoot: bool = true
 var rotDistToPlayer: float = 0
-@export var aimCorrection: float = 1.0
+
 @export var accuracyDist: float = 0.002
 
 
@@ -97,7 +97,7 @@ func _physics_process(delta):
 	
 	if rotDistToPlayer <= accuracyDist and allowedToShoot:
 		ShootAtPlayer(delta)
-		
+
 var timeToNextShot = 0
 var gunToShoot: int = 0
 func ShootAtPlayer(delta):
@@ -112,16 +112,12 @@ func ShootAtPlayer(delta):
 			gunToShoot += 1
 			AudioPlayer.play(0)
 	timeToNextShot -= delta
-	#print(Time.get_datetime_string_from_system(), ": shooting at player")
-
-func Dogfight(_delta):
-	pass
 
 func Flyby(_delta):
-	pass
+	pass #TODO: Implement behaviour
 
 func Idle(_delta):
-	pass
+	pass #TODO: Implement behaviour
 
 func Following(delta):
 	var pointToFollow = followPointOuter.global_position
@@ -191,7 +187,3 @@ func LegacyFollowing(delta):
 		look_at(Player.position)
 	
 	move_and_slide()
-
-func moveFollowPoint(dir: Vector3, amount: float):
-	followPointMiddle.rotate_object_local(dir, deg_to_rad(amount))
-	#print(followPointMiddle.rotation, amount)

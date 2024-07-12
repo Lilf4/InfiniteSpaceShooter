@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="Infinite Space Shooter"
-config/version="0.0.1"
-run/main_scene="res://Main/main.tscn"
+config/version="0.2.2"
+run/main_scene="res://Main/MainMenu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [autoload]
