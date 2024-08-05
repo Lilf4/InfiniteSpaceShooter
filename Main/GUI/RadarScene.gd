@@ -17,25 +17,6 @@ func _process(_delta):
 	if System_Global.GamePaused:
 		return
 	Pivot.rotation = Player.rotation
-	#Clear local instance of dead enemies
-	for enemy in enemies:
-		if not System_Global.EnemyInstances.has(enemy):
-			var enemyDotInstance: MeshInstance3D = enemies[enemy]
-			var enemyLineInstance: Draw3D = enemyLines[enemy]
-			enemies.erase(enemy)
-			enemyLines.erase(enemy)
-			remove_child(enemyLineInstance)
-			remove_child(enemyDotInstance)
-	
-	#Add new enemies to local instance
-	for enemy in System_Global.EnemyInstances:
-		if not enemies.has(enemy):
-			var NewEnemyDot = EnemyDot.instantiate()
-			enemies[enemy] = NewEnemyDot
-			enemyLines[enemy] = Draw3D.new()
-			add_child(enemyLines[enemy])
-			add_child(NewEnemyDot)
-	
 	updateDotPos()
 
 func updateDotPos():
@@ -66,3 +47,22 @@ func updateDotPos():
 			var closest_point_on_plane = object_position - plane_normal * distance_to_plane
 			
 			line.draw_line([closest_point_on_plane, enemies[enemy].global_position], Color.RED)
+
+
+func _on_wave_spawner_enemy_spawned(id):
+	if not enemies.has(id):
+			var NewEnemyDot = EnemyDot.instantiate()
+			enemies[id] = NewEnemyDot
+			enemyLines[id] = Draw3D.new()
+			add_child(enemyLines[id])
+			add_child(NewEnemyDot)
+
+
+func _on_wave_spawner_enemy_dead(id):
+	if not System_Global.EnemyInstances.has(id):
+			var enemyDotInstance: MeshInstance3D = enemies[id]
+			var enemyLineInstance: Draw3D = enemyLines[id]
+			enemies.erase(id)
+			enemyLines.erase(id)
+			remove_child(enemyLineInstance)
+			remove_child(enemyDotInstance)

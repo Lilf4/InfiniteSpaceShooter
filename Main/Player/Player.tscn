@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c4m8ja0uorn45"]
+[gd_scene load_steps=16 format=3 uid="uid://c4m8ja0uorn45"]
 
 [ext_resource type="Script" path="res://Main/Player/Player.gd" id="1_ef8ja"]
 [ext_resource type="ArrayMesh" uid="uid://fvg06ial0u3o" path="res://Assets/Spaceship/Lo_poly_Spaceship_01_by_Liz_Reddington.obj" id="1_xmbok"]
@@ -18,6 +18,15 @@ size = Vector3(14.036, 3, 4.517)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x372m"]
 transparency = 1
 albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ll2ga"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gfjmp"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_178l8"]
+albedo_color = Color(0, 1, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6yv2o"]
 shader = ExtResource("3_e7q7t")
@@ -62,6 +71,9 @@ shape = SubResource("BoxShape3D_umqah")
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 mesh = ExtResource("1_xmbok")
 surface_material_override/3 = SubResource("StandardMaterial3D_x372m")
+surface_material_override/7 = SubResource("StandardMaterial3D_ll2ga")
+surface_material_override/11 = SubResource("StandardMaterial3D_gfjmp")
+surface_material_override/15 = SubResource("StandardMaterial3D_178l8")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 4.553, -6)

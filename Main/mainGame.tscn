@@ -220,4 +220,6 @@ shadow_transmittance_bias = 2.313
 [connection signal="Quit" from="GUI/DeathScreen" to="." method="Quit"]
 [connection signal="Retry" from="GUI/DeathScreen" to="." method="Retry"]
 [connection signal="PlayerDeath" from="Player" to="." method="PlayerDeath"]
+[connection signal="enemyDead" from="WaveSpawner" to="GUI/PlayElements/Radar/SubViewportContainer/SubViewport/Radar" method="_on_wave_spawner_enemy_dead"]
+[connection signal="enemySpawned" from="WaveSpawner" to="GUI/PlayElements/Radar/SubViewportContainer/SubViewport/Radar" method="_on_wave_spawner_enemy_spawned"]
 [connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]

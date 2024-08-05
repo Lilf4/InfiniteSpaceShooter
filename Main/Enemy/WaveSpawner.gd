@@ -66,6 +66,7 @@ func _ready():
 	WaveUI.SetWaveCount(CurrentWave)
 	WaveUI.StartWave(5)
 
+signal enemySpawned
 func spawnEnemies(count):
 	for i in range(count):
 		var points = Vector3(randf() - 0.5, randf() - 0.5, randf() - 0.5)
@@ -81,12 +82,15 @@ func spawnEnemies(count):
 		newEnemy.MaxSpeed = Vector3(maxSpeed, maxSpeed, maxSpeed)
 		System_Global.EnemyInstances[newEnemy.ID] = newEnemy
 		main.add_child.call_deferred(newEnemy)
+		enemySpawned.emit(newEnemy.ID)
 		enemiesAlive += 1
 
+signal enemyDead
 func enemyDied(id):
 	if not enabled:
 		return
 	if(System_Global.EnemyInstances.erase(id)):
+		enemyDead.emit(id)
 		enemiesAlive -= 1
 		enemiesKilledSinceSpawn += 1
 		score += CurrentDifficultyValue
@@ -110,7 +114,7 @@ func trySpawnEnemies():
 		enemiesLeft -= enemiesToSpawn
 		enemiesKilledSinceSpawn = 0
 
-#Setup necessary values and call functions for starting a wave 
+#Setup necessary values and call functions for starting a wave
 func _on_wave_ui_wave_started():
 	CurrentDifficultyValue = 1.0 + (CurrentWave - 1) * DifficultyScalePower
 	

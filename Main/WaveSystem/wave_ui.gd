@@ -15,3 +15,7 @@ func StartWave(TimeToStart: int):
 
 func SetWaveCount(waveCount: int):
 	WaveDisplay.text = str("Wave: ", waveCount)
+
+
+func _on_wave_spawner_enemy_dead():
+	pass # Replace with function body.
