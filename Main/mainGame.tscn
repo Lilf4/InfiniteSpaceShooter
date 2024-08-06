@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://w33bplejeiky"]
+[gd_scene load_steps=21 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
@@ -8,15 +8,21 @@
 [ext_resource type="Script" path="res://Main/GUI/fpsLabel.gd" id="4_sekis"]
 [ext_resource type="PackedScene" uid="uid://dxa6xif2pbt5k" path="res://Main/GUI/death_screen.tscn" id="5_ikyxl"]
 [ext_resource type="PackedScene" uid="uid://pmew437j224v" path="res://Main/WaveSystem/wave_ui.tscn" id="6_4op8d"]
+[ext_resource type="Texture2D" uid="uid://c74vxklx5dku4" path="res://Main/GUI/Icons/Scrap_metal_icon.webp" id="6_4r21d"]
+[ext_resource type="Script" path="res://Main/GUI/Scrap/Label.gd" id="6_tyked"]
 [ext_resource type="PackedScene" uid="uid://cfl1xsdo0pylf" path="res://Main/GUI/RadarScene.tscn" id="6_ysssl"]
 [ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
 [ext_resource type="Script" path="res://Main/Enemy/WaveSpawner.gd" id="8_urq70"]
+[ext_resource type="PackedScene" uid="uid://dtwxfbnkapfjc" path="res://Main/GUI/Upgrade Menu/upgrade_menu.tscn" id="8_wye4b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkqsf"]
 bg_color = Color(0, 0, 0, 0.784314)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdfhv"]
 bg_color = Color(0.137255, 0.407843, 0.639216, 0.784314)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wdh7l"]
+font_size = 32
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aiq0l"]
 emission_shape_scale = Vector3(200, 200, 200)
@@ -52,15 +58,6 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 reticleSize = 20
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
-offset_right = 40.0
-offset_bottom = 40.0
-mouse_filter = 2
-
-[node name="fpsLabel" type="Label" parent="GUI/VBoxContainer"]
-layout_mode = 2
-script = ExtResource("4_sekis")
 
 [node name="PlayElements" type="Control" parent="GUI"]
 layout_mode = 3
@@ -182,10 +179,70 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="ScrapCount" type="Control" parent="GUI/PlayElements"]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 50.0
+
+[node name="Panel" type="Panel" parent="GUI/PlayElements/ScrapCount"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/PlayElements/ScrapCount"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="GUI/PlayElements/ScrapCount/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("6_4r21d")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="GUI/PlayElements/ScrapCount/HBoxContainer"]
+layout_mode = 2
+text = "128"
+label_settings = SubResource("LabelSettings_wdh7l")
+script = ExtResource("6_tyked")
+
 [node name="WaveUI" parent="GUI" instance=ExtResource("6_4op8d")]
 
 [node name="DeathScreen" parent="GUI" instance=ExtResource("5_ikyxl")]
 visible = false
+
+[node name="UpgradeMenu" parent="GUI" instance=ExtResource("8_wye4b")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+
+[node name="DebugInfo" type="Control" parent="GUI"]
+layout_mode = 3
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/DebugInfo"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="fpsLabel" type="Label" parent="GUI/DebugInfo/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("4_sekis")
 
 [node name="Player" parent="." instance=ExtResource("1_4wbho")]
 maxTurnSpeed = 2.0

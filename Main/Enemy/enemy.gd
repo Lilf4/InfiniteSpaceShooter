@@ -3,6 +3,7 @@ extends CharacterBody3D
 ## Enemy will try to move towards a follow point which gets moved further/closer to control the speed of the enemy
 ## Using a follow point with more "realistic" restrictions/movement fx making the point need to be moved over time-
 ## to point toward the player allows for enemies to make "realistic" turning manuevers with less complications
+@onready var Scrap = preload("res://Main/Pickups/Scrap.tscn")
 @onready var Main: Node = find_parent("Main")
 @onready var Player: Node3D = find_parent("Main").find_child("Player")
 
@@ -50,8 +51,19 @@ func takeDamage(val):
 	currHealth -= val
 	if currHealth <= 0:
 		enemyDeath.emit(ID)
+		spawnScrapPile(true, 75)
 		followPointMiddle.queue_free()
 		queue_free()
+
+func spawnScrapPile(random: bool, percentage: int):
+	var shouldSpawn: bool = true
+	if random:
+		shouldSpawn = randi_range(0, 100) >= 100 - percentage
+	
+	if shouldSpawn:
+		var scrapPile = Scrap.instantiate()
+		scrapPile.position = position
+		Main.add_child(scrapPile)
 
 func _ready():
 	Guns.append(LeftFrontGun)

@@ -3,7 +3,7 @@ extends Node
 @onready var player = $Player
 
 @onready var input_settings_menu = $GUI/InputSettings
-@onready var fpsLabel = $GUI/VBoxContainer/fpsLabel
+@onready var fpsLabel = $GUI/DebugInfo/VBoxContainer/fpsLabel
 @onready var deathScreen = $GUI/DeathScreen
 @onready var healthBar = $GUI/PlayElements/HealthBar/Foreground/HealthProgress
 @onready var speedLabel = $GUI/PlayElements/MoveDisplay/MarginContainer/HBoxContainer/Label
@@ -46,6 +46,7 @@ func PlayerDeath():
 
 func Retry():
 	System_Global.GamePaused = false
+	System_Global.ResetGameValues()
 	get_tree().reload_current_scene()
 
 func Quit():

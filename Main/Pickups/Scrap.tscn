@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3288fktgj8m1"]
+
+[ext_resource type="PackedScene" uid="uid://bvhu8pvv3okgk" path="res://Assets/Debris Pile/Debris Pile.glb" id="1_7s337"]
+[ext_resource type="Script" path="res://Main/Pickups/Scrap.gd" id="1_wksyq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_b5vwl"]
+radius = 50.0
+
+[node name="Scrap" type="Node3D"]
+script = ExtResource("1_wksyq")
+
+[node name="Root Scene" parent="." instance=ExtResource("1_7s337")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_b5vwl")
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7, 0)
+light_energy = 10.878
+omni_range = 26.39
+omni_attenuation = 0.217638
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 0)
+light_energy = 10.878
+omni_range = 26.39
+omni_attenuation = 0.217638
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

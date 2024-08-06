@@ -25,6 +25,10 @@ System_Global="*res://Main/Global_scripts/system_global.gd"
 
 enabled=PackedStringArray("res://addons/draw3d/plugin.cfg")
 
+[filesystem]
+
+import/fbx/enabled=false
+
 [input]
 
 ui_left={

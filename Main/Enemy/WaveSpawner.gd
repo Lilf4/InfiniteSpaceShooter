@@ -95,10 +95,18 @@ func enemyDied(id):
 		enemiesKilledSinceSpawn += 1
 		score += CurrentDifficultyValue
 		if enemiesAlive <= 0 and enemiesLeft <= 0:
-				player.currHealth = clamp(player.currHealth + player.Health * 0.25, 0, player.Health)
-				CurrentWave += 1
-				WaveUI.SetWaveCount(CurrentWave)
-				WaveUI.StartWave(5)
+			#Wave is done
+			player.currHealth = clamp(player.currHealth + player.Health * 0.25, 0, player.Health)
+			
+
+func WaveDone():
+	pass
+
+func StartNewWave():
+	CurrentWave += 1
+	WaveUI.SetWaveCount(CurrentWave)
+	WaveUI.StartWave(5)
+	pass
 
 
 func _on_spawn_timer_timeout():
@@ -108,7 +116,16 @@ func trySpawnEnemies():
 	#Try to spawn enemies
 	if enemiesLeft > 0 and enemiesAlive < maxEnemiesAlive and enemiesKilledSinceSpawn >= enemyKillBeforeSpawn:
 		var enemiesToSpawn = enemiesLeft if enemySpawnAmount - enemiesAlive >= enemiesLeft else enemySpawnAmount if  maxEnemiesAlive - enemiesAlive >= enemySpawnAmount else maxEnemiesAlive - enemySpawnAmount
-		print(enemiesLeft, " ", enemiesAlive, " ", maxEnemiesAlive, " ", enemiesKilledSinceSpawn, " ", enemyKillBeforeSpawn, " ", enemiesToSpawn, " ", enemySpawnAmount)
+		print(
+			str("Trying to spawn, Info\r\n"),
+			str("Enemies Left: ", enemiesLeft, "\r\n"), 
+			str("Enemies Alive: ", enemiesAlive, "\r\n"),
+			str("Maximum Alive Enemies Allowed: ", maxEnemiesAlive, "\r\n"), 
+			str("Enemies Killed Since Last Spawn Attempt: ", enemiesKilledSinceSpawn, "\r\n"), 
+			str("Enemies Left To Kill Before Spawn Is Allowed: ", enemyKillBeforeSpawn, "\r\n"), 
+			str("Enemies Left To Spawn: ", enemiesToSpawn, "\r\n"), 
+			str("Max Spawn Amount Per Try: ", enemySpawnAmount, "\r\n")
+		)
 		spawnEnemies(enemiesToSpawn)
 		enemiesSpawned += enemiesToSpawn
 		enemiesLeft -= enemiesToSpawn
