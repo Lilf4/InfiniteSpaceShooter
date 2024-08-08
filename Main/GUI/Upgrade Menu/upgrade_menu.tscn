@@ -1,9 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://dtwxfbnkapfjc"]
+[gd_scene load_steps=11 format=3 uid="uid://dtwxfbnkapfjc"]
 
 [ext_resource type="Shader" path="res://Main/GUI/Upgrade Menu/upgrade_menu.gdshader" id="1_7i45l"]
 [ext_resource type="Script" path="res://Main/GUI/Upgrade Menu/upgrade_menu.gd" id="1_c8sp6"]
 [ext_resource type="Texture2D" uid="uid://diprt7f370b0d" path="res://Main/GUI/Upgrade Menu/hologram_lines-b1399a8d-150x150.png" id="2_keijs"]
 [ext_resource type="PackedScene" uid="uid://busdcitxnovle" path="res://Main/GUI/Upgrade Menu/UpgradeSection.tscn" id="3_jbgsw"]
+[ext_resource type="Texture2D" uid="uid://dv76odekmkykb" path="res://Main/GUI/Upgrade Menu/Upgrade Icons/EndOfRoundHealthSprite.png" id="5_oiilh"]
+[ext_resource type="Texture2D" uid="uid://cohpt8ijbkfkg" path="res://Main/GUI/Upgrade Menu/Upgrade Icons/DamageUpSprite.png" id="5_pilyf"]
+[ext_resource type="Texture2D" uid="uid://yhrej4k2kt4" path="res://Main/GUI/Upgrade Menu/Upgrade Icons/Shield.png" id="6_55prs"]
+[ext_resource type="Texture2D" uid="uid://d2g4wel0cw73i" path="res://Main/GUI/Upgrade Menu/Upgrade Icons/FireRateSprite.png" id="6_poyrr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0cbh5"]
 shader = ExtResource("1_7i45l")
@@ -31,7 +35,7 @@ script = ExtResource("1_c8sp6")
 [node name="PanelContainer" type="PanelContainer" parent="."]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -60,15 +64,101 @@ size_flags_horizontal = 3
 size_flags_vertical = 6
 theme_override_constants/separation = 70
 
-[node name="UpgradeSection" parent="PanelContainer/UpgradeFlow" instance=ExtResource("3_jbgsw")]
+[node name="HealthRepair" parent="PanelContainer/UpgradeFlow" instance=ExtResource("3_jbgsw")]
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 1
+UpgradeTextFormat = "Repair Ship"
+CurrUpgradeTextFormat = "Restore ship health to 100%"
+ButtonTextFormat = "Repair
+{RepairCost} Scrap"
+KeyToVarMap = {
+"RepairCost": "GetCost"
+}
+upgradeIdentifier = "ShipRepair"
+costMultipliers = [1.2]
 
-[node name="UpgradeSection2" parent="PanelContainer/UpgradeFlow" instance=ExtResource("3_jbgsw")]
+[node name="RoundEndHealing" parent="PanelContainer/UpgradeFlow" instance=ExtResource("3_jbgsw")]
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 1
+UpgradeImage = ExtResource("5_oiilh")
+UpgradeTextFormat = "End of round
+healing"
+CurrUpgradeTextFormat = "Current (MATH_FORMAT){{BaseHeal}*{CurrMult}}% 
+After (MATH_FORMAT){{BaseHeal}*({CurrMult}+{NextMult})}%"
+ButtonTextFormat = "Upgrade
+{RepairCost} Scrap"
+KeyToVarMap = {
+"BaseHeal": "Global.baseEndRepair",
+"CurrMult": "Global.endRepairMultiplier",
+"NextMult": "nextMultiplier",
+"RepairCost": "GetCost"
+}
+upgradeIdentifier = "EndOfWaveHeal"
+upgradeMultipliers = [1.1]
+costMultipliers = [1.2]
+
+[node name="FireRate" parent="PanelContainer/UpgradeFlow" instance=ExtResource("3_jbgsw")]
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+UpgradeImage = ExtResource("6_poyrr")
+UpgradeTextFormat = "Fire Rate"
+CurrUpgradeTextFormat = "Current (MATH_FORMAT){{BaseRate}*{CurrMult}}/s
+After (MATH_FORMAT){{BaseRate}*({CurrMult}+{NextMult})}/s"
+ButtonTextFormat = "Upgrade
+{RepairCost} Scrap"
+KeyToVarMap = {
+"BaseRate": "Global.baseFireRate",
+"CurrMult": "Global.fireRateMultiplier",
+"NextMult": "nextMultiplier",
+"RepairCost": "GetCost"
+}
+upgradeIdentifier = "FireRate"
+upgradeMultipliers = [1.2]
+costMultipliers = [1.2]
+
+[node name="DamageUp" parent="PanelContainer/UpgradeFlow" instance=ExtResource("3_jbgsw")]
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+UpgradeImage = ExtResource("5_pilyf")
+UpgradeTextFormat = "Damage"
+CurrUpgradeTextFormat = "Current (MATH_FORMAT){{BaseDamage}*{CurrMultiplier}}
+after (MATH_FORMAT){{BaseDamage}*({CurrMultiplier}+{NextMultiplier})}"
+ButtonTextFormat = "Upgrade
+{UpgradeCost} Scrap"
+KeyToVarMap = {
+"BaseDamage": "Global.baseDamage",
+"CurrMultiplier": "Global.damageMultiplier",
+"NextMultiplier": "nextMultiplier",
+"UpgradeCost": "GetCost"
+}
+upgradeIdentifier = "DamageUp"
+upgradeMultipliers = [1.0, 1.2]
+costMultipliers = [1.2]
+
+[node name="Shield" parent="PanelContainer/UpgradeFlow" instance=ExtResource("3_jbgsw")]
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+UpgradeImage = ExtResource("6_55prs")
+UpgradeTextFormat = "Shield"
+CurrUpgradeTextFormat = "Current (MATH_FORMAT){{BaseShield}*{CurrMult}}
+after (MATH_FORMAT){{BaseShield}*({CurrMult}+{NextMult})}"
+ButtonTextFormat = "Upgrade
+{UpgradeCost} Scrap"
+KeyToVarMap = {
+"BaseShield": "Global.baseShield",
+"CurrMult": "Global.shieldMultiplier",
+"NextMult": "nextMultiplier",
+"UpgradeCost": "GetCost"
+}
+upgradeIdentifier = "Shield"
+upgradeMultipliers = [1.0, 1.2]
+baseCost = 20
+costMultipliers = [20.0, -20.0, 1.2]
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -85,4 +175,9 @@ theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 24
 text = "Done"
 
+[connection signal="UpgradePressed" from="PanelContainer/UpgradeFlow/HealthRepair" to="." method="_on_upgrade_pressed"]
+[connection signal="UpgradePressed" from="PanelContainer/UpgradeFlow/RoundEndHealing" to="." method="_on_upgrade_pressed"]
+[connection signal="UpgradePressed" from="PanelContainer/UpgradeFlow/FireRate" to="." method="_on_upgrade_pressed"]
+[connection signal="UpgradePressed" from="PanelContainer/UpgradeFlow/DamageUp" to="." method="_on_upgrade_pressed"]
+[connection signal="UpgradePressed" from="PanelContainer/UpgradeFlow/Shield" to="." method="_on_upgrade_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/Done" to="." method="_on_done_pressed"]

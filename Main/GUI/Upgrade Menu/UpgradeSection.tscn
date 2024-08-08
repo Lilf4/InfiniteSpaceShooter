@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://busdcitxnovle"]
 
-[ext_resource type="Texture2D" uid="uid://cliix4u3wam2o" path="res://Main/GUI/Upgrade Menu/Upgrade Icons/HealthIcon.png" id="1_blf6g"]
 [ext_resource type="Script" path="res://Main/GUI/Upgrade Menu/UpgradeSection.gd" id="1_n0m1u"]
+[ext_resource type="Texture2D" uid="uid://nflqnlf5qb0l" path="res://Main/GUI/Upgrade Menu/Upgrade Icons/HealthSprite.png" id="3_ywv2k"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_qky83"]
 color = Color(0.247059, 0.247059, 0.247059, 1)
@@ -24,12 +24,7 @@ anchors_preset = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_n0m1u")
-UpgradeImage = ExtResource("1_blf6g")
-KeyToVarMap = {
-"NextUpgradeAmount": "Global.Test2",
-"UpgradePrice": "Global.Test3",
-"UpgradeVal": "Global.Test"
-}
+UpgradeImage = ExtResource("3_ywv2k")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 use_parent_material = true
@@ -52,7 +47,7 @@ layout_mode = 2
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_blf6g")
+texture = ExtResource("3_ywv2k")
 expand_mode = 2
 stretch_mode = 3
 

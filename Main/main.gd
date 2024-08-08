@@ -52,3 +52,18 @@ func Retry():
 func Quit():
 	System_Global.GamePaused = false
 	get_tree().change_scene_to_file("res://Main/MainMenu.tscn")
+
+
+func _on_upgrade_menu_upgrade_occured(ident, mult):
+	mult -= 1
+	match ident:
+		"ShipRepair":
+			player.currHealth = player.Health
+		"EndOfWaveHeal":
+			System_Global.endRepairMultiplier += mult
+		"FireRate":
+			System_Global.fireRateMultiplier += mult
+		"DamageUp":
+			System_Global.damageMultiplier += mult
+		"Shield":
+			print("Tried to upgrade shield")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cliix4u3wam2o"
-path="res://.godot/imported/HealthIcon.png-62bbb6e4270fb8bb834313a4bd0ec14e.ctex"
+uid="uid://yhrej4k2kt4"
+path="res://.godot/imported/Shield.png-894cbc31f40275634e9e5bc89dd02278.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Main/GUI/Upgrade Menu/Upgrade Icons/HealthIcon.png"
-dest_files=["res://.godot/imported/HealthIcon.png-62bbb6e4270fb8bb834313a4bd0ec14e.ctex"]
+source_file="res://Main/GUI/Upgrade Menu/Upgrade Icons/Shield.png"
+dest_files=["res://.godot/imported/Shield.png-894cbc31f40275634e9e5bc89dd02278.ctex"]
 
 [params]
 

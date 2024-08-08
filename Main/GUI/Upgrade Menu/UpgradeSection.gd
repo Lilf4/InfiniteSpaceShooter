@@ -1,25 +1,33 @@
 extends Control
 
 @export var UpgradeImage: Texture
-@export var UpgradeTextFormat: String = "Upgrade Label"
-@export var CurrUpgradeTextFormat: String = "Current {UpgradeVal}, After Upgrade (MATH_FORMAT){{UpgradeVal}+{NextUpgradeAmount}}"
-@export var ButtonTextFormat: String = "Upgrade {UpgradePrice} Scrap"
+@export_multiline var UpgradeTextFormat: String
+@export_multiline var CurrUpgradeTextFormat: String
+@export_multiline var ButtonTextFormat: String
 var Global = System_Global
 
 @export var KeyToVarMap: Dictionary = {}
 
+@onready var textureRect: TextureRect = find_child("TextureRect")
 @onready var upgradeTextLabel: Label = find_child("UpgradeNameLabel")
 @onready var upgradeDescLabel: Label = find_child("CurrUpgradeInformation")
 @onready var upgradeBtn: Button = find_child("Button")
+
 
 @export var upgradeIdentifier: String
 @export var currUpgradeCount: int = 0
 @export var upgradeMultipliers: Array = [1.0]
 
+@export var baseCost: int = 0
+var costMultiplier: float = 1.0
+@export var costMultipliers: Array
+
 func _ready():
 	updateText()
+	textureRect.texture = UpgradeImage
 
 func updateText():
+	costMultiplier = costMultipliers[0]
 	upgradeTextLabel.text = ProcessFormartting(UpgradeTextFormat)
 	upgradeDescLabel.text = ProcessFormartting(CurrUpgradeTextFormat)
 	upgradeBtn.text = ProcessFormartting(ButtonTextFormat)
@@ -92,10 +100,30 @@ func ProcessFormartting(input: String):
 
 signal UpgradePressed
 func _on_upgrade_pressed():
+	#If has enough scrap
+	print()
+	var cost = 0
+	if currUpgradeCount >= costMultipliers.size():
+		costMultiplier += costMultipliers[costMultipliers.size() - 1]
+	else:
+		costMultiplier += costMultipliers[currUpgradeCount]
+	print(costMultiplier)
 	var multToSend = 0
+	currUpgradeCount += 1
 	if currUpgradeCount >= upgradeMultipliers.size():
 		multToSend = upgradeMultipliers[upgradeMultipliers.size() - 1]
 	else:
 		multToSend = upgradeMultipliers[currUpgradeCount]
 	UpgradePressed.emit(upgradeIdentifier, multToSend)
 	updateText()
+
+func nextMultiplier():
+	var mult = 0
+	if currUpgradeCount >= upgradeMultipliers.size() - 1:
+		mult = upgradeMultipliers[upgradeMultipliers.size() - 1]
+	else:
+		mult = upgradeMultipliers[currUpgradeCount + 1]
+	return mult - 1
+
+func GetCost():
+	return baseCost * costMultiplier

@@ -96,7 +96,7 @@ func enemyDied(id):
 		score += CurrentDifficultyValue
 		if enemiesAlive <= 0 and enemiesLeft <= 0:
 			#Wave is done
-			player.currHealth = clamp(player.currHealth + player.Health * 0.25, 0, player.Health)
+			player.currHealth = clamp(player.currHealth + player.Health * (System_Global.baseEndRepair * System_Global.endRepairMultiplier) * 0.01, 0, player.Health)
 			
 
 func WaveDone():
