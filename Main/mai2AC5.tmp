@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://w33bplejeiky"]
+[gd_scene load_steps=20 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
@@ -13,7 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://cfl1xsdo0pylf" path="res://Main/GUI/RadarScene.tscn" id="6_ysssl"]
 [ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
 [ext_resource type="Script" path="res://Main/Enemy/WaveSpawner.gd" id="8_urq70"]
-[ext_resource type="PackedScene" uid="uid://dtwxfbnkapfjc" path="res://Main/GUI/Upgrade Menu/upgrade_menu.tscn" id="8_wye4b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkqsf"]
 bg_color = Color(0, 0, 0, 0.784314)
@@ -237,14 +236,6 @@ mouse_filter = 2
 layout_mode = 2
 script = ExtResource("4_sekis")
 
-[node name="UpgradeMenu" parent="GUI" instance=ExtResource("8_wye4b")]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-
 [node name="Player" parent="." instance=ExtResource("1_4wbho")]
 maxTurnSpeed = 2.0
 turnCutOff = 0.05
@@ -277,8 +268,6 @@ shadow_transmittance_bias = 2.313
 [connection signal="WaveStarted" from="GUI/WaveUI" to="WaveSpawner" method="_on_wave_ui_wave_started"]
 [connection signal="Quit" from="GUI/DeathScreen" to="." method="Quit"]
 [connection signal="Retry" from="GUI/DeathScreen" to="." method="Retry"]
-[connection signal="UpgradeOccured" from="GUI/UpgradeMenu" to="." method="_on_upgrade_menu_upgrade_occured"]
-[connection signal="donePressed" from="GUI/UpgradeMenu" to="WaveSpawner" method="_on_upgrade_menu_done_pressed"]
 [connection signal="PlayerDeath" from="Player" to="." method="PlayerDeath"]
 [connection signal="enemyDead" from="WaveSpawner" to="GUI/PlayElements/Radar/SubViewportContainer/SubViewport/Radar" method="_on_wave_spawner_enemy_dead"]
 [connection signal="enemySpawned" from="WaveSpawner" to="GUI/PlayElements/Radar/SubViewportContainer/SubViewport/Radar" method="_on_wave_spawner_enemy_spawned"]

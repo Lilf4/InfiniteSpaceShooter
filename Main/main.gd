@@ -8,10 +8,12 @@ extends Node
 @onready var healthBar = $GUI/PlayElements/HealthBar/Foreground/HealthProgress
 @onready var speedLabel = $GUI/PlayElements/MoveDisplay/MarginContainer/HBoxContainer/Label
 @onready var ParticleEmitter = $Player/GPUParticles3D
+@onready var UpgradeMenu = $GUI/UpgradeMenu
 
 @onready var MainMenu: PackedScene = preload("res://Main/MainMenu.tscn")
 
 var PlayerDead: bool = false
+var UpgradeMenuOpen: bool = false
 
 func _ready():
 	print("Startup")
@@ -27,7 +29,7 @@ func _process(_delta):
 		ParticleEmitter.speed_scale = 1
 
 func _unhandled_input(event):
-	if event.is_action_pressed("pause") and !PlayerDead:
+	if event.is_action_pressed("pause") and !PlayerDead and !UpgradeMenuOpen:
 		System_Global.GamePaused = !System_Global.GamePaused
 		if System_Global.GamePaused:
 			input_settings_menu.show()
@@ -53,6 +55,26 @@ func Quit():
 	System_Global.GamePaused = false
 	get_tree().change_scene_to_file("res://Main/MainMenu.tscn")
 
+func OpenUpgrades():
+	for scrap in System_Global.ScrapInstances:
+		print(scrap)
+		scrap._on_area_3d_body_entered(player)
+	System_Global.GamePaused = true
+	UpgradeMenuOpen = true
+	showMouse()
+	UpgradeMenu.show()
+
+func CloseUpgrades():
+	System_Global.GamePaused = false
+	UpgradeMenuOpen = false
+	hideMouse()
+	UpgradeMenu.hide()
+
+func hideMouse():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func showMouse():
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _on_upgrade_menu_upgrade_occured(ident, mult):
 	mult -= 1

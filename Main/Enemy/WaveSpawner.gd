@@ -95,12 +95,11 @@ func enemyDied(id):
 		enemiesKilledSinceSpawn += 1
 		score += CurrentDifficultyValue
 		if enemiesAlive <= 0 and enemiesLeft <= 0:
-			#Wave is done
+			WaveDone()
 			player.currHealth = clamp(player.currHealth + player.Health * (System_Global.baseEndRepair * System_Global.endRepairMultiplier) * 0.01, 0, player.Health)
-			
 
 func WaveDone():
-	pass
+	main.OpenUpgrades()
 
 func StartNewWave():
 	CurrentWave += 1
@@ -147,3 +146,8 @@ func _on_wave_ui_wave_started():
 	enemiesLeft = enemyCount
 	
 	trySpawnEnemies()
+
+
+func _on_upgrade_menu_done_pressed():
+	main.CloseUpgrades()
+	StartNewWave()

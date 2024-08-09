@@ -1,10 +1,12 @@
 extends Control
 
+var Global = System_Global
+
+@export_category("Formatting")
 @export var UpgradeImage: Texture
 @export_multiline var UpgradeTextFormat: String
 @export_multiline var CurrUpgradeTextFormat: String
 @export_multiline var ButtonTextFormat: String
-var Global = System_Global
 
 @export var KeyToVarMap: Dictionary = {}
 
@@ -13,21 +15,23 @@ var Global = System_Global
 @onready var upgradeDescLabel: Label = find_child("CurrUpgradeInformation")
 @onready var upgradeBtn: Button = find_child("Button")
 
-
+@export_category("Upgrade variables")
+@export var AdditiveMultipliers: bool = true
 @export var upgradeIdentifier: String
+@export var maxUpgrades: int = 0
 @export var currUpgradeCount: int = 0
 @export var upgradeMultipliers: Array = [1.0]
 
 @export var baseCost: int = 0
 var costMultiplier: float = 1.0
-@export var costMultipliers: Array
+@export var costMultipliers: Array = [1.0]
 
 func _ready():
-	updateText()
+	costMultiplier = costMultipliers[0]
 	textureRect.texture = UpgradeImage
+	updateText()
 
 func updateText():
-	costMultiplier = costMultipliers[0]
 	upgradeTextLabel.text = ProcessFormartting(UpgradeTextFormat)
 	upgradeDescLabel.text = ProcessFormartting(CurrUpgradeTextFormat)
 	upgradeBtn.text = ProcessFormartting(ButtonTextFormat)
@@ -101,13 +105,23 @@ func ProcessFormartting(input: String):
 signal UpgradePressed
 func _on_upgrade_pressed():
 	#If has enough scrap
-	print()
-	var cost = 0
-	if currUpgradeCount >= costMultipliers.size():
-		costMultiplier += costMultipliers[costMultipliers.size() - 1]
+	var cost = baseCost * costMultiplier
+	if System_Global.Scrap >= cost and (maxUpgrades == 0 or maxUpgrades > currUpgradeCount):
+		System_Global.Scrap -= cost
 	else:
-		costMultiplier += costMultipliers[currUpgradeCount]
-	print(costMultiplier)
+		return
+	
+	var multiplier: float
+	if currUpgradeCount >= costMultipliers.size() - 1:
+		multiplier = costMultipliers[costMultipliers.size() - 1]
+	else:
+		multiplier = costMultipliers[currUpgradeCount + 1]
+	
+	if AdditiveMultipliers:
+		costMultiplier += multiplier
+	else:
+		costMultiplier = multiplier
+	
 	var multToSend = 0
 	currUpgradeCount += 1
 	if currUpgradeCount >= upgradeMultipliers.size():

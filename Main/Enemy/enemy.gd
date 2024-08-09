@@ -40,7 +40,6 @@ var currVel: Vector3 = Vector3.ZERO
 @onready var AudioPlayer: AudioStreamPlayer3D = $AudioStreamPlayer3D
 @onready var HealthLabel: Label3D = $Label3D
 
-
 @export var Health = 100
 var currHealth = 0
 

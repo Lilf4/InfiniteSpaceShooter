@@ -3,6 +3,7 @@ extends Node
 var currID: int = 0
 var DEBUG_MODE = false
 var EnemyInstances = {}
+var ScrapInstances = {}
 var GamePaused = false
 var Scrap: int = 0
 
