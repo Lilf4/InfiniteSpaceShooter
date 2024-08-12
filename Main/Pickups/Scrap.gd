@@ -1,7 +1,7 @@
 extends Node3D
 
 @export var lifetime: float = 10
-@export var range: Vector2 = Vector2(1, 3)
+@export var pickupAmountRange: Vector2 = Vector2(1, 3)
 
 var GUID: int
 func _ready():
@@ -15,7 +15,7 @@ func _process(delta):
 		eraseSelf()
 
 func _on_area_3d_body_entered(_body):
-	System_Global.Scrap += randi_range(range.x, range.y)
+	System_Global.Scrap += randi_range(pickupAmountRange.x, pickupAmountRange.y)
 	eraseSelf()
 
 func eraseSelf():

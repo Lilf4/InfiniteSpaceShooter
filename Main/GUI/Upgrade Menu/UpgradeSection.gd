@@ -74,7 +74,6 @@ func ProcessLogicalFormart(input: String):
 			var endIndex: int
 			
 			var hasReturnedToOuter: bool = false
-			var bodies: Array
 			var currDepth: int = 0
 			
 			while(not hasReturnedToOuter):

@@ -11,8 +11,8 @@ material = SubResource("StandardMaterial3D_kt6w7")
 [node name="FollowPointMiddle" type="Node3D"]
 
 [node name="FollowPointOuter" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="FollowPointOuter"]
-visible = false
 mesh = SubResource("SphereMesh_7dhkc")
 skeleton = NodePath("../..")
