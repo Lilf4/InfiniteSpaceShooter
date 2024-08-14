@@ -6,7 +6,7 @@ class_name EnemyBase extends CharacterBody3D
 @onready var Scrap = preload("res://Main/Pickups/Scrap.tscn")
 @onready var Main: Node = find_parent("Main")
 
-@onready var followPointScene: PackedScene = preload("res://Main/Enemy/follow_point.tscn")
+@onready var followPointScene: PackedScene = preload("res://Main/Enemies/follow_point.tscn")
 var followPointMiddle: Node3D
 var followPointOuter: Node3D
 
@@ -47,7 +47,7 @@ func spawnScrapPile(random: bool, percentage: int):
 #Setup followpoints
 func setup():
 	followPointMiddle = followPointScene.instantiate()
-	find_parent("Main").add_child(followPointMiddle)
+	find_parent("Main").add_child.call_deferred(followPointMiddle)
 	followPointOuter = followPointMiddle.find_child("FollowPointOuter")
 
 #Lets enemy come to a slow stop, slowly rotating towards followpoint
@@ -85,6 +85,7 @@ func flyToPoint(delta):
 
 #Turns followpoint towards target
 func turnFollowPoint(target: Vector3):
+	followPointMiddle.position = position
 	if not followPointMiddle.position.is_equal_approx(target):
 		var before = followPointMiddle.global_transform.basis.get_rotation_quaternion()
 		followPointMiddle.look_at(target)

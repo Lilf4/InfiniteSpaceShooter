@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://3uq802w03s36"
+path="res://.godot/imported/Lo_poly_Spaceship_02_by_Liz_Reddington.obj-bbb014d9d4bd9b9b7a657ce72a0fbc6b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Lo_poly_Spaceship_02_by_Liz_Reddington.obj-bbb014d9d4bd9b9b7a657ce72a0fbc6b.mesh"]
+
+source_file="res://Assets/SpaceshipT3/Lo_poly_Spaceship_02_by_Liz_Reddington.obj"
+dest_files=["res://.godot/imported/Lo_poly_Spaceship_02_by_Liz_Reddington.obj-bbb014d9d4bd9b9b7a657ce72a0fbc6b.mesh", "res://.godot/imported/Lo_poly_Spaceship_02_by_Liz_Reddington.obj-bbb014d9d4bd9b9b7a657ce72a0fbc6b.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

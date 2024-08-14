@@ -57,8 +57,7 @@ func Quit():
 
 func OpenUpgrades():
 	for scrap in System_Global.ScrapInstances:
-		print(scrap)
-		scrap._on_area_3d_body_entered(player)
+		System_Global.ScrapInstances[scrap].pickedUp()
 	System_Global.GamePaused = true
 	UpgradeMenuOpen = true
 	showMouse()
@@ -88,4 +87,4 @@ func _on_upgrade_menu_upgrade_occured(ident, mult):
 		"DamageUp":
 			System_Global.damageMultiplier += mult
 		"Shield":
-			print("Tried to upgrade shield")
+			System_Global.shieldMultiplier += mult

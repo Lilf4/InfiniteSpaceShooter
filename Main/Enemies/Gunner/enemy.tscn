@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://ypaqjflcdklt"]
 
-[ext_resource type="ArrayMesh" uid="uid://bti3a3k88xeno" path="res://Assets/SpaceshipT2/Lo_poly_Spaceship_04_by_Liz_Reddington.obj" id="1_6h2m3"]
-[ext_resource type="Script" path="res://Main/Enemy/enemy.gd" id="1_jffad"]
-[ext_resource type="AudioStream" uid="uid://tjnhntclvkob" path="res://Assets/Sounds/laserShoot.wav" id="4_3kswj"]
+[ext_resource type="Script" path="res://Main/Enemies/Gunner/enemy.gd" id="1_jwliv"]
+[ext_resource type="ArrayMesh" uid="uid://bti3a3k88xeno" path="res://Assets/SpaceshipT2/Lo_poly_Spaceship_04_by_Liz_Reddington.obj" id="2_flp06"]
+[ext_resource type="AudioStream" uid="uid://tjnhntclvkob" path="res://Assets/Sounds/laserShoot.wav" id="3_wv1mu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0500u"]
 size = Vector3(6.50684, 7.47168, 21.082)
@@ -16,11 +16,11 @@ size = Vector3(4.943, 12.7183, 9.727)
 [node name="Enemy" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 3
-script = ExtResource("1_jffad")
+script = ExtResource("1_jwliv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
-mesh = ExtResource("1_6h2m3")
+mesh = ExtResource("2_flp06")
 
 [node name="MainBody" type="CollisionShape3D" parent="." groups=["EnemyBody", "MainBody"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.67306, 0)
@@ -58,7 +58,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.471, 2.17, 5.773)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.436, 0.58, 8)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("4_3kswj")
+stream = ExtResource("3_wv1mu")
 volume_db = -24.615
 max_db = -24.0
 

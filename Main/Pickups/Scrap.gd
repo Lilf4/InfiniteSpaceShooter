@@ -6,7 +6,7 @@ extends Node3D
 var GUID: int
 func _ready():
 	GUID = System_Global.GET_NEWID()
-	System_Global.EnemyInstances[GUID] = self
+	System_Global.ScrapInstances[GUID] = self
 
 var timeAlive = 0
 func _process(delta):
@@ -15,9 +15,12 @@ func _process(delta):
 		eraseSelf()
 
 func _on_area_3d_body_entered(_body):
+	pickedUp()
+
+func pickedUp():
 	System_Global.Scrap += randi_range(pickupAmountRange.x, pickupAmountRange.y)
 	eraseSelf()
 
 func eraseSelf():
-	System_Global.EnemyInstances.erase(GUID)
+	System_Global.ScrapInstances.erase(GUID)
 	queue_free()

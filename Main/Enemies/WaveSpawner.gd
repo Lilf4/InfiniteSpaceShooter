@@ -6,7 +6,7 @@ extends Node3D
 #Aswell as a speedup in enemy movement-
 #and tighter/looser enemy acccuracy threshold
 
-@onready var enemeyScene = preload("res://Main/Enemy/enemy.tscn")
+@onready var enemeyScene = preload("res://Main/Enemies/Gunner/enemy.tscn")
 
 @onready var main = find_parent("Main")
 @onready var player = find_parent("Main").find_child("Player")
@@ -47,7 +47,7 @@ var speedMultiplier: float = 0
 @export var enemyFireRate: float = 0.5
 @export var enemyMinFireRate: float = 0.2
 
-@export var enabled: bool = true
+@export var enabled: bool = false
 
 var enemiesSpawned: int = 0
 var maxEnemiesAlive: int = 0

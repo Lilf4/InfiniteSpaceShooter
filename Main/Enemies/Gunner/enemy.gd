@@ -12,7 +12,7 @@ extends EnemyBase
 @onready var FollowTesting: Node3D = find_parent("Main").find_child("FollowTesting")
 
 #Gun variables
-@onready var Bullet: PackedScene = preload("res://Main/Enemy/Bullet.tscn")
+@onready var Bullet: PackedScene = preload("res://Main/Enemies/Common/Bullet.tscn")
 @onready var Guns = [
 	$LeftBackGun,
 	$LeftFrontGun,
@@ -48,7 +48,6 @@ func _process(_delta):
 		return
 	
 	HealthLabel.text = str(currHealth, "% HP")
-	followPointMiddle.position = position
 	
 	#Implement behaviour tree
 	if position.distance_to(FocusPoint.position) <= IdleDist:

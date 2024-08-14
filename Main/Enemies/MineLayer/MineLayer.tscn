@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8q203lxw6gr2"]
+
+[ext_resource type="Script" path="res://Main/Enemies/MineLayer/MineLayer.gd" id="1_cngyr"]
+[ext_resource type="ArrayMesh" uid="uid://3uq802w03s36" path="res://Assets/SpaceshipT3/Lo_poly_Spaceship_02_by_Liz_Reddington.obj" id="2_2guqe"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ia0tj"]
+size = Vector3(22.9609, 9.71881, 16.036)
+
+[node name="MineLayer" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_cngyr")
+Thrust = 8.0
+MaxSpeed = Vector3(70, 70, 70)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+mesh = ExtResource("2_2guqe")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0606384, -0.789612)
+shape = SubResource("BoxShape3D_ia0tj")
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.15691, -8.12305)
+light_energy = 9.6
+omni_range = 23.0
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.66953, 6.03366)
+light_energy = 5.0
+omni_range = 22.523
+omni_attenuation = 0.00153239

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bohma1w6ifg3c"
+path="res://.godot/imported/model.obj-2ddfc03eb5890e4c95ca21ca3a52b772.mesh"
+
+[deps]
+
+files=["res://.godot/imported/model.obj-2ddfc03eb5890e4c95ca21ca3a52b772.mesh"]
+
+source_file="res://Assets/Spike Mine/model.obj"
+dest_files=["res://.godot/imported/model.obj-2ddfc03eb5890e4c95ca21ca3a52b772.mesh", "res://.godot/imported/model.obj-2ddfc03eb5890e4c95ca21ca3a52b772.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
