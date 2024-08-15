@@ -134,14 +134,14 @@ func trySpawnEnemies():
 func _on_wave_ui_wave_started():
 	CurrentDifficultyValue = 1.0 + (CurrentWave - 1) * DifficultyScalePower
 	
-	enemyCount = enemyBaseCount * CurrentDifficultyValue
+	enemyCount = (enemyBaseCount * CurrentDifficultyValue) as int
 	enemyAliveMult = clamp(enemyBaseMaxAliveMult + (enemyBaseMaxAliveMult * CurrentDifficultyValue), enemyBaseMaxAliveMult, enemyMaxAliveMult)
-	maxEnemiesAlive = enemyCount * enemyAliveMult
+	maxEnemiesAlive = (enemyCount * enemyAliveMult) as int
 	
 	enemySpawnAmount = clamp(enemyBaseSpawnAmount + (enemyBaseSpawnAmount * CurrentDifficultyValue), enemyBaseSpawnAmount, enemyMaxSpawnAmount)
 	
 	enemyKillBeforeSpawnMult = clamp(enemyBaseKillBeforeSpawnMult - (CurrentDifficultyValue - 1.0) * enemyBaseKillBeforeSpawnMult, 0, enemyBaseKillBeforeSpawnMult)
-	enemiesToKillBeforeSpawn = enemyCount * enemyKillBeforeSpawnMult
+	enemiesToKillBeforeSpawn = (enemyCount * enemyKillBeforeSpawnMult) as int
 	
 	enemiesLeft = enemyCount
 	

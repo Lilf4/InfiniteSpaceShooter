@@ -1,0 +1,78 @@
+[gd_scene load_steps=12 format=3 uid="uid://dbxk0cvtdv2td"]
+
+[ext_resource type="Script" path="res://Main/Enemies/Kamikaze/Kamikaze.gd" id="1_cxucc"]
+[ext_resource type="ArrayMesh" uid="uid://364huk4qdb1x" path="res://Assets/SpaceshipT4/Lo_poly_Spaceship_05_by_Liz_Reddington.obj" id="1_p0rqf"]
+[ext_resource type="Shader" path="res://Main/Enemies/Kamikaze/KamikazeStealth.gdshader" id="2_ih0wa"]
+
+[sub_resource type="Gradient" id="Gradient_vkyyc"]
+offsets = PackedFloat32Array(0.162338, 0.948052)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0bkj7"]
+noise_type = 3
+frequency = 0.0141
+domain_warp_enabled = true
+domain_warp_type = 2
+domain_warp_amplitude = 20.0
+domain_warp_fractal_octaves = 1
+domain_warp_fractal_lacunarity = 8.0
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_aaid7"]
+width = 256
+height = 256
+in_3d_space = true
+generate_mipmaps = false
+seamless = true
+seamless_blend_skirt = 0.476
+color_ramp = SubResource("Gradient_vkyyc")
+noise = SubResource("FastNoiseLite_0bkj7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f0x37"]
+render_priority = 0
+shader = ExtResource("2_ih0wa")
+shader_parameter/albedo = Color(0.4, 0.85098, 0.741176, 1)
+shader_parameter/dissolve_amount = 0.5
+shader_parameter/scroll_speed = 0.08
+shader_parameter/angle_degrees = 45.0
+shader_parameter/repeat_x = 20.0
+shader_parameter/repeat_y = 12.0
+shader_parameter/row_offset = 1.0
+shader_parameter/texture_albedo = SubResource("NoiseTexture2D_aaid7")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ua5fa"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vabng"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qnh1y"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w1wyr"]
+size = Vector3(23.5299, 12.3246, 31.8208)
+
+[node name="Kamikaze" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("1_cxucc")
+minInvis = 0.5
+attackChance = 25
+moveTurnWeight = 0.08
+AccelRate = 20.0
+Thrust = 10.0
+MaxSpeed = Vector3(150, 150, 150)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_f0x37")
+cast_shadow = 0
+mesh = ExtResource("1_p0rqf")
+surface_material_override/0 = SubResource("StandardMaterial3D_ua5fa")
+surface_material_override/9 = SubResource("StandardMaterial3D_vabng")
+surface_material_override/13 = SubResource("StandardMaterial3D_qnh1y")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0603638, 0.45192, 2.55591)
+shape = SubResource("BoxShape3D_w1wyr")

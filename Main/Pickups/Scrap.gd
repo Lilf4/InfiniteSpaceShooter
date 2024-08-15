@@ -18,7 +18,7 @@ func _on_area_3d_body_entered(_body):
 	pickedUp()
 
 func pickedUp():
-	System_Global.Scrap += randi_range(pickupAmountRange.x, pickupAmountRange.y)
+	System_Global.Scrap += randi_range(pickupAmountRange.x as int, pickupAmountRange.y as int)
 	eraseSelf()
 
 func eraseSelf():

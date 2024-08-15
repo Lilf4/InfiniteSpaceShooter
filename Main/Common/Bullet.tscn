@@ -27,7 +27,7 @@ mesh = SubResource("CapsuleMesh_ttfwx")
 
 [node name="Area3D" type="Area3D" parent="."]
 collision_layer = 4
-collision_mask = 2
+collision_mask = 10
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(2, 0, 0, 0, -8.74228e-08, -2, 0, 2, -8.74228e-08, 0, 0, 0)
@@ -37,4 +37,5 @@ shape = SubResource("CapsuleShape3D_8hv5o")
 shape = SubResource("BoxShape3D_fl8mf")
 disabled = true
 
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

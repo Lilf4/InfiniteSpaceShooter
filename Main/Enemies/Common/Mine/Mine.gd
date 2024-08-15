@@ -1,4 +1,4 @@
-extends Area3D
+class_name BaseMine extends Area3D
 
 @onready var mesh = $MeshInstance3D
 @onready var particles = $GPUParticles3D
@@ -10,14 +10,17 @@ var currLifetime = 0
 func _process(delta):
 	currLifetime += delta
 	if currLifetime >= lifetime:
-		currLifetime = 0
 		Implode()
 
 func Implode():
+	if particles.emitting:
+		return
 	mesh.hide()
 	particles.emitting = true
 
 func Explode(player):
+	if particles.emitting:
+		return
 	player.takeDamage(damage)
 	mesh.hide()
 	particles.emitting = true

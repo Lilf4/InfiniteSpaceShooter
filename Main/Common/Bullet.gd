@@ -25,6 +25,10 @@ func _physics_process(_delta):
 
 
 func _on_area_3d_body_entered(body):
-	print("e")
 	body.takeDamage(Damage)
 	queue_free()
+
+
+func _on_area_3d_area_entered(area):
+	if area.is_in_group("Mine"):
+		area.Implode()

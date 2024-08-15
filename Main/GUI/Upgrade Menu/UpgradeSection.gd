@@ -88,9 +88,9 @@ func ProcessLogicalFormart(input: String):
 				elif currChar == ")":
 					currDepth -= 1
 				index += 1
-			var exp = Expression.new()
-			exp.parse(output.substr(startIndex + startOffset + 1, endIndex - (startIndex + startOffset)))
-			var result = exp.execute()
+			var expression = Expression.new()
+			expression.parse(output.substr(startIndex + startOffset + 1, endIndex - (startIndex + startOffset)))
+			var result = expression.execute()
 			output = output.replace(output.substr(startIndex, endIndex - (startIndex) + 1), str(result))
 		else:
 			noLogicToProcess = true
@@ -106,7 +106,7 @@ func _on_upgrade_pressed():
 	#If has enough scrap
 	var cost = baseCost * costMultiplier
 	if System_Global.Scrap >= cost and (maxUpgrades == 0 or maxUpgrades > currUpgradeCount):
-		System_Global.Scrap -= cost
+		System_Global.Scrap -= cost as int
 	else:
 		return
 	

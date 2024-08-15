@@ -10,6 +10,8 @@ extends EnemyBase
 
 @export var minDistToPoint: float = 100
 var currPos: Vector3
+var layRange: Vector2 = Vector2(2,5)
+var currLayTime: float = 2
 
 
 func _ready():
@@ -20,21 +22,20 @@ func _ready():
 func _physics_process(delta):
 	turnFollowPoint(player.position + currPos)
 	flyToPoint(delta)
-	#print(position.distance_to(followPoint.position + currPos))
 
-var minTimeToSpawn = 2
-var potentialSpawnTime = 0
+var spawnTimer = 0
 func _process(delta):
-	potentialSpawnTime += delta
+	spawnTimer += delta
 	if position.distance_to(player.position + currPos) <= minDistToPoint:
 		currPos = pickPoint(circleRadius)
+		currLayTime = randf_range(layRange.x, layRange.y)
 		trySpawnMine(100)
-	elif potentialSpawnTime >= minTimeToSpawn:
-		potentialSpawnTime = 0
-		trySpawnMine(25)
+	elif spawnTimer >= currLayTime:
+		spawnTimer = 0
+		trySpawnMine(100)
 
 func trySpawnMine(chance):
-	if randf_range(0, 100) > chance:
+	if randf_range(0, 100) <= chance:
 		var newMine = mineScene.instantiate()
 		newMine.position = position
 		Main.add_child(newMine)
