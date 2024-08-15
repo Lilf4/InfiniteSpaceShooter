@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://w33bplejeiky"]
+[gd_scene load_steps=26 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
 [ext_resource type="Script" path="res://Main/Enemies/WaveSpawner.gd" id="8_urq70"]
 [ext_resource type="PackedScene" uid="uid://dtwxfbnkapfjc" path="res://Main/GUI/Upgrade Menu/upgrade_menu.tscn" id="8_wye4b"]
+[ext_resource type="PackedScene" uid="uid://b8q203lxw6gr2" path="res://Main/Enemies/MineLayer/MineLayer.tscn" id="16_arp65"]
 [ext_resource type="PackedScene" uid="uid://dbxk0cvtdv2td" path="res://Main/Enemies/Kamikaze/Kamikaze.tscn" id="16_tufai"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_237ks"]
@@ -293,6 +294,13 @@ light_color = Color(1, 0.282353, 0.909804, 1)
 shadow_transmittance_bias = 2.313
 
 [node name="Kamikaze" parent="." instance=ExtResource("16_tufai")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 119.029)
+
+[node name="MineLayer" parent="." instance=ExtResource("16_arp65")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.8047, 0, 119.029)
+
+[node name="MineLayer2" parent="." instance=ExtResource("16_arp65")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -68.5995, 0, 119.029)
 
 [connection signal="WaveStarted" from="GUI/WaveUI" to="WaveSpawner" method="_on_wave_ui_wave_started"]
 [connection signal="Quit" from="GUI/DeathScreen" to="." method="Quit"]

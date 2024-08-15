@@ -5,8 +5,6 @@ var shader: ShaderMaterial
 @onready var Player: CharacterBody3D = find_parent("Main").find_child("Player")
 @onready var FollowTest: MeshInstance3D = find_parent("Main").find_child("FollowTesting")
 
-@onready var e = find_parent("Main").find_child("WaveSpawner")
-
 @export_range(0,1) var minInvis: float = 0.3
 @export_range(0,1) var maxInvis: float = 1
 @export var minDist: float = 50
@@ -21,9 +19,6 @@ var lastActionAttack: bool = false
 func _ready():
 	shader = mesh.material_override
 	setup()
-	ID = System_Global.GET_NEWID()
-	System_Global.EnemyInstances[ID] = self
-	e.enemySpawned.emit(ID)
 
 var chanceTime = 0
 func _process(_delta):
