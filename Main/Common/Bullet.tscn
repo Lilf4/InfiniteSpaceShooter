@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dk3vbcggn88k5"]
+[gd_scene load_steps=13 format=3 uid="uid://dk3vbcggn88k5"]
 
 [ext_resource type="Script" path="res://Main/Common/Bullet.gd" id="1_mawuq"]
 
@@ -14,6 +14,46 @@ material = SubResource("StandardMaterial3D_bd6cl")
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8hv5o"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fl8mf"]
+
+[sub_resource type="Curve" id="Curve_slddp"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_fllnr"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_g8vv0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_oegu4"]
+curve_x = SubResource("Curve_slddp")
+curve_y = SubResource("Curve_fllnr")
+curve_z = SubResource("Curve_g8vv0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ce2pq"]
+direction = Vector3(0, 0, -1)
+spread = 70.0
+initial_velocity_min = 200.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveXYZTexture_oegu4")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ibsts"]
+albedo_color = Color(1, 1, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 16.0
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_6abgj"]
+material = SubResource("StandardMaterial3D_ibsts")
+size = Vector2(0.5, 0.5)
 
 [node name="Bullet" type="CharacterBody3D"]
 collision_layer = 4
@@ -37,5 +77,16 @@ shape = SubResource("CapsuleShape3D_8hv5o")
 shape = SubResource("BoxShape3D_fl8mf")
 disabled = true
 
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 32
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_ce2pq")
+draw_pass_1 = SubResource("QuadMesh_6abgj")
+
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="finished" from="GPUParticles3D" to="." method="_on_gpu_particles_3d_finished"]

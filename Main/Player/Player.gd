@@ -18,8 +18,8 @@ var currRoll: float = 0
 @export var rollForce: float = 5.0
 @export var rollStopForce: float = 1.0
 
-@export var maxTurnSpeed: float = .5
-@export var turnCutOff: float = 0.1
+@export var maxTurnSpeed: float = 2
+@export var turnCutOff: float = 0.2
 var turnVal: Vector3 = Vector3.ZERO
 
 func _ready():
@@ -36,6 +36,15 @@ func _input(event):
 		return
 	if event is InputEventMouseMotion:
 		turnVal += Vector3(event.relative.x, event.relative.y, 0) * 0.001
+		var clamped: Vector2 = clamp_vector(Vector2(turnVal.x, turnVal.y), Vector2.ZERO, 1)
+		turnVal = Vector3(clamped.x, clamped.y, 0)
+
+func clamp_vector(vector, clamp_origin, clamp_length):
+	var offset = vector - clamp_origin
+	var offset_length = offset.length()
+	if offset_length <= clamp_length:
+		return vector
+	return clamp_origin + offset * (clamp_length / offset_length)
 
 func _physics_process(delta):
 	if System_Global.GamePaused:
@@ -78,22 +87,17 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
-	turnVal = turnVal.clamp(
-		-Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed),
-		Vector3(maxTurnSpeed,maxTurnSpeed,maxTurnSpeed)
-	)
 	currRoll += ((roll * rollForce) * rollAccel) * delta
 	
 	currRoll = lerp(currRoll, 0.0, delta * rollStopForce)
 	
 	rotate_object_local(Vector3(0,0,1), deg_to_rad(currRoll))
 	
-	if turnVal.distance_to(Vector3.ZERO) < turnCutOff:
+	if Vector2(turnVal.x,turnVal.y).distance_to(Vector2.ZERO) < turnCutOff:
 		return
 	
-	#print(turnVal.distance_to(Vector3.ZERO))
-	var yaw = turnVal.x
-	var pitch = turnVal.y
+	var yaw = turnVal.x * maxTurnSpeed
+	var pitch = turnVal.y * maxTurnSpeed
 	
 	rotate_object_local(Vector3(0,1,0), deg_to_rad(-yaw))
 	rotate_object_local(Vector3(1,0,0), deg_to_rad(pitch))

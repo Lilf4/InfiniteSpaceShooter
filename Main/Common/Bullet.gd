@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
-@export var lifeTime = 10
-@export var Speed = 300
+@export var lifeTime = 5
+@export var Speed = 600
 
 @export var Damage = 10
 
@@ -25,10 +25,18 @@ func _physics_process(_delta):
 
 
 func _on_area_3d_body_entered(body):
+	if ($GPUParticles3D as GPUParticles3D).emitting:
+		return
 	body.takeDamage(Damage)
-	queue_free()
+	($MeshInstance3D as MeshInstance3D).hide()
+	($GPUParticles3D as GPUParticles3D).emitting = true
 
 
 func _on_area_3d_area_entered(area):
 	if area.is_in_group("Mine"):
 		area.Implode()
+		queue_free()
+
+
+func _on_gpu_particles_3d_finished():
+	queue_free()

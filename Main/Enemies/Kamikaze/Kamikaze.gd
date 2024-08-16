@@ -4,7 +4,8 @@ extends EnemyBase
 var shader: ShaderMaterial
 @onready var Player: CharacterBody3D = find_parent("Main").find_child("Player")
 @onready var FollowTest: MeshInstance3D = find_parent("Main").find_child("FollowTesting")
-
+@onready var Particles: GPUParticles3D = $GPUParticles3D
+@onready var MeshInstance: MeshInstance3D = $MeshInstance3D
 @export_range(0,1) var minInvis: float = 0.3
 @export_range(0,1) var maxInvis: float = 1
 @export var minDist: float = 50
@@ -14,6 +15,9 @@ var shader: ShaderMaterial
 @export var attackChance: int = 90
 
 @export var minDistToPoint: float = 100
+
+@export var Damage: float = 80
+
 var currPoint: Vector3
 var lastActionAttack: bool = false
 func _ready():
@@ -42,3 +46,15 @@ func pickAPoint():
 func _physics_process(delta):
 	turnFollowPoint(currPoint + Player.position)
 	flyToPoint(delta)
+
+
+func _on_area_3d_body_entered(body):
+	if Particles.emitting:
+		return
+	Particles.emitting = true
+	MeshInstance.hide()
+	body.takeDamage(Damage)
+
+
+func _on_gpu_particles_3d_finished():
+	queue_free()

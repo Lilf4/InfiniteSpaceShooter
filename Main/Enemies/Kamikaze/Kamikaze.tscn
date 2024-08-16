@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dbxk0cvtdv2td"]
+[gd_scene load_steps=20 format=3 uid="uid://dbxk0cvtdv2td"]
 
 [ext_resource type="Script" path="res://Main/Enemies/Kamikaze/Kamikaze.gd" id="1_cxucc"]
 [ext_resource type="ArrayMesh" uid="uid://364huk4qdb1x" path="res://Assets/SpaceshipT4/Lo_poly_Spaceship_05_by_Liz_Reddington.obj" id="1_p0rqf"]
@@ -52,7 +52,47 @@ transparency = 1
 albedo_color = Color(1, 1, 1, 0)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_w1wyr"]
-size = Vector3(23.5299, 12.3246, 31.8208)
+size = Vector3(12.9678, 8.1556, 31.8208)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_stw53"]
+size = Vector3(26.0445, 14.8399, 34.5643)
+
+[sub_resource type="Curve" id="Curve_1ig52"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_jk3x6"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_o8pvr"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_k54pb"]
+curve_x = SubResource("Curve_1ig52")
+curve_y = SubResource("Curve_jk3x6")
+curve_z = SubResource("Curve_o8pvr")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_k84ir"]
+emission_shape = 1
+emission_sphere_radius = 5.0
+spread = 180.0
+initial_velocity_min = 80.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_curve = SubResource("CurveXYZTexture_k54pb")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_th6kv"]
+albedo_color = Color(1, 0.423529, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_6gbxh"]
+material = SubResource("StandardMaterial3D_th6kv")
 
 [node name="Kamikaze" type="CharacterBody3D"]
 collision_layer = 2
@@ -75,5 +115,25 @@ surface_material_override/9 = SubResource("StandardMaterial3D_vabng")
 surface_material_override/13 = SubResource("StandardMaterial3D_qnh1y")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0603638, 0.45192, 2.55591)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0183859, 1.21572, 2.55591)
 shape = SubResource("BoxShape3D_w1wyr")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.280487, 0.591888, 2.54318)
+shape = SubResource("BoxShape3D_stw53")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 240
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+visibility_aabb = AABB(-50, -50, -50, 100, 100, 100)
+process_material = SubResource("ParticleProcessMaterial_k84ir")
+draw_pass_1 = SubResource("QuadMesh_6gbxh")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="finished" from="GPUParticles3D" to="." method="_on_gpu_particles_3d_finished"]

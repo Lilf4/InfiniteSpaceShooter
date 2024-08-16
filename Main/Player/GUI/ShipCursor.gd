@@ -3,7 +3,15 @@ extends Control
 @onready var Player = find_parent("Main").find_child("Player")
 
 @onready var Main = find_parent("Main")
-@export var reticleSize = 25
+@export var reticleSize = 20
+@export var width = 1
+
+@export var enableReticle: bool = true
+@export var enableCursor: bool = true
+@export var enableDeadzone: bool = true
+@export var enableMaxTurn: bool = true
+
+
 
 func _ready():
 	pass
@@ -14,26 +22,27 @@ func _process(_delta):
 	queue_redraw()
 
 func _draw():
-	if Player == null:
+	if Player == null or not enableReticle:
 		return
-	var distMult = 2
-	#var screenCenter = get_viewport_rect().size * .5
-	var mouseOffset = (Vector2(Player.turnVal.x, Player.turnVal.y) * (reticleSize * distMult)) 
+	var mouseOffset = (Vector2(Player.turnVal.x, Player.turnVal.y) * (reticleSize)) 
 	
-	#Cursor
-	draw_arc(
-		mouseOffset, 
-		reticleSize * .5, 
-		0, TAU, 100, Color.WHITE)
-		
-	#Deadzone
-	draw_arc(
-		Vector2.ZERO, 
-		reticleSize + (reticleSize * Vector2(Player.turnCutOff, Player.turnCutOff).distance_to(Vector2.ZERO)),
-		0, TAU, 100, Color.ORANGE)
-		
-	#Max
-	draw_arc(
-		Vector2.ZERO, 
-		(reticleSize + Player.maxTurnSpeed) + (reticleSize * Player.maxTurnSpeed), 
-		0, TAU, 100, Color.RED)
+	if enableDeadzone:
+		#Deadzone
+		draw_arc(
+			Vector2.ZERO, 
+			((reticleSize * .5) + reticleSize * Player.turnCutOff) - width,
+			0, TAU, 100, Color.ORANGE, width)
+	
+	if enableMaxTurn:
+		#Max
+		draw_arc(
+			Vector2.ZERO, 
+			(reticleSize * .5 + reticleSize) - width, 
+			0, TAU, 100, Color.RED, width)
+	
+	if enableCursor:
+		#Cursor
+		draw_arc(
+			mouseOffset, 
+			(reticleSize * .5) - width, 
+			0, TAU, 100, Color.WHITE, width)
