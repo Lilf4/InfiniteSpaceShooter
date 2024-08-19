@@ -25,7 +25,8 @@ func _ready():
 	setup()
 
 var chanceTime = 0
-func _process(_delta):
+func _process(delta):
+	tryFixShield(delta)
 	var dist = max(minDist, min(maxDist, position.distance_to(Player.position)))
 	var newTransparency = ((maxDist-dist)*(maxInvis-minInvis)/(maxDist-minDist))+minInvis
 	shader.set_shader_parameter("dissolve_amount", newTransparency)

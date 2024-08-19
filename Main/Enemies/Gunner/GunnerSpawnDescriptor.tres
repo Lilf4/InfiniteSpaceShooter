@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemySpawnDescriptor" load_steps=4 format=3 uid="uid://dig58e0pdcgvf"]
+
+[ext_resource type="PackedScene" uid="uid://ypaqjflcdklt" path="res://Main/Enemies/Gunner/enemy.tscn" id="1_dmlud"]
+[ext_resource type="Script" path="res://Main/Enemies/EnemySpawnDescriptor.gd" id="1_ompr5"]
+[ext_resource type="Resource" uid="uid://5mhij875v1fw" path="res://Main/Enemies/Gunner/GunnerDefaultVariant.tres" id="3_bhk7g"]
+
+[resource]
+script = ExtResource("1_ompr5")
+scene = ExtResource("1_dmlud")
+cost = 5.0
+weight = 25.0
+variants = Array[Resource]([ExtResource("3_bhk7g")])

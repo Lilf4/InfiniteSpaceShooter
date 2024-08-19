@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://w33bplejeiky"]
+[gd_scene load_steps=27 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
@@ -15,6 +15,9 @@
 [ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
 [ext_resource type="Script" path="res://Main/Enemies/WaveSpawner.gd" id="8_urq70"]
 [ext_resource type="PackedScene" uid="uid://dtwxfbnkapfjc" path="res://Main/GUI/Upgrade Menu/upgrade_menu.tscn" id="8_wye4b"]
+[ext_resource type="Resource" uid="uid://h2502kema73p" path="res://Main/Enemies/MineLayer/MineLayerSpawnDescriptor.tres" id="14_4l3nc"]
+[ext_resource type="Resource" uid="uid://c3jocxq6a1jmb" path="res://Main/Enemies/Kamikaze/KamikazeSpawnDescriptor.tres" id="15_c1dls"]
+[ext_resource type="Resource" uid="uid://dig58e0pdcgvf" path="res://Main/Enemies/Gunner/GunnerSpawnDescriptor.tres" id="16_lnwew"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_237ks"]
 albedo_color = Color(1, 0, 0, 1)
@@ -278,10 +281,7 @@ size = Vector3(14.21, 7.42175, 28.7681)
 
 [node name="WaveSpawner" type="Node3D" parent="."]
 script = ExtResource("8_urq70")
-
-[node name="SpawnTimer" type="Timer" parent="WaveSpawner"]
-wait_time = 5.0
-autostart = true
+enemies = Array[Resource]([ExtResource("14_4l3nc"), ExtResource("15_c1dls"), ExtResource("16_lnwew")])
 
 [node name="SunScene" parent="." instance=ExtResource("2_35fdn")]
 script = ExtResource("8_cn62n")
@@ -298,4 +298,3 @@ shadow_transmittance_bias = 2.313
 [connection signal="PlayerDeath" from="Player" to="." method="PlayerDeath"]
 [connection signal="enemyDead" from="WaveSpawner" to="GUI/PlayElements/Radar/SubViewportContainer/SubViewport/Radar" method="_on_wave_spawner_enemy_dead"]
 [connection signal="enemySpawned" from="WaveSpawner" to="GUI/PlayElements/Radar/SubViewportContainer/SubViewport/Radar" method="_on_wave_spawner_enemy_spawned"]
-[connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]

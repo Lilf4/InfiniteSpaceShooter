@@ -43,10 +43,10 @@ var currBehavior: BehaviorStates = BehaviorStates.Following
 var allowedToShoot: bool = true
 
 #Control behavior
-func _process(_delta):
+func _process(delta):
 	if System_Global.GamePaused:
 		return
-	
+	tryFixShield(delta)
 	HealthLabel.text = str(currHealth, "% HP")
 	
 	#Implement behaviour tree

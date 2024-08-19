@@ -21,13 +21,33 @@ var ID = 0
 @export var AccelRate: float = 10.0
 @export var Thrust: float = 5.0
 @export var MaxSpeed: Vector3 = Vector3(50.0, 50.0, 50.0)
+var difficulty: float = 1.0
+
 var currVel: Vector3 = Vector3.ZERO
 
-var currHealth = 0
+var MaxShield: float = 0
+var currShield: float = 0
+
+var shieldRepairTime: float = 15
+var timeTillRepair: float = 0
+var shieldRepairRate: float = 1
+
+var currHealth: float = 0
+
+func tryFixShield(delta):
+	if timeTillRepair > 0:
+		timeTillRepair -= delta
+		return
+	if currShield < MaxShield:
+		currShield += shieldRepairRate * delta
 
 signal enemyDeath
 func takeDamage(val):
-	currHealth -= val
+	if currShield > 0:
+		currShield = max(currShield - val, 0)
+		timeTillRepair = shieldRepairTime
+	else:
+		currHealth -= val
 	
 	if currHealth <= 0:
 		followPointMiddle.queue_free()
@@ -49,6 +69,9 @@ func setup():
 	followPointMiddle = followPointScene.instantiate()
 	find_parent("Main").add_child.call_deferred(followPointMiddle)
 	followPointOuter = followPointMiddle.find_child("FollowPointOuter")
+
+func setBaseValues():
+	pass
 
 #Lets enemy come to a slow stop, slowly rotating towards followpoint
 func idle(delta):

@@ -25,6 +25,7 @@ func _physics_process(delta):
 
 var spawnTimer = 0
 func _process(delta):
+	tryFixShield(delta)
 	spawnTimer += delta
 	if position.distance_to(player.position + currPos) <= minDistToPoint:
 		currPos = pickPoint(circleRadius)
