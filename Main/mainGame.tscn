@@ -266,6 +266,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 
 [node name="Player" parent="." instance=ExtResource("1_4wbho")]
+maxTurnSpeed = 1.0
 turnCutOff = 0.1
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="Player"]
@@ -281,7 +282,8 @@ size = Vector3(14.21, 7.42175, 28.7681)
 
 [node name="WaveSpawner" type="Node3D" parent="."]
 script = ExtResource("8_urq70")
-enemies = Array[Resource]([ExtResource("14_4l3nc"), ExtResource("15_c1dls"), ExtResource("16_lnwew")])
+enemies = Array[Resource("res://Main/Enemies/EnemySpawnDescriptor.gd")]([ExtResource("14_4l3nc"), ExtResource("15_c1dls"), ExtResource("16_lnwew")])
+enabled = true
 
 [node name="SunScene" parent="." instance=ExtResource("2_35fdn")]
 script = ExtResource("8_cn62n")

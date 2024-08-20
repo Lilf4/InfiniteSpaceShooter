@@ -16,7 +16,7 @@ extends Node3D
 # which it can spend on spawning enemies, this budget would be based on player-
 # performance so increased or decreased upto a certain point.
 # 
-# Director will pick at start of wave whether to be cheap, and try and preserve
+# Director will pick at start of wave whether to fx. be cheap, and try and preserve
 # the budget till later to test how the player will do
 #
 # Will spawn the enemies in a kind of mini waves which can be done in two ways,
@@ -24,38 +24,57 @@ extends Node3D
 # stream.
 
 #List of enemies and their costs/weights/variants
-@export var enemies: Array[Resource]
+@export var enemies: Array[EnemySpawnDescriptor]
 
 @onready var main = find_parent("Main")
 @onready var player = find_parent("Main").find_child("Player")
 @onready var WaveUI = main.find_child("WaveUI")
 
-var score: float = 0
+@export var enabled: bool = false
 
-@export var DifficultyScalePower: float = 0.05
+var score: float = 0
 
 @export var spawnRadius: float = 500
 
-@export_category("Enemy values")
-
-var enemyAliveAmount: int = 0
-var enemyAliveMult: float = 0
-@export var enemyBaseMaxAliveMult: float = 0.2
-@export var enemyMaxAliveMult: float = 0.45 
-
-@export var enabled: bool = false
+var playerPerformance: float = 1
 
 var enemiesSpawned: int = 0
 var maxEnemiesAlive: int = 0
 var enemiesAlive: int = 0
-var enemiesLeft: int = 0
 
+var spawningDataDecided: bool = false
+var spawningMiniWave: bool = false
+var miniWaveOngoing: bool = false
+var waveStarted: bool = false
 var waveOngoing: bool = false
 var CurrentWave: int = 0
+var timeTillNextMini: float = 0
+var timeRangeForMini: Vector2 = Vector2(3, 6)
+@export var DifficultyScalePower: float = 0.05
 var CurrBaseDifficulty: float = 1.0
 var CurrDifficultyOffset: float = 0.0
 
-# Called when the node enters the scene tree for the first time.
+var BaseBudget: int = 300
+var CurrBaseBudget: int = 300
+var CurrBudget: int = 300
+
+enum spawnBiases {
+	Weak,
+	
+}
+
+var currBudgetOption: BudgetOptions
+enum BudgetOptions {
+	Observer,
+	BigSpender
+}
+
+var currSpawnMode: SpawnModes
+enum SpawnModes {
+	Pulse,
+	Rapid
+}
+
 func _ready():
 	if not enabled:
 		return
@@ -64,24 +83,88 @@ func _ready():
 	WaveUI.StartWave(5)
 
 func _process(delta):
+	Debug.log("Enemies Alive", enemiesAlive)
+	Debug.log("Mini Wave Going", miniWaveOngoing)
+	Debug.log("Mini Wave Spawning", spawningMiniWave)
+	Debug.log("Time till next mini wave", timeTillNextMini)
+	Debug.log("Wave Budget", CurrBudget)
+	Debug.log("Mini wave budget", budgetToUse)
+	
+	if enemiesAlive <= 0 and getValidEnemies(CurrBudget).size() == 0:
+		WaveDone()
+		player.currHealth = clamp(player.currHealth + player.Health * (System_Global.baseEndRepair * System_Global.endRepairMultiplier) * 0.01, 0, player.Health)
+	elif enemiesAlive <= 0 and not spawningMiniWave:
+		miniWaveOngoing = false
+
+	if timeTillNextMini > 0:
+		timeTillNextMini -= delta
+		
+	if not miniWaveOngoing and waveOngoing:
+		timeTillNextMini = randf_range(timeRangeForMini.x, timeRangeForMini.y)
+		miniWaveOngoing = true
+		spawningMiniWave = true
+		currSpawnMode = SpawnModes.values().pick_random()
+		
+		print("SpawnMode: ", SpawnModes.values()[currSpawnMode])
+		print("BudgetOption: ", BudgetOptions.values()[currBudgetOption])
+		
+	if spawningMiniWave and timeTillNextMini <= 0 and not spawningDataDecided:
+		match currBudgetOption:
+			BudgetOptions.Observer:
+				budgetToUse = min(CurrBudget - (CurrBudget - CurrBaseBudget * .2), CurrBudget)
+				pass
+			BudgetOptions.BigSpender:
+				budgetToUse = min(CurrBaseBudget / 3, CurrBudget)
+				pass
+		spawningDataDecided = true
+	if spawningMiniWave and spawningDataDecided:
+		trySpawnEnemies(delta)
+
+var budgetToUse: float = 0
+var randSpawnInt: Vector2 = Vector2(1, 2)
+var timeToSpawn: float = 0
+func trySpawnEnemies(delta):
+	if getValidEnemies(budgetToUse).size() == 0 or getValidEnemies(CurrBudget).size() == 0:
+		spawningMiniWave = false
+		spawningDataDecided = false
+		return
+	match currSpawnMode:
+		SpawnModes.Rapid:
+			if timeToSpawn <= 0:
+				var cost = spawnEnemy(budgetToUse)
+				budgetToUse -= cost
+				CurrBudget -= cost
+				timeToSpawn = randf_range(randSpawnInt.x, randSpawnInt.y)
+			else:
+				timeToSpawn -= delta
+			pass
+		SpawnModes.Pulse:
+			while not getValidEnemies(budgetToUse).size() == 0:
+				var cost = spawnEnemy(budgetToUse)
+				budgetToUse -= cost
+				CurrBudget -= cost
+			pass
 	pass
 
 signal enemySpawned
-func spawnEnemies(count):
-	for i in range(count):
-		var points = Vector3(randf() - 0.5, randf() - 0.5, randf() - 0.5)
-		points = points.normalized()
-		#var newEnemy = enemeyScene.instantiate()
-		#newEnemy.set_position((points * spawnRadius) + player.position)
-		#newEnemy.connect("enemyDeath", enemyDied)
-		
-		#newEnemy.ID = System_Global.GET_NEWID()
-		#newEnemy.Difficulty = CurrentDifficultyValue
-		
-		#System_Global.EnemyInstances[newEnemy.ID] = newEnemy
-		#main.add_child.call_deferred(newEnemy)
-		#enemySpawned.emit(newEnemy.ID)
-		#enemiesAlive += 1
+func spawnEnemy(budget):
+	var availableEnemies = getValidEnemies(CurrBudget)
+	var points = Vector3(randf() - 0.5, randf() - 0.5, randf() - 0.5)
+	points = points.normalized() * spawnRadius + player.position
+	var pickedEnemy = randByWeight(availableEnemies)
+	
+	var newEnemy = pickedEnemy.scene.instantiate()
+	newEnemy.set_position(points)
+	newEnemy.connect("enemyDeath", enemyDied)
+	
+	newEnemy.ID = System_Global.GET_NEWID()
+	newEnemy.difficulty = CurrBaseDifficulty + CurrDifficultyOffset
+	
+	System_Global.EnemyInstances[newEnemy.ID] = newEnemy
+	main.add_child.call_deferred(newEnemy)
+	enemySpawned.emit(newEnemy.ID)
+	enemiesAlive += 1
+	return pickedEnemy.cost
 
 signal enemyDead
 func enemyDied(id):
@@ -92,9 +175,6 @@ func enemyDied(id):
 		enemiesAlive -= 1
 		#enemiesKilledSinceSpawn += 1
 		score += CurrBaseDifficulty + CurrDifficultyOffset
-		if enemiesAlive <= 0 and enemiesLeft <= 0:
-			WaveDone()
-			player.currHealth = clamp(player.currHealth + player.Health * (System_Global.baseEndRepair * System_Global.endRepairMultiplier) * 0.01, 0, player.Health)
 
 func WaveDone():
 	waveOngoing = false
@@ -102,24 +182,42 @@ func WaveDone():
 
 func StartNewWave():
 	CurrentWave += 1
+	CurrBaseBudget = BaseBudget
+	CurrBudget = CurrBaseBudget
 	WaveUI.SetWaveCount(CurrentWave)
 	WaveUI.StartWave(5)
 	pass
 
-
-func trySpawnEnemies():
-	#Try to spawn enemies
-	#spawnEnemies(enemiesToSpawn)
-	pass
-
 #Setting up and starting new wave
 func _on_wave_ui_wave_started():
+	currBudgetOption = BudgetOptions.values().pick_random()
 	CurrBaseDifficulty = 1.0 + (CurrentWave - 1) * DifficultyScalePower
 	waveOngoing = true
-	
-	trySpawnEnemies()
 
 
 func _on_upgrade_menu_done_pressed():
 	main.CloseUpgrades()
+	waveOngoing = true
 	StartNewWave()
+
+# Objects in array are assumed to have a weight property
+func randByWeight(arr: Array):
+	var total: float = 0
+	for obj in arr:
+		total += obj.weight
+		
+	var random: float = ceil(randf() * total)
+	
+	var cursor = 0
+	for i in arr:
+		cursor += i.weight
+		if cursor >= random:
+			return i
+	return null
+
+func getValidEnemies(budget):
+	var validEnemies: Array[EnemySpawnDescriptor] = []
+	for enemy in enemies:
+		if enemy.cost <= budget and enemy.fromRound <= CurrentWave:
+			validEnemies.append(enemy)
+	return validEnemies

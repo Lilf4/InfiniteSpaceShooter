@@ -20,10 +20,11 @@ config/icon="res://icon.svg"
 [autoload]
 
 System_Global="*res://Main/Global_scripts/system_global.gd"
+Debug="*res://addons/awesome_debug_log/autoloads/debug.tscn"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/draw3d/plugin.cfg")
+enabled=PackedStringArray("res://addons/awesome_debug_log/plugin.cfg", "res://addons/draw3d/plugin.cfg")
 
 [filesystem]
 

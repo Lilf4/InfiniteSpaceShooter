@@ -5,6 +5,7 @@ extends CharacterBody3D
 
 @export var Damage = 10
 
+
 var timeLeft = 0
 
 func _ready():

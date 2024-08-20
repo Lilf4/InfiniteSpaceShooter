@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://ckbqf17yd8g7o"]
 
-[ext_resource type="Script" path="res://Main/Common/Bullet.gd" id="1_c182w"]
+[ext_resource type="Script" path="res://Main/Enemies/Common/Bullet.gd" id="1_b2u6u"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bd6cl"]
 albedo_color = Color(1, 0, 0, 1)
@@ -18,7 +18,9 @@ material = SubResource("StandardMaterial3D_bd6cl")
 [node name="Bullet" type="CharacterBody3D"]
 collision_layer = 4
 motion_mode = 1
-script = ExtResource("1_c182w")
+script = ExtResource("1_b2u6u")
+lifeTime = 5
+Speed = 600
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, -8.74228e-08, -0.5, 0, 2, -2.18557e-08, 0, 0, 0)

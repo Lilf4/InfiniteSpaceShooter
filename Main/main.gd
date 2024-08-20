@@ -16,7 +16,6 @@ var PlayerDead: bool = false
 var UpgradeMenuOpen: bool = false
 
 func _ready():
-	print(str("%5d" % 10).lpad(5, " "))
 	print("Startup")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	

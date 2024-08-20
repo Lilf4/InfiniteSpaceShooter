@@ -4,7 +4,6 @@ extends EnemyBase
 
 @onready var mineScene = preload("res://Main/Enemies/Common/Mine/Mine.tscn")
 @onready var player = find_parent("Main").find_child("Player")
-@onready var followPoint = find_parent("Main").find_child("FollowTesting")
 @export var Health: int = 200
 @export var circleRadius: float = 300
 
@@ -20,11 +19,15 @@ func _ready():
 	currPos = pickPoint(circleRadius)
 
 func _physics_process(delta):
+	if System_Global.GamePaused:
+		return
 	turnFollowPoint(player.position + currPos)
 	flyToPoint(delta)
 
 var spawnTimer = 0
 func _process(delta):
+	if System_Global.GamePaused:
+		return
 	tryFixShield(delta)
 	spawnTimer += delta
 	if position.distance_to(player.position + currPos) <= minDistToPoint:

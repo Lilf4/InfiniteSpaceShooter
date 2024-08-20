@@ -7,6 +7,7 @@
 [resource]
 script = ExtResource("1_ompr5")
 scene = ExtResource("1_dmlud")
-cost = 5.0
-weight = 25.0
+cost = 20.0
+weight = 10.0
 variants = Array[Resource]([ExtResource("3_bhk7g")])
+fromRound = 0

@@ -9,7 +9,6 @@ extends EnemyBase
 @onready var HealthLabel: Label3D = $Label3D
 
 @onready var Player: Node3D = find_parent("Main").find_child("Player")
-@onready var FollowTesting: Node3D = find_parent("Main").find_child("FollowTesting")
 
 #Gun variables
 @onready var Bullet: PackedScene = preload("res://Main/Enemies/Common/Bullet.tscn")
@@ -31,7 +30,7 @@ var FocusPoint: Node3D
 
 func _ready():
 	currHealth = Health
-	FocusPoint = FollowTesting
+	FocusPoint = Player
 	setup()
 
 enum BehaviorStates {

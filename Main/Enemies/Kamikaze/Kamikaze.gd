@@ -3,7 +3,6 @@ extends EnemyBase
 @onready var mesh: MeshInstance3D = $MeshInstance3D
 var shader: ShaderMaterial
 @onready var Player: CharacterBody3D = find_parent("Main").find_child("Player")
-@onready var FollowTest: MeshInstance3D = find_parent("Main").find_child("FollowTesting")
 @onready var Particles: GPUParticles3D = $GPUParticles3D
 @onready var MeshInstance: MeshInstance3D = $MeshInstance3D
 @export_range(0,1) var minInvis: float = 0.3
@@ -26,7 +25,8 @@ func _ready():
 
 var chanceTime = 0
 func _process(delta):
-	tryFixShield(delta)
+	if System_Global.GamePaused:
+		return
 	var dist = max(minDist, min(maxDist, position.distance_to(Player.position)))
 	var newTransparency = ((maxDist-dist)*(maxInvis-minInvis)/(maxDist-minDist))+minInvis
 	shader.set_shader_parameter("dissolve_amount", newTransparency)
@@ -45,6 +45,8 @@ func pickAPoint():
 	return Vector3(randf() - 0.5, randf() - 0.5, randf() - 0.5).normalized() * passiveCircleRadius
 
 func _physics_process(delta):
+	if System_Global.GamePaused:
+		return
 	turnFollowPoint(currPoint + Player.position)
 	flyToPoint(delta)
 
@@ -58,4 +60,4 @@ func _on_area_3d_body_entered(body):
 
 
 func _on_gpu_particles_3d_finished():
-	queue_free()
+	takeDamage(10000)
