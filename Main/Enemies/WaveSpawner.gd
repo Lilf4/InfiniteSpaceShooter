@@ -79,20 +79,19 @@ func _ready():
 	if not enabled:
 		return
 	CurrentWave += 1
+	connect("enemyDead", System_Global.playerKilled)
 	WaveUI.SetWaveCount(CurrentWave)
 	WaveUI.StartWave(5)
 
+## Todo: 
+## Player Performance
+## Budget Handling
 func _process(delta):
-	Debug.log("Enemies Alive", enemiesAlive)
-	Debug.log("Mini Wave Going", miniWaveOngoing)
-	Debug.log("Mini Wave Spawning", spawningMiniWave)
-	Debug.log("Time till next mini wave", timeTillNextMini)
-	Debug.log("Wave Budget", CurrBudget)
-	Debug.log("Mini wave budget", budgetToUse)
-	
-	if enemiesAlive <= 0 and getValidEnemies(CurrBudget).size() == 0:
+	if enemiesAlive <= 0 and getValidEnemies(CurrBudget).size() == 0 and waveOngoing:
 		WaveDone()
-		player.currHealth = clamp(player.currHealth + player.Health * (System_Global.baseEndRepair * System_Global.endRepairMultiplier) * 0.01, 0, player.Health)
+		var healthToAdd: float = player.Health * (System_Global.baseEndRepair * System_Global.endRepairMultiplier * 0.01)
+		print(healthToAdd)
+		player.currHealth = min(player.currHealth + healthToAdd, player.Health)
 	elif enemiesAlive <= 0 and not spawningMiniWave:
 		miniWaveOngoing = false
 
@@ -103,10 +102,11 @@ func _process(delta):
 		timeTillNextMini = randf_range(timeRangeForMini.x, timeRangeForMini.y)
 		miniWaveOngoing = true
 		spawningMiniWave = true
-		currSpawnMode = SpawnModes.values().pick_random()
+		#currSpawnMode = SpawnModes.values().pick_random()
+		currSpawnMode = SpawnModes.Pulse
 		
-		print("SpawnMode: ", SpawnModes.values()[currSpawnMode])
-		print("BudgetOption: ", BudgetOptions.values()[currBudgetOption])
+		print("SpawnMode: ", SpawnModes.keys()[currSpawnMode])
+		print("BudgetOption: ", BudgetOptions.keys()[currBudgetOption])
 		
 	if spawningMiniWave and timeTillNextMini <= 0 and not spawningDataDecided:
 		match currBudgetOption:
@@ -114,7 +114,7 @@ func _process(delta):
 				budgetToUse = min(CurrBudget - (CurrBudget - CurrBaseBudget * .2), CurrBudget)
 				pass
 			BudgetOptions.BigSpender:
-				budgetToUse = min(CurrBaseBudget / 3, CurrBudget)
+				budgetToUse = min(CurrBaseBudget / 3.0, CurrBudget)
 				pass
 		spawningDataDecided = true
 	if spawningMiniWave and spawningDataDecided:
@@ -122,6 +122,7 @@ func _process(delta):
 
 var budgetToUse: float = 0
 var randSpawnInt: Vector2 = Vector2(1, 2)
+var randGroupSpawnInt: Vector2 = Vector2(5, 9)
 var timeToSpawn: float = 0
 func trySpawnEnemies(delta):
 	if getValidEnemies(budgetToUse).size() == 0 or getValidEnemies(CurrBudget).size() == 0:
@@ -139,16 +140,22 @@ func trySpawnEnemies(delta):
 				timeToSpawn -= delta
 			pass
 		SpawnModes.Pulse:
-			while not getValidEnemies(budgetToUse).size() == 0:
-				var cost = spawnEnemy(budgetToUse)
-				budgetToUse -= cost
-				CurrBudget -= cost
+			if timeToSpawn <= 0:
+				while not getValidEnemies(budgetToUse).size() == 0:
+					var cost = spawnEnemy(budgetToUse)
+					budgetToUse -= cost
+					CurrBudget -= cost
+					if randf() < 0.1:
+						timeToSpawn = randf_range(randGroupSpawnInt.x, randGroupSpawnInt.y)
+						break
+			else:
+				timeToSpawn -= delta
 			pass
 	pass
 
 signal enemySpawned
 func spawnEnemy(budget):
-	var availableEnemies = getValidEnemies(CurrBudget)
+	var availableEnemies = getValidEnemies(budget)
 	var points = Vector3(randf() - 0.5, randf() - 0.5, randf() - 0.5)
 	points = points.normalized() * spawnRadius + player.position
 	var pickedEnemy = randByWeight(availableEnemies)
@@ -156,6 +163,7 @@ func spawnEnemy(budget):
 	var newEnemy = pickedEnemy.scene.instantiate()
 	newEnemy.set_position(points)
 	newEnemy.connect("enemyDeath", enemyDied)
+	newEnemy.connect("enemyDamaged", System_Global.playerDidDamage)
 	
 	newEnemy.ID = System_Global.GET_NEWID()
 	newEnemy.difficulty = CurrBaseDifficulty + CurrDifficultyOffset

@@ -24,10 +24,13 @@ var turnVal: Vector3 = Vector3.ZERO
 
 func _ready():
 	currHealth = Health
-	
+	connect("PlayerDamaged", System_Global.playerTookDamage)
+
 signal PlayerDeath
+signal PlayerDamaged
 func takeDamage(val):
 	currHealth -= val
+	PlayerDamaged.emit(val)
 	if currHealth <= 0:
 		PlayerDeath.emit()
 

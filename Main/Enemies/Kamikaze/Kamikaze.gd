@@ -24,7 +24,7 @@ func _ready():
 	setup()
 
 var chanceTime = 0
-func _process(delta):
+func _process(_delta):
 	if System_Global.GamePaused:
 		return
 	var dist = max(minDist, min(maxDist, position.distance_to(Player.position)))
@@ -60,4 +60,4 @@ func _on_area_3d_body_entered(body):
 
 
 func _on_gpu_particles_3d_finished():
-	takeDamage(10000)
+	takeDamage(10000, false)

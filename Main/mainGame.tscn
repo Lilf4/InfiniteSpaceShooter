@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://w33bplejeiky"]
+[gd_scene load_steps=28 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
 [ext_resource type="Script" path="res://Main/Enemies/WaveSpawner.gd" id="8_urq70"]
 [ext_resource type="PackedScene" uid="uid://dtwxfbnkapfjc" path="res://Main/GUI/Upgrade Menu/upgrade_menu.tscn" id="8_wye4b"]
+[ext_resource type="Script" path="res://Main/accLabel.gd" id="11_yg2wi"]
 [ext_resource type="Resource" uid="uid://h2502kema73p" path="res://Main/Enemies/MineLayer/MineLayerSpawnDescriptor.tres" id="14_4l3nc"]
 [ext_resource type="Resource" uid="uid://c3jocxq6a1jmb" path="res://Main/Enemies/Kamikaze/KamikazeSpawnDescriptor.tres" id="15_c1dls"]
 [ext_resource type="Resource" uid="uid://dig58e0pdcgvf" path="res://Main/Enemies/Gunner/GunnerSpawnDescriptor.tres" id="16_lnwew"]
@@ -255,7 +256,13 @@ mouse_filter = 2
 
 [node name="fpsLabel" type="Label" parent="GUI/DebugInfo/VBoxContainer"]
 layout_mode = 2
+text = "ada"
 script = ExtResource("4_sekis")
+
+[node name="accLabel" type="Label" parent="GUI/DebugInfo/VBoxContainer"]
+layout_mode = 2
+text = "ada"
+script = ExtResource("11_yg2wi")
 
 [node name="UpgradeMenu" parent="GUI" instance=ExtResource("8_wye4b")]
 visible = false

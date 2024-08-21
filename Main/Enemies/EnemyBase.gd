@@ -42,7 +42,10 @@ func tryFixShield(delta):
 		currShield += shieldRepairRate * delta
 
 signal enemyDeath
-func takeDamage(val):
+signal enemyDamaged
+func takeDamage(val: float, emitDamaged: bool = true):
+	if emitDamaged:
+		enemyDamaged.emit(val)
 	if currShield > 0:
 		currShield = max(currShield - val, 0)
 		timeTillRepair = shieldRepairTime
