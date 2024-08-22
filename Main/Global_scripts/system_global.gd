@@ -37,8 +37,10 @@ func ResetGameValues():
 	shieldMultiplier = baseShieldMultiplier
 	endRepairMultiplier = baseEndRepairMultiplier
 
+var PlayerPerfTracking = false
+
 func _process(delta):
-	if GamePaused:
+	if GamePaused or not PlayerPerfTracking:
 		return
 	
 	if PlayerPerformance < 1:
@@ -51,7 +53,7 @@ func _process(delta):
 
 var PlayerPerformance: float = 1
 var PerfReplenishRate: float =  0.02
-var PerfDrainRate: float = 0.05
+var PerfDrainRate: float = 0.04
 
 var damageAmountBias: float = 0.08
 func playerTookDamage(_amount):

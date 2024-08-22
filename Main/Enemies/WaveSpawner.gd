@@ -36,8 +36,6 @@ var score: float = 0
 
 @export var spawnRadius: float = 500
 
-var playerPerformance: float = 1
-
 var enemiesSpawned: int = 0
 var maxEnemiesAlive: int = 0
 var enemiesAlive: int = 0
@@ -50,13 +48,15 @@ var waveOngoing: bool = false
 var CurrentWave: int = 0
 var timeTillNextMini: float = 0
 var timeRangeForMini: Vector2 = Vector2(3, 6)
+
 @export var DifficultyScalePower: float = 0.05
 var CurrBaseDifficulty: float = 1.0
 var CurrDifficultyOffset: float = 0.0
+var MaxDifficultySwing: float = 0.6
 
-var BaseBudget: int = 300
-var CurrBaseBudget: int = 300
-var CurrBudget: int = 300
+var BaseBudget: int = 900
+var CurrBaseBudget: int = 600
+var CurrBudget: int = 600
 
 enum spawnBiases {
 	Weak,
@@ -78,22 +78,23 @@ enum SpawnModes {
 func _ready():
 	if not enabled:
 		return
-	CurrentWave += 1
 	connect("enemyDead", System_Global.playerKilled)
-	WaveUI.SetWaveCount(CurrentWave)
-	WaveUI.StartWave(5)
+	StartNewWave()
 
-## Todo: 
-## Player Performance
+## Todo:
 ## Budget Handling
 func _process(delta):
+	CurrDifficultyOffset = (((System_Global.PlayerPerformance - 0.0) * (MaxDifficultySwing - -MaxDifficultySwing)) / (2.0 - 0.0)) + -MaxDifficultySwing
 	if enemiesAlive <= 0 and getValidEnemies(CurrBudget).size() == 0 and waveOngoing:
+		budgetProcentToStart = -1
+		miniWavesToUseProcent = -1
 		WaveDone()
 		var healthToAdd: float = player.Health * (System_Global.baseEndRepair * System_Global.endRepairMultiplier * 0.01)
 		print(healthToAdd)
 		player.currHealth = min(player.currHealth + healthToAdd, player.Health)
 	elif enemiesAlive <= 0 and not spawningMiniWave:
 		miniWaveOngoing = false
+		System_Global.PlayerPerfTracking = false
 
 	if timeTillNextMini > 0:
 		timeTillNextMini -= delta
@@ -102,23 +103,50 @@ func _process(delta):
 		timeTillNextMini = randf_range(timeRangeForMini.x, timeRangeForMini.y)
 		miniWaveOngoing = true
 		spawningMiniWave = true
-		#currSpawnMode = SpawnModes.values().pick_random()
-		currSpawnMode = SpawnModes.Pulse
+		currSpawnMode = SpawnModes.values().pick_random()
 		
 		print("SpawnMode: ", SpawnModes.keys()[currSpawnMode])
 		print("BudgetOption: ", BudgetOptions.keys()[currBudgetOption])
 		
 	if spawningMiniWave and timeTillNextMini <= 0 and not spawningDataDecided:
+		System_Global.PlayerPerfTracking = true
 		match currBudgetOption:
 			BudgetOptions.Observer:
-				budgetToUse = min(CurrBudget - (CurrBudget - CurrBaseBudget * .2), CurrBudget)
+				#TODO Implement accumalating performance tracking
+				#Conservative at start of wave, adapting to player performance
+				#aim to use 20-30% at start
+				if budgetProcentToStart == -1:
+					budgetProcentToStart = randf_range(0.2, 0.3)
+					miniWavesToUseProcent = randi_range(2,3)
+					miniWavesLeft = miniWavesToUseProcent
+				if miniWavesLeft > 0:
+					budgetToUse = (CurrBaseBudget * budgetProcentToStart) / miniWavesToUseProcent
+				else:
+					budgetToUse = CurrBaseBudget * System_Global.PlayerPerformance
+					if CurrBudget < budgetToUse:
+						budgetToUse = CurrBudget
 				pass
 			BudgetOptions.BigSpender:
-				budgetToUse = min(CurrBaseBudget / 3.0, CurrBudget)
+				#Spends a lot early on to try and overwhelm the player, 
+				#depending on how the player does, cranks budget use down/up
+				#aim to use 60-70% early on
+				if budgetProcentToStart == -1:
+					budgetProcentToStart = randf_range(0.6, 0.7)
+					miniWavesToUseProcent = randi_range(3,5)
+					miniWavesLeft = miniWavesToUseProcent
+				if miniWavesLeft > 0:
+					budgetToUse = (CurrBaseBudget * budgetProcentToStart) / miniWavesToUseProcent
+				else:
+					budgetToUse = CurrBaseBudget * System_Global.PlayerPerformance
+					if CurrBudget < budgetToUse:
+						budgetToUse = CurrBudget
 				pass
 		spawningDataDecided = true
 	if spawningMiniWave and spawningDataDecided:
 		trySpawnEnemies(delta)
+var budgetProcentToStart = -1
+var miniWavesToUseProcent = -1
+var miniWavesLeft = -1
 
 var budgetToUse: float = 0
 var randSpawnInt: Vector2 = Vector2(1, 2)
@@ -198,7 +226,8 @@ func StartNewWave():
 
 #Setting up and starting new wave
 func _on_wave_ui_wave_started():
-	currBudgetOption = BudgetOptions.values().pick_random()
+	#currBudgetOption = BudgetOptions.values().pick_random()
+	currBudgetOption = BudgetOptions.Observer
 	CurrBaseDifficulty = 1.0 + (CurrentWave - 1) * DifficultyScalePower
 	waveOngoing = true
 

@@ -1,8 +1,7 @@
-[gd_scene load_steps=28 format=3 uid="uid://w33bplejeiky"]
+[gd_scene load_steps=25 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
-[ext_resource type="Script" path="res://Main/FollowTesting.gd" id="2_2kahg"]
 [ext_resource type="PackedScene" uid="uid://c2xoo5sd5ga8u" path="res://Main/Environment/Sun.tscn" id="2_35fdn"]
 [ext_resource type="PackedScene" uid="uid://cpwy34jgvhxa7" path="res://Main/GUI/Settings/InputSettings.tscn" id="2_2420r"]
 [ext_resource type="PackedScene" uid="uid://dgu27pi6pnrhm" path="res://Main/Player/GUI/ShipCursor.tscn" id="3_ija6w"]
@@ -19,16 +18,6 @@
 [ext_resource type="Resource" uid="uid://h2502kema73p" path="res://Main/Enemies/MineLayer/MineLayerSpawnDescriptor.tres" id="14_4l3nc"]
 [ext_resource type="Resource" uid="uid://c3jocxq6a1jmb" path="res://Main/Enemies/Kamikaze/KamikazeSpawnDescriptor.tres" id="15_c1dls"]
 [ext_resource type="Resource" uid="uid://dig58e0pdcgvf" path="res://Main/Enemies/Gunner/GunnerSpawnDescriptor.tres" id="16_lnwew"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_237ks"]
-albedo_color = Color(1, 0, 0, 1)
-emission_enabled = true
-emission = Color(1, 0, 0, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_iggcv"]
-material = SubResource("StandardMaterial3D_237ks")
-radius = 2.0
-height = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkqsf"]
 bg_color = Color(0, 0, 0, 0.784314)
@@ -58,12 +47,6 @@ height = 0.1
 
 [node name="Main" type="Node"]
 script = ExtResource("1_6atm7")
-
-[node name="FollowTesting" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 127.881)
-mesh = SubResource("SphereMesh_iggcv")
-skeleton = NodePath("../Player")
-script = ExtResource("2_2kahg")
 
 [node name="GUI" type="CanvasLayer" parent="."]
 

@@ -1,4 +1,4 @@
 extends Label
 
 func _process(_delta):
-	text = str("Accuracy: ", "%s" % (System_Global.getAccuracy() * 100), "%")
+	text = str("Accuracy: ", "%3d" % (System_Global.getAccuracy() * 100), "%")
