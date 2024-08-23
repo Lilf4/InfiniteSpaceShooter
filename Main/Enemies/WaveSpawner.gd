@@ -1,5 +1,4 @@
 extends Node3D
-
 # Concept - WaveSpawner will act as a type of director,-
 # trying to give the player an exciting game.
 #
@@ -36,8 +35,6 @@ var score: float = 0
 
 @export var spawnRadius: float = 500
 
-var enemiesSpawned: int = 0
-var maxEnemiesAlive: int = 0
 var enemiesAlive: int = 0
 
 var spawningDataDecided: bool = false
@@ -54,14 +51,11 @@ var CurrBaseDifficulty: float = 1.0
 var CurrDifficultyOffset: float = 0.0
 var MaxDifficultySwing: float = 0.6
 
-var BaseBudget: int = 900
-var CurrBaseBudget: int = 600
-var CurrBudget: int = 600
-
-enum spawnBiases {
-	Weak,
-	
-}
+@export var maxSpawnBonus: float = 100
+@export var maxBonusChannce: float = 0.8
+@export var budgetRange: Vector2 = Vector2(600,1200)
+var CurrBaseBudget: float
+var CurrBudget: float
 
 var currBudgetOption: BudgetOptions
 enum BudgetOptions {
@@ -81,13 +75,12 @@ func _ready():
 	connect("enemyDead", System_Global.playerKilled)
 	StartNewWave()
 
-## Todo:
-## Budget Handling
 func _process(delta):
 	CurrDifficultyOffset = (((System_Global.PlayerPerformance - 0.0) * (MaxDifficultySwing - -MaxDifficultySwing)) / (2.0 - 0.0)) + -MaxDifficultySwing
 	if enemiesAlive <= 0 and getValidEnemies(CurrBudget).size() == 0 and waveOngoing:
 		budgetProcentToStart = -1
 		miniWavesToUseProcent = -1
+		accumaletedPerformance = 0
 		WaveDone()
 		var healthToAdd: float = player.Health * (System_Global.baseEndRepair * System_Global.endRepairMultiplier * 0.01)
 		print(healthToAdd)
@@ -95,6 +88,7 @@ func _process(delta):
 	elif enemiesAlive <= 0 and not spawningMiniWave:
 		miniWaveOngoing = false
 		System_Global.PlayerPerfTracking = false
+		miniWavesLeft -= 1
 
 	if timeTillNextMini > 0:
 		timeTillNextMini -= delta
@@ -110,9 +104,9 @@ func _process(delta):
 		
 	if spawningMiniWave and timeTillNextMini <= 0 and not spawningDataDecided:
 		System_Global.PlayerPerfTracking = true
+		accumaletedPerformance += (System_Global.PlayerPerformance - 1) * 0.1
 		match currBudgetOption:
 			BudgetOptions.Observer:
-				#TODO Implement accumalating performance tracking
 				#Conservative at start of wave, adapting to player performance
 				#aim to use 20-30% at start
 				if budgetProcentToStart == -1:
@@ -121,8 +115,9 @@ func _process(delta):
 					miniWavesLeft = miniWavesToUseProcent
 				if miniWavesLeft > 0:
 					budgetToUse = (CurrBaseBudget * budgetProcentToStart) / miniWavesToUseProcent
+					bonusBudget = (randf() * (maxSpawnBonus * (System_Global.PlayerPerformance - 1))) if randf() < maxBonusChannce * (System_Global.PlayerPerformance - 1) else 0.0
 				else:
-					budgetToUse = CurrBaseBudget * System_Global.PlayerPerformance
+					budgetToUse = CurrBaseBudget * accumaletedPerformance
 					if CurrBudget < budgetToUse:
 						budgetToUse = CurrBudget
 				pass
@@ -136,8 +131,9 @@ func _process(delta):
 					miniWavesLeft = miniWavesToUseProcent
 				if miniWavesLeft > 0:
 					budgetToUse = (CurrBaseBudget * budgetProcentToStart) / miniWavesToUseProcent
+					bonusBudget = (randf() * (maxSpawnBonus * (System_Global.PlayerPerformance - 1))) if randf() < maxBonusChannce * (System_Global.PlayerPerformance - 1) else 0.0
 				else:
-					budgetToUse = CurrBaseBudget * System_Global.PlayerPerformance
+					budgetToUse = CurrBaseBudget * accumaletedPerformance
 					if CurrBudget < budgetToUse:
 						budgetToUse = CurrBudget
 				pass
@@ -147,20 +143,29 @@ func _process(delta):
 var budgetProcentToStart = -1
 var miniWavesToUseProcent = -1
 var miniWavesLeft = -1
+var accumaletedPerformance = 0
 
 var budgetToUse: float = 0
+var bonusBudget: float = 0
 var randSpawnInt: Vector2 = Vector2(1, 2)
 var randGroupSpawnInt: Vector2 = Vector2(5, 9)
 var timeToSpawn: float = 0
 func trySpawnEnemies(delta):
-	if getValidEnemies(budgetToUse).size() == 0 or getValidEnemies(CurrBudget).size() == 0:
+	if getValidEnemies(budgetToUse + bonusBudget).size() == 0 or getValidEnemies(CurrBudget).size() == 0:
 		spawningMiniWave = false
 		spawningDataDecided = false
 		return
 	match currSpawnMode:
 		SpawnModes.Rapid:
 			if timeToSpawn <= 0:
-				var cost = spawnEnemy(budgetToUse)
+				var cost = spawnEnemy(budgetToUse + bonusBudget)
+				var calcedBonus = bonusBudget - cost
+				if calcedBonus < 0:
+					cost = -calcedBonus
+					bonusBudget = 0
+				else:
+					bonusBudget -= cost
+					cost = 0
 				budgetToUse -= cost
 				CurrBudget -= cost
 				timeToSpawn = randf_range(randSpawnInt.x, randSpawnInt.y)
@@ -169,8 +174,15 @@ func trySpawnEnemies(delta):
 			pass
 		SpawnModes.Pulse:
 			if timeToSpawn <= 0:
-				while not getValidEnemies(budgetToUse).size() == 0:
-					var cost = spawnEnemy(budgetToUse)
+				while not getValidEnemies(budgetToUse + bonusBudget).size() == 0:
+					var cost = spawnEnemy(budgetToUse + bonusBudget)
+					var calcedBonus = bonusBudget - cost
+					if calcedBonus < 0:
+						cost = -calcedBonus
+						bonusBudget = 0
+					else:
+						bonusBudget -= cost
+						cost = 0
 					budgetToUse -= cost
 					CurrBudget -= cost
 					if randf() < 0.1:
@@ -209,7 +221,6 @@ func enemyDied(id):
 	if(System_Global.EnemyInstances.erase(id)):
 		enemyDead.emit(id)
 		enemiesAlive -= 1
-		#enemiesKilledSinceSpawn += 1
 		score += CurrBaseDifficulty + CurrDifficultyOffset
 
 func WaveDone():
@@ -218,7 +229,7 @@ func WaveDone():
 
 func StartNewWave():
 	CurrentWave += 1
-	CurrBaseBudget = BaseBudget
+	CurrBaseBudget = clamp((CurrBaseBudget + budgetRange.x * (System_Global.PlayerPerformance - 1)), budgetRange.x, budgetRange.y)
 	CurrBudget = CurrBaseBudget
 	WaveUI.SetWaveCount(CurrentWave)
 	WaveUI.StartWave(5)
@@ -226,8 +237,7 @@ func StartNewWave():
 
 #Setting up and starting new wave
 func _on_wave_ui_wave_started():
-	#currBudgetOption = BudgetOptions.values().pick_random()
-	currBudgetOption = BudgetOptions.Observer
+	currBudgetOption = BudgetOptions.values().pick_random()
 	CurrBaseDifficulty = 1.0 + (CurrentWave - 1) * DifficultyScalePower
 	waveOngoing = true
 

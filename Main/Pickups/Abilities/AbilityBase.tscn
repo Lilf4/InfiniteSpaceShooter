@@ -1,0 +1,90 @@
+[gd_scene load_steps=15 format=3 uid="uid://btsul6rjbvjka"]
+
+[ext_resource type="Script" path="res://Main/Pickups/Abilities/AbilityBase.gd" id="1_26gh7"]
+[ext_resource type="Shader" path="res://Main/Pickups/Abilities/AbilityBase.gdshader" id="1_bg0ly"]
+[ext_resource type="Texture2D" uid="uid://cjfrafv6j2wi7" path="res://Main/Pickups/Abilities/Icons/HeartAbility.png" id="1_hub5q"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1hmby"]
+frequency = 0.005
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4ltyq"]
+in_3d_space = true
+seamless = true
+noise = SubResource("FastNoiseLite_1hmby")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8df2q"]
+frequency = 0.0065
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4t4f4"]
+in_3d_space = true
+seamless = true
+noise = SubResource("FastNoiseLite_8df2q")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qdqj6"]
+seed = 4
+frequency = 0.005
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_d15og"]
+in_3d_space = true
+seamless = true
+noise = SubResource("FastNoiseLite_qdqj6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_638s4"]
+render_priority = 0
+shader = ExtResource("1_bg0ly")
+shader_parameter/distortionView = 0.03
+shader_parameter/speedView = 0.075
+shader_parameter/tintColor = Color(0.733333, 0, 0, 1)
+shader_parameter/fesnelAmount = 3.0
+shader_parameter/distortionVertex = 0.3
+shader_parameter/speedVertex = 0.08
+shader_parameter/noiseViewX = SubResource("NoiseTexture2D_4t4f4")
+shader_parameter/noiseViewY = SubResource("NoiseTexture2D_d15og")
+shader_parameter/noiseVertex = SubResource("NoiseTexture2D_4ltyq")
+
+[sub_resource type="SphereMesh" id="SphereMesh_jtns4"]
+material = SubResource("ShaderMaterial_638s4")
+radius = 5.0
+height = 10.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pivvk"]
+size = Vector2(5, 5)
+orientation = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fo2uf"]
+render_priority = 1
+transparency = 1
+albedo_texture = ExtResource("1_hub5q")
+billboard_mode = 1
+billboard_keep_scale = true
+proximity_fade_distance = 117.03
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ikgn7"]
+radius = 10.0
+
+[node name="AbilityBase" type="Node3D"]
+script = ExtResource("1_26gh7")
+Icon = ExtResource("1_hub5q")
+Tint = Color(1, 0, 0, 1)
+
+[node name="DistortienSphere" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_jtns4")
+
+[node name="AbilityIcon" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00751734, 0.0599613, -0.0335016)
+mesh = SubResource("PlaneMesh_pivvk")
+surface_material_override/0 = SubResource("StandardMaterial3D_fo2uf")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_energy = 16.0
+light_size = 1.0
+light_specular = 0.0
+omni_range = 14.357
+omni_attenuation = 0.554782
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_ikgn7")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

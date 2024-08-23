@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://nflqnlf5qb0l"
-path.s3tc="res://.godot/imported/HealthSprite.png-74a2a1db51aafc1cbc9cb32780a3edcb.s3tc.ctex"
+uid="uid://cjfrafv6j2wi7"
+path.s3tc="res://.godot/imported/HeartAbility.png-5b890ba945d1f657bbcf176a7000576e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Main/GUI/Upgrade Menu/Upgrade Icons/HealthSprite.png"
-dest_files=["res://.godot/imported/HealthSprite.png-74a2a1db51aafc1cbc9cb32780a3edcb.s3tc.ctex"]
+source_file="res://Main/Pickups/Abilities/Icons/HeartAbility.png"
+dest_files=["res://.godot/imported/HeartAbility.png-5b890ba945d1f657bbcf176a7000576e.s3tc.ctex"]
 
 [params]
 

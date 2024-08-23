@@ -3,7 +3,7 @@
 ##Including taking care of movement
 class_name EnemyBase extends CharacterBody3D
 
-@onready var Scrap = preload("res://Main/Pickups/Scrap.tscn")
+@onready var Scrap = preload("res://Main/Pickups/Scrap/Scrap.tscn")
 @onready var Main: Node = find_parent("Main")
 
 @onready var followPointScene: PackedScene = preload("res://Main/Enemies/follow_point.tscn")
