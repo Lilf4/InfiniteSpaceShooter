@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://btsul6rjbvjka"]
+[gd_scene load_steps=20 format=3 uid="uid://btsul6rjbvjka"]
 
 [ext_resource type="Script" path="res://Main/Pickups/Abilities/AbilityBase.gd" id="1_26gh7"]
 [ext_resource type="Shader" path="res://Main/Pickups/Abilities/AbilityBase.gdshader" id="1_bg0ly"]
@@ -62,10 +62,34 @@ proximity_fade_distance = 117.03
 [sub_resource type="SphereShape3D" id="SphereShape3D_ikgn7"]
 radius = 10.0
 
+[sub_resource type="Curve" id="Curve_s1ht2"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_hd1um"]
+curve_x = SubResource("Curve_s1ht2")
+curve_y = SubResource("Curve_s1ht2")
+curve_z = SubResource("Curve_s1ht2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ks1dx"]
+spread = 180.0
+initial_velocity_min = 75.0
+initial_velocity_max = 100.0
+scale_curve = SubResource("CurveXYZTexture_hd1um")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_606u6"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.207843)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_fx5ax"]
+material = SubResource("StandardMaterial3D_606u6")
+radius = 0.25
+height = 0.5
+
 [node name="AbilityBase" type="Node3D"]
 script = ExtResource("1_26gh7")
-Icon = ExtResource("1_hub5q")
-Tint = Color(1, 0, 0, 1)
 
 [node name="DistortienSphere" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_jtns4")
@@ -87,4 +111,15 @@ omni_attenuation = 0.554782
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_ikgn7")
 
+[node name="PickupParticles" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 256
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_ks1dx")
+draw_pass_1 = SubResource("SphereMesh_fx5ax")
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="finished" from="PickupParticles" to="." method="_on_gpu_particles_3d_finished"]

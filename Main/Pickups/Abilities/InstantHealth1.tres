@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AbilityResource" load_steps=2 format=3 uid="uid://q8ovodbehy5l"]
+
+[ext_resource type="Script" path="res://Main/Pickups/Abilities/AbilityResources/AbilityResourceBase.gd" id="1_5u6nx"]
+
+[resource]
+script = ExtResource("1_5u6nx")
+Tint = Color(0, 0, 0, 1)
+LightEnergy = 16.0
+Effect = 0
+EffectValue = 0.0

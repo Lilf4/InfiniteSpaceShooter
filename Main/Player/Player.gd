@@ -23,16 +23,21 @@ var currRoll: float = 0
 var turnVal: Vector3 = Vector3.ZERO
 
 func _ready():
-	currHealth = Health
+	currHealth = Health - Health * .5
 	connect("PlayerDamaged", System_Global.playerTookDamage)
 
 signal PlayerDeath
 signal PlayerDamaged
 func takeDamage(val):
+	return
 	currHealth -= val
 	PlayerDamaged.emit(val)
 	if currHealth <= 0:
 		PlayerDeath.emit()
+
+func heal(val):
+	currHealth += val
+	currHealth = clamp(currHealth, 0, Health)
 
 func _input(event):
 	if System_Global.GamePaused:

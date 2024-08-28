@@ -14,13 +14,15 @@ var followPointOuter: Node3D
 var currAccToTarget: float = 0
 
 var ID = 0
-
+@export var abilitySpawnChance: float = 0.25
+@export var droppableAbilities: Array[AbilityDescriptor]
 @export var StoppingPower: float = 5.0
 @export var idleTurnWeight: float = 0.05
 @export var moveTurnWeight: float = 0.02
 @export var AccelRate: float = 10.0
 @export var Thrust: float = 5.0
 @export var MaxSpeed: Vector3 = Vector3(50.0, 50.0, 50.0)
+@onready var abilityBase: PackedScene = preload("res://Main/Pickups/Abilities/AbilityBase.tscn")
 var difficulty: float = 1.0
 
 var currVel: Vector3 = Vector3.ZERO
@@ -40,7 +42,7 @@ func tryFixShield(delta):
 		return
 	if currShield < MaxShield:
 		currShield += shieldRepairRate * delta
-
+var dead: bool = false
 signal enemyDeath
 signal enemyDamaged
 func takeDamage(val: float, emitDamaged: bool = true):
@@ -52,9 +54,11 @@ func takeDamage(val: float, emitDamaged: bool = true):
 	else:
 		currHealth -= val
 	
-	if currHealth <= 0:
+	if currHealth <= 0 and not dead:
+		dead = true
 		followPointMiddle.queue_free()
-		spawnScrapPile(true, 75)
+		if not spawnScrapPile(true, 75):
+			spawnAbility()
 		enemyDeath.emit(ID)
 		queue_free()
 
@@ -66,6 +70,30 @@ func spawnScrapPile(random: bool, percentage: int):
 		var scrapPile = Scrap.instantiate()
 		scrapPile.position = position
 		Main.add_child(scrapPile)
+	return shouldSpawn
+
+func spawnAbility():
+	if randf() >= abilitySpawnChance:
+		var ability = randByWeight(droppableAbilities)
+		var _abilityBase = abilityBase.instantiate()
+		Main.add_child(_abilityBase)
+		_abilityBase.position = position
+		_abilityBase.init(ability.ability)
+		print("E")
+
+func randByWeight(arr: Array):
+	var total: float = 0
+	for obj in arr:
+		total += obj.weight
+		
+	var random: float = ceil(randf() * total)
+	
+	var cursor = 0
+	for i in arr:
+		cursor += i.weight
+		if cursor >= random:
+			return i
+	return null
 
 #Setup followpoints
 func setup():

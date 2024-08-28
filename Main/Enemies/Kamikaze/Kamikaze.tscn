@@ -1,8 +1,21 @@
-[gd_scene load_steps=20 format=3 uid="uid://dbxk0cvtdv2td"]
+[gd_scene load_steps=25 format=3 uid="uid://dbxk0cvtdv2td"]
 
 [ext_resource type="Script" path="res://Main/Enemies/Kamikaze/Kamikaze.gd" id="1_cxucc"]
 [ext_resource type="ArrayMesh" uid="uid://364huk4qdb1x" path="res://Assets/SpaceshipT4/Lo_poly_Spaceship_05_by_Liz_Reddington.obj" id="1_p0rqf"]
 [ext_resource type="Shader" path="res://Main/Enemies/Kamikaze/KamikazeStealth.gdshader" id="2_ih0wa"]
+[ext_resource type="Resource" uid="uid://c22rp8pcunmij" path="res://Main/Pickups/Abilities/AbilityResources/InstantHealing.tres" id="2_sno1r"]
+[ext_resource type="Script" path="res://Main/Pickups/Abilities/AbilityDescriptor.gd" id="3_d3jdb"]
+[ext_resource type="Resource" uid="uid://cxvdp0me4jalt" path="res://Main/Pickups/Abilities/AbilityResources/Cloaking.tres" id="4_vi3mf"]
+
+[sub_resource type="Resource" id="Resource_yo70u"]
+script = ExtResource("3_d3jdb")
+ability = ExtResource("2_sno1r")
+weight = 25.0
+
+[sub_resource type="Resource" id="Resource_mmly2"]
+script = ExtResource("3_d3jdb")
+ability = ExtResource("4_vi3mf")
+weight = 25.0
 
 [sub_resource type="Gradient" id="Gradient_vkyyc"]
 offsets = PackedFloat32Array(0.162338, 0.948052)
@@ -100,6 +113,7 @@ script = ExtResource("1_cxucc")
 minInvis = 0.5
 attackChance = 25
 minDistToPoint = 60.0
+droppableAbilities = Array[ExtResource("3_d3jdb")]([SubResource("Resource_yo70u"), SubResource("Resource_mmly2")])
 moveTurnWeight = 0.08
 AccelRate = 20.0
 Thrust = 10.0

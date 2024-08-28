@@ -1,8 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://ypaqjflcdklt"]
+[gd_scene load_steps=10 format=3 uid="uid://ypaqjflcdklt"]
 
 [ext_resource type="Script" path="res://Main/Enemies/Gunner/enemy.gd" id="1_jwliv"]
+[ext_resource type="Resource" uid="uid://c22rp8pcunmij" path="res://Main/Pickups/Abilities/AbilityResources/InstantHealing.tres" id="2_3am78"]
 [ext_resource type="ArrayMesh" uid="uid://bti3a3k88xeno" path="res://Assets/SpaceshipT2/Lo_poly_Spaceship_04_by_Liz_Reddington.obj" id="2_flp06"]
+[ext_resource type="Script" path="res://Main/Pickups/Abilities/AbilityDescriptor.gd" id="3_1mwpf"]
 [ext_resource type="AudioStream" uid="uid://tjnhntclvkob" path="res://Assets/Sounds/laserShoot.wav" id="3_wv1mu"]
+
+[sub_resource type="Resource" id="Resource_ekbif"]
+script = ExtResource("3_1mwpf")
+ability = ExtResource("2_3am78")
+weight = 25.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0500u"]
 size = Vector3(6.50684, 7.47168, 21.082)
@@ -17,6 +24,7 @@ size = Vector3(4.943, 12.7183, 9.727)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_jwliv")
+droppableAbilities = Array[ExtResource("3_1mwpf")]([SubResource("Resource_ekbif")])
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)

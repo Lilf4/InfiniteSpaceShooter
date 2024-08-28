@@ -1,7 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://b8q203lxw6gr2"]
+[gd_scene load_steps=7 format=3 uid="uid://b8q203lxw6gr2"]
 
 [ext_resource type="Script" path="res://Main/Enemies/MineLayer/MineLayer.gd" id="1_cngyr"]
+[ext_resource type="Resource" uid="uid://c22rp8pcunmij" path="res://Main/Pickups/Abilities/AbilityResources/InstantHealing.tres" id="2_0tnbe"]
 [ext_resource type="ArrayMesh" uid="uid://3uq802w03s36" path="res://Assets/SpaceshipT3/Lo_poly_Spaceship_02_by_Liz_Reddington.obj" id="2_2guqe"]
+[ext_resource type="Script" path="res://Main/Pickups/Abilities/AbilityDescriptor.gd" id="3_20do1"]
+
+[sub_resource type="Resource" id="Resource_d8jct"]
+script = ExtResource("3_20do1")
+ability = ExtResource("2_0tnbe")
+weight = 25.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ia0tj"]
 size = Vector3(22.9609, 9.71881, 16.036)
@@ -10,6 +17,7 @@ size = Vector3(22.9609, 9.71881, 16.036)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_cngyr")
+droppableAbilities = Array[ExtResource("3_20do1")]([SubResource("Resource_d8jct")])
 Thrust = 8.0
 MaxSpeed = Vector3(70, 70, 70)
 

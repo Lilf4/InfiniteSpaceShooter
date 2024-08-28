@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AbilityResource" load_steps=3 format=3 uid="uid://cxvdp0me4jalt"]
+
+[ext_resource type="Texture2D" uid="uid://d08kjikncf0m0" path="res://Main/Pickups/Abilities/Icons/CloakAbility.png" id="1_2hn1h"]
+[ext_resource type="Script" path="res://Main/Pickups/Abilities/AbilityResources/AbilityResourceBase.gd" id="1_diw8n"]
+
+[resource]
+script = ExtResource("1_diw8n")
+Icon = ExtResource("1_2hn1h")
+Tint = Color(0, 0, 1, 1)
+LightEnergy = 4.0
+Effect = 1
+EffectValue = 10.0

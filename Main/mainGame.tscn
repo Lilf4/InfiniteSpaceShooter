@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://w33bplejeiky"]
+[gd_scene load_steps=25 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
@@ -18,7 +18,6 @@
 [ext_resource type="Resource" uid="uid://h2502kema73p" path="res://Main/Enemies/MineLayer/MineLayerSpawnDescriptor.tres" id="14_4l3nc"]
 [ext_resource type="Resource" uid="uid://c3jocxq6a1jmb" path="res://Main/Enemies/Kamikaze/KamikazeSpawnDescriptor.tres" id="15_c1dls"]
 [ext_resource type="Resource" uid="uid://dig58e0pdcgvf" path="res://Main/Enemies/Gunner/GunnerSpawnDescriptor.tres" id="16_lnwew"]
-[ext_resource type="PackedScene" uid="uid://btsul6rjbvjka" path="res://Main/Pickups/Abilities/AbilityBase.tscn" id="19_77pwk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkqsf"]
 bg_color = Color(0, 0, 0, 0.784314)
@@ -282,9 +281,6 @@ script = ExtResource("8_cn62n")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SunScene"]
 light_color = Color(1, 0.282353, 0.909804, 1)
 shadow_transmittance_bias = 2.313
-
-[node name="AbilityBase" parent="." instance=ExtResource("19_77pwk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 73, 61)
 
 [connection signal="WaveStarted" from="GUI/WaveUI" to="WaveSpawner" method="_on_wave_ui_wave_started"]
 [connection signal="Quit" from="GUI/DeathScreen" to="." method="Quit"]
