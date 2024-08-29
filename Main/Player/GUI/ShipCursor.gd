@@ -48,15 +48,20 @@ func _draw():
 			(reticleSize * .5) - width, 
 			0, TAU, 100, Color.WHITE, width)
 			
-	var health = .7
-	var shield = .5
-	var playerFacing = Player.transform.basis.z
+	
+	var playerFacing = -Player.transform.basis.z
 	#TODO
+	var EnemyToDisplay
+	var smallestDist: float = INF
 	for enemy in System_Global.EnemyInstances:
 		var enemyInstance = System_Global.EnemyInstances[enemy]
 		if enemyInstance.isVisible:
-			print((enemyInstance.position - enemyInstance.position * playerFacing).distance_to(Player.position - Player.position * playerFacing))
+			if smallestDist > (enemyInstance.position - enemyInstance.position * playerFacing).distance_to(Player.position - Player.position * playerFacing):
+				EnemyToDisplay = System_Global.EnemyInstances[enemy]
+				smallestDist = (enemyInstance.position - enemyInstance.position * playerFacing).distance_to(Player.position - Player.position * playerFacing)
 	
+	var health = 0 if EnemyToDisplay == null or EnemyToDisplay.currHealth == 0 else EnemyToDisplay.currHealth / EnemyToDisplay.Health
+	var shield = 0 if EnemyToDisplay == null or EnemyToDisplay.currShield == 0 else EnemyToDisplay.currShield / EnemyToDisplay.MaxShield
 	var innerRadius = (reticleSize * .5 + reticleSize) - width
 	var enemyInfoRadius = (reticleSize * 1.75 + reticleSize) - width + 2
 	var difference = innerRadius / enemyInfoRadius
