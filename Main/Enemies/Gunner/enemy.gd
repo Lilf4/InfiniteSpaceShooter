@@ -85,3 +85,13 @@ func ShootAtPlayer(delta):
 			gunToShoot += 1
 			AudioPlayer.play(0)
 	timeToNextShot -= delta
+
+
+func _on_visible_on_screen_notifier_3d_screen_entered():
+	isVisible = true
+	pass # Replace with function body.
+
+
+func _on_visible_on_screen_notifier_3d_screen_exited():
+	isVisible = false
+	pass # Replace with function body.

@@ -1,5 +1,3 @@
-// Available at: https://godotshaders.com/shader/distortion-bubble/
-
 shader_type spatial;
 
 render_mode unshaded;

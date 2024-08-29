@@ -18,7 +18,8 @@ func _ready():
 
 func _process(_delta):
 	if System_Global.GamePaused:
-		return
+		#return
+		pass
 	queue_redraw()
 
 func _draw():
@@ -46,3 +47,39 @@ func _draw():
 			mouseOffset, 
 			(reticleSize * .5) - width, 
 			0, TAU, 100, Color.WHITE, width)
+			
+	var health = .7
+	var shield = .5
+	var playerFacing = Player.transform.basis.z
+	#TODO
+	for enemy in System_Global.EnemyInstances:
+		var enemyInstance = System_Global.EnemyInstances[enemy]
+		if enemyInstance.isVisible:
+			print((enemyInstance.position - enemyInstance.position * playerFacing).distance_to(Player.position - Player.position * playerFacing))
+	
+	var innerRadius = (reticleSize * .5 + reticleSize) - width
+	var enemyInfoRadius = (reticleSize * 1.75 + reticleSize) - width + 2
+	var difference = innerRadius / enemyInfoRadius
+	var newAngle = .33 * difference
+	var shieldValue = (1 - shield) * newAngle
+	var healthValue = (1 - health) * newAngle
+	
+	draw_arc(
+			Vector2(0,0), 
+			enemyInfoRadius, 
+			TAU * ((0.5 + newAngle * 0.5)), TAU * (0.5 - newAngle * 0.5), 100, Color(Color.WHITE, 0.2), width + 2)
+	
+	draw_arc(
+			Vector2(0,0), 
+			enemyInfoRadius, 
+			TAU * ((0.5 + newAngle * 0.5) - shieldValue), TAU * (0.5 - newAngle * 0.5), 100, Color.BLUE, width + 2)
+	
+	draw_arc(
+			Vector2(0,0), 
+			enemyInfoRadius, 
+			TAU * (newAngle * 0.5), TAU * ((-newAngle * 0.5)), 100, Color(Color.WHITE, 0.2), width + 2)
+	
+	draw_arc(
+			Vector2(0,0), 
+			enemyInfoRadius, 
+			TAU * (newAngle * 0.5), TAU * ((-newAngle * 0.5) + healthValue), 100, Color.RED, width + 2)

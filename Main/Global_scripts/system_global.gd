@@ -72,3 +72,7 @@ var BulletsHit: int = 1
 
 func getAccuracy():
 	return BulletsHit as float / BulletsShot as float
+
+
+func addTimedAbility(ability):
+	pass

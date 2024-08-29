@@ -36,12 +36,19 @@ var shieldRepairRate: float = 1
 
 var currHealth: float = 0
 
+var isVisible: bool = false
+
+func applyEMP(downTime, distanceMult):
+	print("EMP'ed", " :: ", (distanceMult - .2) * 500)
+	pass
+
 func tryFixShield(delta):
 	if timeTillRepair > 0:
 		timeTillRepair -= delta
 		return
 	if currShield < MaxShield:
 		currShield += shieldRepairRate * delta
+
 var dead: bool = false
 signal enemyDeath
 signal enemyDamaged

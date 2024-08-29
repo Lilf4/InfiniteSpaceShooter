@@ -1,14 +1,20 @@
-[gd_scene load_steps=10 format=3 uid="uid://ypaqjflcdklt"]
+[gd_scene load_steps=12 format=3 uid="uid://ypaqjflcdklt"]
 
 [ext_resource type="Script" path="res://Main/Enemies/Gunner/enemy.gd" id="1_jwliv"]
 [ext_resource type="Resource" uid="uid://c22rp8pcunmij" path="res://Main/Pickups/Abilities/AbilityResources/InstantHealing.tres" id="2_3am78"]
 [ext_resource type="ArrayMesh" uid="uid://bti3a3k88xeno" path="res://Assets/SpaceshipT2/Lo_poly_Spaceship_04_by_Liz_Reddington.obj" id="2_flp06"]
 [ext_resource type="Script" path="res://Main/Pickups/Abilities/AbilityDescriptor.gd" id="3_1mwpf"]
 [ext_resource type="AudioStream" uid="uid://tjnhntclvkob" path="res://Assets/Sounds/laserShoot.wav" id="3_wv1mu"]
+[ext_resource type="Resource" uid="uid://blv5n282tva3g" path="res://Main/Pickups/Abilities/AbilityResources/EMP.tres" id="4_tvfki"]
 
 [sub_resource type="Resource" id="Resource_ekbif"]
 script = ExtResource("3_1mwpf")
 ability = ExtResource("2_3am78")
+weight = 25.0
+
+[sub_resource type="Resource" id="Resource_efa0r"]
+script = ExtResource("3_1mwpf")
+ability = ExtResource("4_tvfki")
 weight = 25.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0500u"]
@@ -24,7 +30,7 @@ size = Vector3(4.943, 12.7183, 9.727)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_jwliv")
-droppableAbilities = Array[ExtResource("3_1mwpf")]([SubResource("Resource_ekbif")])
+droppableAbilities = Array[ExtResource("3_1mwpf")]([SubResource("Resource_ekbif"), SubResource("Resource_efa0r")])
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
@@ -77,3 +83,8 @@ text = "100 HP"
 font_size = 1024
 outline_size = 64
 uppercase = true
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]

@@ -121,5 +121,9 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_ks1dx")
 draw_pass_1 = SubResource("SphereMesh_fx5ax")
 
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="finished" from="PickupParticles" to="." method="_on_gpu_particles_3d_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

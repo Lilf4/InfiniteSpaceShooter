@@ -61,3 +61,13 @@ func _on_area_3d_body_entered(body):
 
 func _on_gpu_particles_3d_finished():
 	takeDamage(10000, false)
+
+
+func _on_visible_on_screen_notifier_3d_screen_exited():
+	isVisible = false
+	pass # Replace with function body.
+
+
+func _on_visible_on_screen_notifier_3d_screen_entered():
+	isVisible = true
+	pass # Replace with function body.
