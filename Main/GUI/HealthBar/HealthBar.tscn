@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://duitu78e27itj"]
+
+[ext_resource type="Script" path="res://Main/GUI/HealthBar/HealthBar.gd" id="1_5socu"]
+[ext_resource type="Texture2D" uid="uid://8f6ytvubnicf" path="res://Main/GUI/HealthBar/Textures/ShieldBackground.png" id="1_lyudk"]
+[ext_resource type="Texture2D" uid="uid://cx4bsk5mpurqk" path="res://Main/GUI/HealthBar/Textures/ShieldProgress.png" id="2_pb683"]
+[ext_resource type="Texture2D" uid="uid://cnoprd8ol5im1" path="res://Main/GUI/HealthBar/Textures/HealthBackground.png" id="3_pwqyl"]
+[ext_resource type="Texture2D" uid="uid://cfv23hflb0bqu" path="res://Main/GUI/HealthBar/Textures/HealthProgress.png" id="4_0o63y"]
+
+[node name="HealthBar" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5socu")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="ShieldProgressBar" type="TextureProgressBar" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -514.0
+offset_right = 514.0
+offset_bottom = 130.0
+grow_horizontal = 2
+scale = Vector2(0.4, 0.4)
+pivot_offset = Vector2(512, 0)
+step = 0.0
+value = 93.0
+texture_under = ExtResource("1_lyudk")
+texture_progress = ExtResource("2_pb683")
+texture_progress_offset = Vector2(2, 0)
+
+[node name="HealthProgressBar" type="TextureProgressBar" parent="Panel/ShieldProgressBar"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -482.0
+offset_right = 482.0
+offset_bottom = 107.0
+grow_horizontal = 2
+step = 0.0
+value = 100.0
+texture_under = ExtResource("3_pwqyl")
+texture_progress = ExtResource("4_0o63y")
+texture_progress_offset = Vector2(2, 0)

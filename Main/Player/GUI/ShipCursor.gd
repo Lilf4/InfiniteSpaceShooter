@@ -55,7 +55,7 @@ func _draw():
 	var smallestDist: float = INF
 	for enemy in System_Global.EnemyInstances:
 		var enemyInstance = System_Global.EnemyInstances[enemy]
-		if enemyInstance.isVisible:
+		if enemyInstance != null and enemyInstance.isVisible:
 			if smallestDist > (enemyInstance.position - enemyInstance.position * playerFacing).distance_to(Player.position - Player.position * playerFacing):
 				EnemyToDisplay = System_Global.EnemyInstances[enemy]
 				smallestDist = (enemyInstance.position - enemyInstance.position * playerFacing).distance_to(Player.position - Player.position * playerFacing)

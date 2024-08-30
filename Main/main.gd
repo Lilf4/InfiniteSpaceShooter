@@ -5,8 +5,8 @@ extends Node
 @onready var input_settings_menu = $GUI/InputSettings
 @onready var fpsLabel = $GUI/DebugInfo/VBoxContainer/fpsLabel
 @onready var deathScreen = $GUI/DeathScreen
-@onready var healthBar = $GUI/PlayElements/HealthBar/Foreground/HealthProgress
-@onready var speedLabel = $GUI/PlayElements/MoveDisplay/MarginContainer/HBoxContainer/Label
+@onready var healthBar = $GUI/PlayElements/HealthBar
+@onready var speedLabel = $GUI/PlayElements/MoveDisplay/TextureProgressBar
 @onready var ParticleEmitter = $Player/GPUParticles3D
 @onready var UpgradeMenu = $GUI/UpgradeMenu
 
@@ -18,11 +18,12 @@ var UpgradeMenuOpen: bool = false
 func _ready():
 	print("Startup")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	healthBar.setMaxHealth(player.Health)
 	
 func _process(_delta):
-	healthBar.value = player.currHealth
+	healthBar.setCurrHealth(player.currHealth)
 	fpsLabel.text = str("FPS: ", Engine.get_frames_per_second())
-	speedLabel.text = str("Speed: ", "%.2f" % player.velocity.distance_to(Vector3.ZERO), " kpm")
+	speedLabel.value = player.velocity.distance_to(Vector3.ZERO)
 	if System_Global.GamePaused:
 		ParticleEmitter.speed_scale = 0
 	else:

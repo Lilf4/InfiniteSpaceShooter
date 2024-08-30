@@ -4,7 +4,7 @@ extends Control
 #Aswell as emitting important signals further for outside scripts to connect to
 
 @onready var WaveStartTimerUI = $WaveStartTimer
-@onready var WaveDisplay = $PanelContainer/Label
+@onready var WaveDisplay = $TextureRect/Label
 signal WaveStarted
 
 func wave_start():

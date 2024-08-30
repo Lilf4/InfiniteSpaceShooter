@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://w33bplejeiky"]
+[gd_scene load_steps=32 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
@@ -6,12 +6,20 @@
 [ext_resource type="PackedScene" uid="uid://cpwy34jgvhxa7" path="res://Main/GUI/Settings/InputSettings.tscn" id="2_2420r"]
 [ext_resource type="PackedScene" uid="uid://dgu27pi6pnrhm" path="res://Main/Player/GUI/ShipCursor.tscn" id="3_ija6w"]
 [ext_resource type="Script" path="res://Main/GUI/fpsLabel.gd" id="4_sekis"]
+[ext_resource type="Texture2D" uid="uid://ujematravil6" path="res://Main/GUI/Radar/Radar.png" id="5_2jlu7"]
+[ext_resource type="PackedScene" uid="uid://duitu78e27itj" path="res://Main/GUI/HealthBar/HealthBar.tscn" id="5_buqva"]
 [ext_resource type="PackedScene" uid="uid://dxa6xif2pbt5k" path="res://Main/GUI/death_screen.tscn" id="5_ikyxl"]
+[ext_resource type="Shader" path="res://Main/mainGame.gdshader" id="5_wr7ld"]
 [ext_resource type="PackedScene" uid="uid://pmew437j224v" path="res://Main/WaveSystem/wave_ui.tscn" id="6_4op8d"]
 [ext_resource type="Texture2D" uid="uid://c74vxklx5dku4" path="res://Main/GUI/Icons/Scrap_metal_icon.webp" id="6_4r21d"]
+[ext_resource type="Texture2D" uid="uid://babavd681fc67" path="res://Main/GUI/Speedometer/SpeedBackground.png" id="6_dormh"]
+[ext_resource type="Texture2D" uid="uid://dt4jgj5japecl" path="res://Main/GUI/Backgrounds/CornerPiece.png" id="6_nq8ft"]
 [ext_resource type="Script" path="res://Main/GUI/Scrap/Label.gd" id="6_tyked"]
+[ext_resource type="Texture2D" uid="uid://ipltfm644qjp" path="res://Main/GUI/Radar/RadarBackground.png" id="6_wtufl"]
 [ext_resource type="PackedScene" uid="uid://cfl1xsdo0pylf" path="res://Main/GUI/RadarScene.tscn" id="6_ysssl"]
+[ext_resource type="Texture2D" uid="uid://em7v1sa7ds0h" path="res://Main/GUI/Speedometer/SpeedFront.png" id="7_f36dj"]
 [ext_resource type="Script" path="res://Main/Environment/Sun.gd" id="8_cn62n"]
+[ext_resource type="Texture2D" uid="uid://ccivka78facc7" path="res://Main/GUI/Speedometer/SpeedProgress.png" id="8_phmce"]
 [ext_resource type="Script" path="res://Main/Enemies/WaveSpawner.gd" id="8_urq70"]
 [ext_resource type="PackedScene" uid="uid://dtwxfbnkapfjc" path="res://Main/GUI/Upgrade Menu/upgrade_menu.tscn" id="8_wye4b"]
 [ext_resource type="Script" path="res://Main/accLabel.gd" id="11_yg2wi"]
@@ -19,11 +27,9 @@
 [ext_resource type="Resource" uid="uid://c3jocxq6a1jmb" path="res://Main/Enemies/Kamikaze/KamikazeSpawnDescriptor.tres" id="15_c1dls"]
 [ext_resource type="Resource" uid="uid://dig58e0pdcgvf" path="res://Main/Enemies/Gunner/GunnerSpawnDescriptor.tres" id="16_lnwew"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkqsf"]
-bg_color = Color(0, 0, 0, 0.784314)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdfhv"]
-bg_color = Color(0.137255, 0.407843, 0.639216, 0.784314)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rpu8x"]
+shader = ExtResource("5_wr7ld")
+shader_parameter/color = Color(0, 0, 0, 0.266667)
 
 [sub_resource type="LabelSettings" id="LabelSettings_wdh7l"]
 font_size = 32
@@ -72,53 +78,36 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="HealthBar" type="Control" parent="GUI/PlayElements"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -299.0
-offset_top = 10.0
-offset_right = 299.0
-offset_bottom = 50.0
-grow_horizontal = 2
-
-[node name="Background" type="PanelContainer" parent="GUI/PlayElements/HealthBar"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -298.0
-offset_top = -20.0
-offset_right = 298.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Foreground" type="PanelContainer" parent="GUI/PlayElements/HealthBar"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -292.0
-offset_top = -15.0
-offset_right = 292.0
-offset_bottom = 15.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HealthProgress" type="ProgressBar" parent="GUI/PlayElements/HealthBar/Foreground"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxFlat_fkqsf")
-theme_override_styles/fill = SubResource("StyleBoxFlat_cdfhv")
-allow_greater = true
-
 [node name="Radar" type="Control" parent="GUI/PlayElements"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -225.0
+offset_top = -225.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="GUI/PlayElements/Radar"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -243.0
+offset_top = -243.0
+offset_right = 27.0
+offset_bottom = 27.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("5_2jlu7")
+
+[node name="TextureRect" type="TextureRect" parent="GUI/PlayElements/Radar/TextureRect"]
+material = SubResource("ShaderMaterial_rpu8x")
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -129,6 +118,7 @@ offset_left = -250.0
 offset_top = -250.0
 grow_horizontal = 0
 grow_vertical = 0
+texture = ExtResource("6_wtufl")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="GUI/PlayElements/Radar"]
 layout_mode = 1
@@ -144,44 +134,38 @@ own_world_3d = true
 transparent_bg = true
 handle_input_locally = false
 gui_disable_input = true
-size = Vector2i(250, 250)
+size = Vector2i(225, 225)
 render_target_update_mode = 4
 
 [node name="Radar" parent="GUI/PlayElements/Radar/SubViewportContainer/SubViewport" instance=ExtResource("6_ysssl")]
+
+[node name="HealthBar" parent="GUI/PlayElements" instance=ExtResource("5_buqva")]
+layout_mode = 1
 
 [node name="MoveDisplay" type="Control" parent="GUI/PlayElements"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -69.0
-offset_right = 250.0
 grow_vertical = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="GUI/PlayElements/MoveDisplay"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="GUI/PlayElements/MoveDisplay"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -231.0
+offset_right = 130.0
+offset_bottom = 348.0
 grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="GUI/PlayElements/MoveDisplay/MarginContainer"]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="GUI/PlayElements/MoveDisplay/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="GUI/PlayElements/MoveDisplay/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Current Speed: 0km/m "
-vertical_alignment = 1
-
-[node name="Control2" type="Control" parent="GUI/PlayElements/MoveDisplay/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
+scale = Vector2(0.4, 0.4)
+step = 0.0
+value = 100.0
+fill_mode = 3
+texture_under = ExtResource("6_dormh")
+texture_over = ExtResource("7_f36dj")
+texture_progress = ExtResource("8_phmce")
+texture_progress_offset = Vector2(19, 156)
 
 [node name="ScrapCount" type="Control" parent="GUI/PlayElements"]
 layout_mode = 1
@@ -189,19 +173,29 @@ anchors_preset = 0
 offset_right = 128.0
 offset_bottom = 50.0
 
-[node name="Panel" type="Panel" parent="GUI/PlayElements/ScrapCount"]
+[node name="TextureRect" type="TextureRect" parent="GUI/PlayElements/ScrapCount"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -63.984
+offset_right = 338.016
+offset_bottom = 130.0
 grow_horizontal = 2
-grow_vertical = 2
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("6_nq8ft")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="GUI/PlayElements/ScrapCount"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -54.0
+offset_top = -22.5
+offset_right = 54.0
+offset_bottom = 22.5
 grow_horizontal = 2
 grow_vertical = 2
 
