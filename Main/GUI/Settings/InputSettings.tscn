@@ -47,9 +47,19 @@ size_flags_horizontal = 3
 [node name="InputButton" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/ActionList" instance=ExtResource("2_athal")]
 layout_mode = 2
 
-[node name="ResetButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="BackButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Back"
+
+[node name="ResetButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Reset to default"
 
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]

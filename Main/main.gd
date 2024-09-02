@@ -2,7 +2,7 @@ extends Node
 
 @onready var player = $Player
 
-@onready var input_settings_menu = $GUI/InputSettings
+@onready var input_settings_menu = $GUI/Settings/MainSettings
 @onready var fpsLabel = $GUI/DebugInfo/VBoxContainer/fpsLabel
 @onready var deathScreen = $GUI/DeathScreen
 @onready var healthBar = $GUI/PlayElements/HealthBar

@@ -1,9 +1,11 @@
-[gd_scene load_steps=32 format=3 uid="uid://w33bplejeiky"]
+[gd_scene load_steps=34 format=3 uid="uid://w33bplejeiky"]
 
 [ext_resource type="PackedScene" uid="uid://c4m8ja0uorn45" path="res://Main/Player/Player.tscn" id="1_4wbho"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_6atm7"]
 [ext_resource type="PackedScene" uid="uid://c2xoo5sd5ga8u" path="res://Main/Environment/Sun.tscn" id="2_35fdn"]
 [ext_resource type="PackedScene" uid="uid://cpwy34jgvhxa7" path="res://Main/GUI/Settings/InputSettings.tscn" id="2_2420r"]
+[ext_resource type="PackedScene" uid="uid://ctliqa78e0cve" path="res://Main/GUI/Settings/MainSettings/MainSettings.tscn" id="2_gleyj"]
+[ext_resource type="Script" path="res://Main/Settings.gd" id="3_duvqb"]
 [ext_resource type="PackedScene" uid="uid://dgu27pi6pnrhm" path="res://Main/Player/GUI/ShipCursor.tscn" id="3_ija6w"]
 [ext_resource type="Script" path="res://Main/GUI/fpsLabel.gd" id="4_sekis"]
 [ext_resource type="Texture2D" uid="uid://ujematravil6" path="res://Main/GUI/Radar/Radar.png" id="5_2jlu7"]
@@ -56,9 +58,6 @@ script = ExtResource("1_6atm7")
 
 [node name="GUI" type="CanvasLayer" parent="."]
 
-[node name="InputSettings" parent="GUI" instance=ExtResource("2_2420r")]
-visible = false
-
 [node name="ShipCursor" parent="GUI" instance=ExtResource("3_ija6w")]
 anchors_preset = 8
 anchor_left = 0.5
@@ -68,6 +67,33 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 reticleSize = 25
+
+[node name="Settings" type="Control" parent="GUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_duvqb")
+
+[node name="MainSettings" parent="GUI/Settings" instance=ExtResource("2_gleyj")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+
+[node name="InputSettings" parent="GUI/Settings" instance=ExtResource("2_2420r")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 
 [node name="PlayElements" type="Control" parent="GUI"]
 layout_mode = 3
@@ -85,10 +111,9 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -225.0
-offset_top = -225.0
 grow_horizontal = 0
 grow_vertical = 0
+scale = Vector2(0.75, 0.75)
 
 [node name="TextureRect" type="TextureRect" parent="GUI/PlayElements/Radar"]
 layout_mode = 1
@@ -97,13 +122,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -243.0
-offset_top = -243.0
-offset_right = 27.0
-offset_bottom = 27.0
+offset_left = -270.0
+offset_top = -270.0
 grow_horizontal = 0
 grow_vertical = 0
-scale = Vector2(0.9, 0.9)
 texture = ExtResource("5_2jlu7")
 
 [node name="TextureRect" type="TextureRect" parent="GUI/PlayElements/Radar/TextureRect"]
@@ -122,11 +144,15 @@ texture = ExtResource("6_wtufl")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="GUI/PlayElements/Radar"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -250.0
+offset_top = -250.0
+grow_horizontal = 0
+grow_vertical = 0
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="GUI/PlayElements/Radar/SubViewportContainer"]
@@ -134,13 +160,18 @@ own_world_3d = true
 transparent_bg = true
 handle_input_locally = false
 gui_disable_input = true
-size = Vector2i(225, 225)
+size = Vector2i(250, 250)
 render_target_update_mode = 4
 
 [node name="Radar" parent="GUI/PlayElements/Radar/SubViewportContainer/SubViewport" instance=ExtResource("6_ysssl")]
 
 [node name="HealthBar" parent="GUI/PlayElements" instance=ExtResource("5_buqva")]
 layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+grow_vertical = 1
 
 [node name="MoveDisplay" type="Control" parent="GUI/PlayElements"]
 layout_mode = 1
@@ -211,6 +242,11 @@ label_settings = SubResource("LabelSettings_wdh7l")
 script = ExtResource("6_tyked")
 
 [node name="WaveUI" parent="GUI" instance=ExtResource("6_4op8d")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+grow_horizontal = 0
+grow_vertical = 1
 
 [node name="DeathScreen" parent="GUI" instance=ExtResource("5_ikyxl")]
 visible = false
@@ -276,6 +312,10 @@ script = ExtResource("8_cn62n")
 light_color = Color(1, 0.282353, 0.909804, 1)
 shadow_transmittance_bias = 2.313
 
+[connection signal="doRestart" from="GUI/Settings/MainSettings" to="GUI/Settings" method="_on_do_restart"]
+[connection signal="openGeneral" from="GUI/Settings/MainSettings" to="GUI/Settings" method="_on_main_settings_open_general"]
+[connection signal="openKeybinds" from="GUI/Settings/MainSettings" to="GUI/Settings" method="_on_main_settings_open_keybinds"]
+[connection signal="resumed" from="GUI/Settings/MainSettings" to="GUI/Settings" method="_on_resumed"]
 [connection signal="WaveStarted" from="GUI/WaveUI" to="WaveSpawner" method="_on_wave_ui_wave_started"]
 [connection signal="Quit" from="GUI/DeathScreen" to="." method="Quit"]
 [connection signal="Retry" from="GUI/DeathScreen" to="." method="Retry"]
